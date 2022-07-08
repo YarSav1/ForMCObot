@@ -401,7 +401,7 @@ class LikeDislike(discord.ui.View):
         if interaction.channel.id in DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})['idea_channel']:
             doc = DB_IDEA_MEMBERS.find_one({'msg': interaction.message.jump_url})
             author_click = interaction.user
-            if author_click.id in DB_IDEA_MEMBERS.find_one({'msg': doc['msg']})['dislike']:
+            if author_click.id in doc['dislike']:
                 embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                                                 doc['footer'], (len(doc['like']) + 1), (len(doc['dislike'])-1), 'No')
                 await interaction.response.edit_message(embed=embed, view=self)
@@ -410,7 +410,7 @@ class LikeDislike(discord.ui.View):
                                            {'$push': {'like': author_click.id}})
                 DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
                                            {'$pull': {'dislike': author_click.id}})
-            elif author_click.id in DB_IDEA_MEMBERS.find_one({'msg': doc['msg']})['like']:
+            elif author_click.id in doc['like']:
                 # embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                 #                                 doc['footer'], (len(doc['like'])), (len(doc['dislike'])), 'No')
                 await interaction.response.edit_message(view=self)
@@ -430,11 +430,11 @@ class LikeDislike(discord.ui.View):
         if interaction.channel.id in DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})['idea_channel']:
             doc = DB_IDEA_MEMBERS.find_one({'msg': interaction.message.jump_url})
             author_click = interaction.user
-            if author_click.id in DB_IDEA_MEMBERS.find_one({'msg': doc['msg']})['dislike']:
+            if author_click.id in doc['dislike']:
                 # embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                 #                                 doc['footer'], (len(doc['like'])), (len(doc['dislike'])), 'No')
                 await interaction.response.edit_message(view=self)
-            elif author_click.id in DB_IDEA_MEMBERS.find_one({'msg': doc['msg']})['like']:
+            elif author_click.id in doc['like']:
                 embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                                                 doc['footer'], (len(doc['like']) - 1), (len(doc['dislike']) + 1), 'No')
                 await interaction.response.edit_message(embed=embed, view=self)
