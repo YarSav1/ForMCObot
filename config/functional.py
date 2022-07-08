@@ -404,23 +404,26 @@ class LikeDislike(discord.ui.View):
             if author_click.id in DB_IDEA_MEMBERS.find_one({'msg': doc['msg']})['dislike']:
                 embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                                                 doc['footer'], (len(doc['like']) + 1), (len(doc['dislike'])-1), 'No')
+                await interaction.response.edit_message(embed=embed, view=self)
+
                 DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
                                            {'$push': {'like': author_click.id}})
                 DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
                                            {'$pull': {'dislike': author_click.id}})
-                await interaction.response.edit_message(embed=embed, view=self)
             elif author_click.id in DB_IDEA_MEMBERS.find_one({'msg': doc['msg']})['like']:
                 # embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                 #                                 doc['footer'], (len(doc['like'])), (len(doc['dislike'])), 'No')
+                await interaction.response.edit_message(view=self)
+
                 DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
                                            {'$push': {'dislike': author_click.id}})
-                await interaction.response.edit_message(view=self)
             else:
                 embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                                                 doc['footer'], (len(doc['like']) + 1), (len(doc['dislike'])), 'No')
+                await interaction.response.edit_message(embed=embed, view=self)
+
                 DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
                                            {'$push': {'like': author_click.id}})
-                await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(emoji=dislike_emj, style=discord.ButtonStyle.red, custom_id='DislikeIdea')
     async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
@@ -434,17 +437,19 @@ class LikeDislike(discord.ui.View):
             elif author_click.id in DB_IDEA_MEMBERS.find_one({'msg': doc['msg']})['like']:
                 embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                                                 doc['footer'], (len(doc['like']) - 1), (len(doc['dislike']) + 1), 'No')
+                await interaction.response.edit_message(embed=embed, view=self)
+
                 DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
                                            {'$pull': {'like': author_click.id}})
                 DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
                                            {'$push': {'dislike': author_click.id}})
-                await interaction.response.edit_message(embed=embed, view=self)
             else:
                 embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                                                 doc['footer'], (len(doc['like'])), (len(doc['dislike'])+1), 'No')
+                await interaction.response.edit_message(embed=embed, view=self)
+
                 DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
                                            {'$push': {'dislike': author_click.id}})
-                await interaction.response.edit_message(embed=embed, view=self)
 
 
 async def create_block_idea(author, title, description, footer, like, dislike, all_=None, py=None):
