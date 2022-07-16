@@ -60,7 +60,7 @@ class MainWaifu(commands.Cog):
                         inline=False)
         present_text = ''
         for i in info['present']:
-            present_text += f'{i[0]} x{counter_number([i[1]])}\n'
+            present_text += f'{i[0]} | {i[1]} - x{counter_number(i[2])}\n'
         if present_text == '':
             present_text = 'Подарков нет.'
         embed.add_field(name=f'Список подарков:', value=f'{present_text}', inline=True)

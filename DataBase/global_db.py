@@ -16,3 +16,4 @@ def check_db():
 DB_GAME = cluster.Goodie.economic
 DB_SERVER_SETTINGS = cluster.Goodie.settings
 DB_IDEA_MEMBERS = cluster.Goodie.idea
+ONLINE = cluster.Goodie.online_players

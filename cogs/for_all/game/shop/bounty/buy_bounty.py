@@ -2,7 +2,8 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_GAME
-from config.functional import check_fields, check_channels, failure, FAILURE_COLOR, shop_bounty_massive
+from config.functional import check_fields, check_channels, failure, FAILURE_COLOR, shop_bounty_massive, accept, \
+    SUCCESS_COLOR, GENERAL_COLOR
 
 
 class BuyBounty(commands.Cog):
@@ -31,15 +32,38 @@ class BuyBounty(commands.Cog):
                     search_author = {'id_member': ctx.author.id}
                     search_member = {'id_member': member.id}
                     info_author = await check_fields(ctx.author)
+                    embed = discord.Embed(title="Проверка баланса", color=GENERAL_COLOR)
+                    msg = await ctx.reply(embed=embed)
                     if info_author['balance'] >= massive[number-1][2]:
+                        embed = discord.Embed(title='Производим оплату...', color=SUCCESS_COLOR)
+                        await msg.edit(embed=embed)
                         info_member = await check_fields(member)
                         DB_GAME.update_one(search_author,
                                            {'$inc': {'balance': -massive[number-1][2]}})
+                        embed = discord.Embed(title='Оплачено!', color=SUCCESS_COLOR)
+                        await msg.edit(embed=embed)
+                        make = True
+                        for pr in info_member['present']:
+                            if pr[0] == massive[number-1][0]:
+                                make = False
+                                DB_GAME.update_one(search_member,
+                                                   {'$pull': {
+                                                       'present': pr}})
+                                DB_GAME.update_one(search_member,
+                                                   {'$push': {
+                                                       'present': [pr[0], pr[1], pr[2]+1]}})
+                        if make:
+                            DB_GAME.update_one(search_member,
+                                               {'$push': {'present': [massive[number-1][0], massive[number-1][1], 1]}})
+                        embed = discord.Embed(title=accept,
+                                              description=f'Подарок {massive[number-1][0]} доставлен вайфу {member}',
+                                              color=SUCCESS_COLOR)
+                        await ctx.reply(embed=embed)
                     else:
                         embed = discord.Embed(title=f'{failure}',
                                               description='У Вас недостаточно средств для покупки!',
                                               color=FAILURE_COLOR)
-                        await ctx.reply(embed=embed)
+                        await msg.edit(embed=embed)
 
 
 
