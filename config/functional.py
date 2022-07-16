@@ -231,6 +231,12 @@ async def check_fields(author):  # Чертовски медленная фун�
         print(exc)
         await add_doc_in_db(author.id, 'ds-minecraft', [])
         success = False
+    try:
+        info['minecraft-coordinates']
+    except Exception as exc:
+        print(exc)
+        await add_doc_in_db(author.id, 'minecraft-coordinates', [])
+        success = False
     if not success:
         info = DB_GAME.find_one({'id_member': author.id})
     return info
