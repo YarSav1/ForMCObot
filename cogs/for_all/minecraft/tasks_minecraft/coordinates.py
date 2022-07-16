@@ -55,23 +55,22 @@ class GoToCoordinates(commands.Cog):
                 pass
         index = 0
         text = ''
-        for i in players:
-            print(index)
-            for serv in server:
-                html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None)
-                r = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None).text
-                if html.status_code == 200:
-                    r = json.loads(r)
-                    cikl_online = r["currentcount"]
-                    try:
-                        for i in range(0, cikl_online):
-                            player = r["players"][i]['name']
-                            if player == players[index]:
-                                text += f'Игрок: {player}. Координаты: x - {int(r["players"][i]["x"])} | ' \
-                                        f'z - {int(r["players"][i]["z"])} | ' \
-                                        f'Высота - {int(r["players"][i]["y"])}'
-                    except Exception as exc:
-                        pass
+        for serv in server:
+            html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None)
+            r = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None).text
+            if html.status_code == 200:
+                r = json.loads(r)
+                cikl_online = r["currentcount"]
+                try:
+                    for i in range(0, cikl_online):
+                        player = r["players"][i]['name']
+                        if player in players:
+                            text += f'Игрок: {player} - Сервер {serv}.\n' \
+                                    f'Координаты: x - {int(r["players"][i]["x"])} | ' \
+                                    f'z - {int(r["players"][i]["z"])} | ' \
+                                    f'Высота - {int(r["players"][i]["y"])}'
+                except Exception as exc:
+                    pass
             if len(players) != index + 2:
                 index += 2
             else:

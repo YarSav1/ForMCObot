@@ -32,7 +32,6 @@ def get_day_min(player):
 
 
 def get_player(player, server_name):
-    print(f'Новый игрок {player} - {server_name}')
     own = {
         "name": player,
         "today_min": 1,
@@ -84,9 +83,6 @@ def online(karta, serv):
 
     except:
         pass
-    print(
-        f'Считывание {serv} - {cikl_online} игроков. Проход: {number} раз. '
-        f'Новых: {len(new_db)}. Старых: {len(valid_players)}')
     if new_db:
         ONLINE.insert_many(new_db)
     if valid_players:
@@ -121,8 +117,7 @@ class OnlinePlayersMCO(commands.Cog):
         for a in range(0, all_servers):
             t = Thread(target=online, args=(URL_carta[a], server[a]))
             t.start()
-        print('\n\n'
-              '<------>')
+
 
 
 def setup(py):
