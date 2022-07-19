@@ -7,7 +7,7 @@ from discord.ext import commands, tasks
 
 from DataBase.global_db import ONLINE
 from config.online_config import server, URL_carta
-from config.functional import HEADERS
+from config.functional_config import HEADERS
 
 
 def get_day_min(player):

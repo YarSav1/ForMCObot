@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_GAME
-from config.functional import failure, slots_emj, FAILURE_COLOR, slots_factor, check_channels, check_fields, \
+from config.functional_config import failure, slots_emj, FAILURE_COLOR, slots_factor, check_channels, check_fields, \
     slots_column, win_slots, slot_shuffle, money_emj, accept, SUCCESS_COLOR, lvl_up, exp_from_games, GENERAL_COLOR
 
 

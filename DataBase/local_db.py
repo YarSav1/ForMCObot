@@ -6,7 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # Fill in your details here to be posted to the login form.
-from config.functional import form_send, payload, HEADERS
+from config.functional_config import form_send, payload, HEADERS
 
 url = 'http://217.182.201.195:7777/up/world/world/'
 

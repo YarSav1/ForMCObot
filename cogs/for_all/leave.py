@@ -1,7 +1,7 @@
 from discord.ext import commands
 
 from DataBase.global_db import DB_GAME
-from config.functional import remove_waifu_and_get_balance
+from config.functional_config import remove_waifu_and_get_balance
 
 
 class LeaveServer(commands.Cog):

@@ -2,6 +2,8 @@ import asyncio
 
 from discord.ext import commands
 
+from DataBase.global_db import DB_GAME
+
 
 class GoToCoordinatesTask(commands.Cog):
     def __init__(self, py):
@@ -12,11 +14,13 @@ class GoToCoordinatesTask(commands.Cog):
         for task in task_coordinates:
             if task[0] == coordinates_now[0]:
                 if task[1] == coordinates_now[1]:
-                    pass
-                    # задание выполнено
-
-
-
+                    if not task[2]:
+                        print(f"{doc['ds-minecraft'][1]} +++")
+                        DB_GAME.update_one({'id_member': doc['id_member']},
+                                           {'$pull': {'minecraft-coordinates': task}})
+                        DB_GAME.update_one({'id_member': doc['id_member']},
+                                           {'$push': {'minecraft-coordinates': [task[0], task[1], True]}})
+                        # задание выполнено
 
 
 def setup(py):

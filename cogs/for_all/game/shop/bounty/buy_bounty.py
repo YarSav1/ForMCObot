@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_GAME
-from config.functional import check_fields, check_channels, failure, FAILURE_COLOR, shop_bounty_massive, accept, \
+from config.functional_config import check_fields, check_channels, failure, FAILURE_COLOR, shop_bounty_massive, accept, \
     SUCCESS_COLOR, GENERAL_COLOR
 
 

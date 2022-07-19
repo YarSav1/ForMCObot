@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_SERVER_SETTINGS
-from config.functional import GENERAL_COLOR, money_emj, amount_shop_roles, counter_number, left_page, right_page
+from config.functional_config import GENERAL_COLOR, money_emj, amount_shop_roles, counter_number, left_page, right_page
 
 
 class one_page_shop(discord.ui.View):

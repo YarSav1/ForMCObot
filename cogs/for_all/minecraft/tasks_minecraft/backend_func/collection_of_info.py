@@ -8,7 +8,7 @@ from discord.ext import commands, tasks
 
 from DataBase.global_db import DB_GAME
 from cogs.for_all.minecraft.tasks_minecraft.coordinates.task import GoToCoordinatesTask
-from config.functional import HEADERS, super_admin
+from config.functional_config import HEADERS, super_admin
 from config.online_config import server, URL_carta
 
 class CollectionInfoPlayers(commands.Cog):
@@ -66,7 +66,13 @@ class CollectionInfoPlayers(commands.Cog):
 
     def thread_task(self, serv, players):
         start_time = time.time()
-        html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None)
+        try:
+            html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None)
+        except Exception as exc:
+            print(f'{exc}\n'
+                  f'Ошибка подключения к {serv}')
+            self.text += f'{serv} - Ошибка'
+            return
         if html.status_code == 200:
             r = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None).text
             r = json.loads(r)
@@ -76,8 +82,6 @@ class CollectionInfoPlayers(commands.Cog):
                     player = r["players"][i]['name']
                     if player in players:
                         coordinates_now = [int(r["players"][i]['x']), int(r["players"][i]['z'])]
-                        print(123)
-
                         GoToCoordinatesTask(self.py).check_coordinates(doc=players[players.index(player) + 1],
                                                                                 coordinates_now=coordinates_now)
                         # вызов заданий

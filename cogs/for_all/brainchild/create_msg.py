@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_SERVER_SETTINGS, DB_IDEA_MEMBERS
-from config.functional import GENERAL_COLOR, FAILURE_COLOR, failure, create_block_idea, accept, SUCCESS_COLOR
+from config.functional_config import GENERAL_COLOR, FAILURE_COLOR, failure, create_block_idea, accept, SUCCESS_COLOR
 
 
 # components = [

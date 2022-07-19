@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_GAME
-from config.functional import check_channels, failure, SUCCESS_COLOR, accept, FAILURE_COLOR
+from config.functional_config import check_channels, failure, SUCCESS_COLOR, accept, FAILURE_COLOR
 
 
 class LikeUser(commands.Cog):

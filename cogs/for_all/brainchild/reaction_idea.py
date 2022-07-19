@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-from config.functional import LikeDislike
+from config.functional_config import LikeDislike
 
 
 class RatingIdea(commands.Cog):

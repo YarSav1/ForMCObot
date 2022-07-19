@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_GAME
-from config.functional import check_channels, failure, FAILURE_COLOR, accept, SUCCESS_COLOR, len_status
+from config.functional_config import check_channels, failure, FAILURE_COLOR, accept, SUCCESS_COLOR, len_status
 
 
 class Status(commands.Cog):

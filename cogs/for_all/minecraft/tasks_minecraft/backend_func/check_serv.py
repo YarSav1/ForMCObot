@@ -5,7 +5,7 @@ import discord
 import requests
 from discord.ext import commands
 
-from config.functional import check_channels, failure, FAILURE_COLOR, HEADERS, accept, loading, \
+from config.functional_config import check_channels, failure, FAILURE_COLOR, HEADERS, accept, loading, \
     SUCCESS_COLOR, GENERAL_COLOR
 from config.online_config import server, URL_carta
 

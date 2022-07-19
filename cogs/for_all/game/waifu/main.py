@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_GAME
-from config.functional import check_channels, check_fields, GENERAL_COLOR, money_emj, failure, FAILURE_COLOR, accept, \
+from config.functional_config import check_channels, check_fields, GENERAL_COLOR, money_emj, failure, FAILURE_COLOR, accept, \
     SUCCESS_COLOR, remove_waifu_and_get_balance, buy_waifu_and_get_balance, counter_number
 
 

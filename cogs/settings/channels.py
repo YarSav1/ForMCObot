@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_SERVER_SETTINGS
-from config.functional import failure, accept, super_admin
+from config.functional_config import failure, accept, super_admin
 
 
 class SettingsChannels(commands.Cog):

@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from discord.ext import commands
 
 from DataBase.global_db import DB_GAME
-from config.functional import check_channels, GENERAL_COLOR, failure, FAILURE_COLOR, form_send, payload, accept, \
+from config.functional_config import check_channels, GENERAL_COLOR, failure, FAILURE_COLOR, form_send, payload, accept, \
     SUCCESS_COLOR, check_fields
 
 class go_or_no(discord.ui.View):

@@ -1,6 +1,6 @@
 from discord.ext import commands
 
-from config.functional import list_commands
+from config.functional_config import list_commands
 
 
 class HelpCommands(commands.Cog):

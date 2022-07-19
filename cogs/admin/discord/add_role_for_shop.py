@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 from DataBase.global_db import DB_SERVER_SETTINGS
-from config.functional import super_admin, GENERAL_COLOR, accept, SUCCESS_COLOR, failure, FAILURE_COLOR
+from config.functional_config import super_admin, GENERAL_COLOR, accept, SUCCESS_COLOR, failure, FAILURE_COLOR
 
 
 class CreateShop(commands.Cog):

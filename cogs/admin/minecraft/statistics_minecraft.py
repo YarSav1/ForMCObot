@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from discord.ext import commands, tasks
 
 from DataBase.global_db import DB_SERVER_SETTINGS
-from config.functional import super_admin, GENERAL_COLOR, FAILURE_COLOR, SUCCESS_COLOR, HEADERS
+from config.functional_config import super_admin, GENERAL_COLOR, FAILURE_COLOR, SUCCESS_COLOR, HEADERS
 
 
 class SuperAdminChannelStatisticsOnlineMinecraft(commands.Cog):

@@ -7,6 +7,7 @@
 import discord
 
 from DataBase.global_db import DB_SERVER_SETTINGS, DB_GAME, DB_IDEA_MEMBERS
+from cogs.for_all.minecraft.tasks_minecraft.give_tasks.give_coordinates import CreateTasksCoordinates
 
 HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/87.0.4280.88 Safari/537.36',
@@ -236,6 +237,18 @@ async def check_fields(author):  # Чертовски медленная фун�
     except Exception as exc:
         print(exc)
         await add_doc_in_db(author.id, 'minecraft-coordinates', [])
+        success = False
+    try:
+        info['minecraft-login-1-in-day']
+    except Exception as exc:
+        print(exc)
+        await add_doc_in_db(author.id, 'minecraft-login-1-in-day', False)
+        success = False
+    try:
+        info['minecraft-login-many']
+    except Exception as exc:
+        print(exc)
+        await add_doc_in_db(author.id, 'minecraft-login-many', [])
         success = False
     if not success:
         info = DB_GAME.find_one({'id_member': author.id})

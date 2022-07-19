@@ -6,7 +6,7 @@ from discord.ext import commands
 from urllib3.packages.six import StringIO
 
 from DataBase.global_db import DB_GAME
-from config.functional import super_admin, accept, failure, money_emj, SUCCESS_COLOR, FAILURE_COLOR, check_channels
+from config.functional_config import super_admin, accept, failure, money_emj, SUCCESS_COLOR, FAILURE_COLOR, check_channels
 
 
 class OutputInterceptor(list):
@@ -61,6 +61,36 @@ class SuperAdminCommands(commands.Cog):
                 content=f"Да-да, я здесь! Проверил задержку - проверяй.\n"
                         f"Задержка:\nDS - {round(self.py.latency * 1000)}ms\n"
                         f"Code - {round((end_time - start_time) * 1000)}ms")
+
+    @commands.command(aliases=['fastreboot', 'быстрыйкд', 'кд'])
+    async def check_files_bot_fast(self, ctx):
+        if ctx.author.id in super_admin:
+            zapusk = []
+            for DirPath_1, DirName_1, filenames in os.walk("cogs"):
+                for filename in filenames:
+                    if not filename.endswith('.pyc'):
+                        link = ''
+                        for simvol in str(os.path.join(DirPath_1, filename)):
+                            if simvol == '/':
+                                simvol = '.'
+                            link += simvol
+                        zapusk.append(link)
+
+            text = 'Проверка и перезагрузка файлов:\n'
+            msg = await ctx.send(text)
+            for file in zapusk:
+                text += f'{file} '
+                try:
+                    self.py.unload_extension(str(file)[:-3])
+                    self.py.load_extension(str(file)[:-3])
+                    text += f'{accept}\n'
+                except Exception as exc:
+                    try:
+                        self.py.load_extension(str(file)[:-3])
+                        text += f'{accept} (перезапущен - {exc})\n'
+                    except Exception as exc:
+                        text += f'{failure} (не запускается - {exc})\n'
+            await msg.edit(text)
 
     @commands.command(aliases=['check', 'проверка', 'чек'])
     async def check_files_bot(self, ctx):
