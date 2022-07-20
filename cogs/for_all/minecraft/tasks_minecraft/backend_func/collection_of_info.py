@@ -70,7 +70,7 @@ class CollectionInfoPlayers(commands.Cog):
             html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None)
         except Exception as exc:
             print(f'{exc}\n'
-                  f'Ошибка подключения к {serv}')
+                  f'Ошибка подключения к {serv}\n')
             self.text += f'{serv} - Ошибка'
             return
         if html.status_code == 200:
