@@ -90,7 +90,7 @@ class CollectionInfoPlayers(commands.Cog):
 
         self.text += f'{serv} - %.2fс\n' % (time.time() - start_time)
 
-    @tasks.loop(seconds=5)
+    @tasks.loop(seconds=10)
     async def task_go_to_coordinates(self):
         # start_time = time.time()
         db = list(DB_GAME.find())
