@@ -105,7 +105,7 @@ class CheckServer(commands.Cog):
                 if old_text != text:
                     old_text = text
                     await msg.edit(text)
-            await msg.edit('Сеанс окончен.')
+            await msg.reply('Сеанс окончен.')
 
 
 def setup(py):

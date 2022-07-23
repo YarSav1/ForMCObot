@@ -4,9 +4,11 @@ import schedule as schedule
 
 from backend_bot.handler.handler_coordinates import task_go_to_coordinates
 from backend_bot.handler.handler_online import online_players
+from backend_bot.tasks_minecraft.give_tasks.give_coordinates import create_task
 from config import config_b
 
 schedule.every(1).minutes.do(online_players)
+schedule.every(1).minutes.do(create_task)
 
 schedule.every(1).seconds.do(task_go_to_coordinates)
 
