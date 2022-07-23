@@ -92,8 +92,10 @@ class CheckServer(commands.Cog):
             nick = info['ds-minecraft'][1]
             config_b.check_players.append([nick])
             old_text = ''
-            while True:
+            timeout = 0
+            while timeout != 30:
                 await asyncio.sleep(1)
+                timeout+=1
                 for i in config_b.check_players:
                     if i[0] == nick:
                         new_doc = i
@@ -103,6 +105,7 @@ class CheckServer(commands.Cog):
                         if old_text != text:
                             old_text = text
                             await msg.edit(text)
+            await msg.edit('Сеанс окончен.')
 
 
 def setup(py):
