@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 from urllib3.packages.six import StringIO
 
+import config.config_b
 from DataBase.global_db import DB_GAME
 from config.functional_config import super_admin, accept, failure, money_emj, SUCCESS_COLOR, FAILURE_COLOR, check_channels
 
@@ -178,6 +179,7 @@ class SuperAdminCommands(commands.Cog):
     @commands.command(aliases=['off', 'выкл'])
     async def _off(self, ctx):
         if ctx.author.id in super_admin:
+            config.config_b.run_bot = False
             await self.py.close()
 
     @commands.command(aliases=['add-role', 'дать-роль'])
@@ -238,6 +240,14 @@ class SuperAdminCommands(commands.Cog):
             await self.stopper_member(ctx)
         else:
             await self.stopper_error_not_found(ctx, error)
+
+    @commands.command()
+    async def _check_backend(self, ctx):
+        if ctx.author.id in super_admin:
+            if config.config_b.run_backend:
+                await ctx.send('Backend launched.')
+            else:
+                await ctx.send('Backend not running')
 
 
 def setup(py):

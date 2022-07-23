@@ -3,11 +3,10 @@ import json
 from threading import Thread
 
 import requests
-from discord.ext import commands, tasks
 
 from DataBase.global_db import ONLINE
-from config.online_config import server, URL_carta
 from config.functional_config import HEADERS
+from config.online_config import server, URL_carta
 
 
 def get_day_min(player):
@@ -90,35 +89,20 @@ def online(karta, serv):
                            {'$inc': {'today_min': 1}})
 
 
-class OnlinePlayersMCO(commands.Cog):
-    def __init__(self, py):
-        self.py = py
+def online_players():
+    delta = datetime.timedelta(hours=3, minutes=0)
+    time_now = datetime.datetime.now(datetime.timezone.utc) + delta
+    time_now = str(time_now.strftime('%H:%M'))
+    if time_now == '00:00':
+        th = []
+        for index in range(0, len(server)):
+            x = Thread(target=online_day, args=(server[index],))
+            x.start()
+            th.append(x)
+        for z in th:
+            z.join()
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        if self.py.is_ready():
-            self.online_players.start()
-
-    @tasks.loop(minutes=1)
-    async def online_players(self):
-        delta = datetime.timedelta(hours=3, minutes=0)
-        time_now = datetime.datetime.now(datetime.timezone.utc) + delta
-        time_now = str(time_now.strftime('%H:%M'))
-        if time_now == '00:00':
-            th = []
-            for index in range(0, len(server)):
-                x = Thread(target=online_day, args=(server[index],))
-                x.start()
-                th.append(x)
-            for z in th:
-                z.join()
-
-        all_servers = len(URL_carta)
-        for a in range(0, all_servers):
-            t = Thread(target=online, args=(URL_carta[a], server[a]))
-            t.start()
-
-
-
-def setup(py):
-    py.add_cog(OnlinePlayersMCO(py))
+    all_servers = len(URL_carta)
+    for a in range(0, all_servers):
+        t = Thread(target=online, args=(URL_carta[a], server[a]))
+        t.start()

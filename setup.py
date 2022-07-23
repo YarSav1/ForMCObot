@@ -1,10 +1,13 @@
 import os
 import time
+from threading import Thread
 
 import discord
 from discord.ext import commands
 
+import config.config_b
 from DataBase.global_db import check_db
+from backend_bot.start import setup_handlers
 from config.secret import token
 
 intents = discord.Intents.all()
@@ -17,7 +20,14 @@ start_time = time.time()
 print('\033[0mПробуем подключиться к БД.')
 request = check_db()
 if request:
+
     print('\033[32mПодключение есть!')
+
+    config.config_b.run_bot = True
+    print('\033[0mПодключение потока для счета онлайна и обработки заданий с майнкрафтом.')
+    x = Thread(target=setup_handlers)
+    x.start()
+
     print('\033[33m\033[40mЗапускаем коги.\n')
     zapusk = []
 
@@ -43,7 +53,7 @@ if request:
     async def on_ready():
         if py.is_ready():
 
-            print("\033[0m\nЗапуск длился: %.2fс\n" % (time.time() - start_time))
+            print("\033[0mЗапуск длился: %.2fс" % (time.time() - start_time))
 
 
 
