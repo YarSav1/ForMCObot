@@ -93,7 +93,7 @@ class CheckServer(commands.Cog):
             config_b.check_players.append([nick])
             old_text = ''
             timeout = 0
-            while timeout != 30:
+            while timeout != 60:
                 await asyncio.sleep(1)
                 timeout+=1
                 for i in config_b.check_players:
