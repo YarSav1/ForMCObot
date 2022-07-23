@@ -42,28 +42,7 @@ class CollectionInfoPlayers(commands.Cog):
                     await self.msg.edit(config_b.text_coordinates)
                     config_b.text_coordinates = ''
 
-    # @commands.command(aliases=['test', 't', "тест"])
-    # async def test_(self, ctx, nick):
-    #     url = 'http://217.182.201.195:7777/up/world/world/'
-    #     msg = await ctx.reply(f'Смотрю Ваши координаты: x: `вычисляется`, y: `вычисляется`, Высота: `вычисляется`')
-    #     while True:
-    #         html = requests.get(url, headers=HEADERS, params=None)
-    #         r = requests.get(url, headers=HEADERS, params=None).text
-    #         if html.status_code == 200:
-    #             r = json.loads(r)
-    #             cikl_online = r["currentcount"]
-    #             for i in range(0, cikl_online):
-    #                 player = r["players"][i]['name']
-    #                 if player == nick:
-    #                     await msg.edit(f'Смотрю Ваши координаты: x: `{r["players"][i]["x"]}`, '
-    #                                    f'z: `{r["players"][i]["z"]}`, '
-    #                                    f'Высота: `{r["players"][i]["y"]}`')
-    #                     break
-    #         else:
-    #             await msg.edit("Повторное подключение...")
-    #             await asyncio.sleep(5)
-    #
-    #         await asyncio.sleep(5)
+
 
 
 

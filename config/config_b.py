@@ -4,3 +4,5 @@ run_bot = False
 
 text_coordinates = ''
 
+check_players = []
+
