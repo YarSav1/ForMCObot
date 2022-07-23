@@ -96,15 +96,15 @@ class CheckServer(commands.Cog):
             while timeout != 60:
                 await asyncio.sleep(1)
                 timeout+=1
+                text = ''
                 for i in config_b.check_players:
                     if i[0] == nick:
                         new_doc = i
-                        text = ''
                         for args in range(1, len(new_doc)):
                             text += f'Сервер: {new_doc[args][0]}. `x: {new_doc[args][1]}` | `z: {new_doc[args][2]}`\n'
-                        if old_text != text:
-                            old_text = text
-                            await msg.edit(text)
+                if old_text != text:
+                    old_text = text
+                    await msg.edit(text)
             await msg.edit('Сеанс окончен.')
 
 
