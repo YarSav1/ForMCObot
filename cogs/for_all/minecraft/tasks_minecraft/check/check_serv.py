@@ -93,6 +93,7 @@ class CheckServer(commands.Cog):
             config_b.check_players.append([nick])
             old_text = ''
             while True:
+                await asyncio.sleep(1)
                 for i in config_b.check_players:
                     if i[0] == nick:
                         new_doc = i
