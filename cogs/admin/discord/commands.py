@@ -65,7 +65,7 @@ class SuperAdminCommands(commands.Cog):
     async def _check_bot_work(self, ctx):
         if await check_channels(ctx) or ctx.author.id in super_admin:
             start_time = time.time()
-            message = await ctx.message.reply("Да-да, я здесь! Проверяю задержку...")
+            message = await ctx.message.reply("Да-да, я тута-здеся! Проверяю задержку...")
             end_time = time.time()
 
             await message.edit(
