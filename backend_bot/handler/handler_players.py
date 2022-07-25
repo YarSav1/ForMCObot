@@ -17,7 +17,7 @@ def thread_task(serv, players):
     global text
     start_time = time.time()
     try:
-        html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None, timeout=5)
+        html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None, timeout=1)
     except Exception:
         if f'{serv}:' not in text:
             text += f'{serv}: Ошибка подключения. Превышено время ожидания!\n'

@@ -26,7 +26,7 @@ class CollectionInfoOnlinePlayers(commands.Cog):
             else:
                 self.ctx = ctx
                 self.check_delay = True
-                await ctx.reply("После следующей обработки начнется вывод статистики в этот чат!\n"
+                await ctx.reply("После следующей обработки начнется вывод статистики в этот чат(онлайн)!\n"
                                 "**При включенном режиме скорость отклика бота понизится!**")
                 self.information_delay_online.start()
 
@@ -35,10 +35,10 @@ class CollectionInfoOnlinePlayers(commands.Cog):
         if self.py.is_ready():
             pass
 
-    @tasks.loop(seconds=1)
+    @tasks.loop(seconds=5)
     async def information_delay_online(self):
         if self.check_delay:
-            self.timer -= 1
+            self.timer -= 5
             if config_b.text_online != '':
                 if self.msg is None:
                     self.msg = await self.ctx.send(f'{config_b.text_online}\n\n'

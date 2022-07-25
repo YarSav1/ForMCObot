@@ -1,10 +1,10 @@
 import time
 
+from DataBase.global_db import ONLINE
 
-start_time = time.time()
-
-time.sleep(2)
-# start_time += 1
-
-tm = time.time()+1 - start_time
-print(tm)
+while True:
+    try:
+        doc = ONLINE.find_one({'name': 'LamerBot2'})
+        print(doc)
+    except:
+        pass

@@ -7,5 +7,3 @@ text_coordinates = ''
 
 check_players = []
 
-text_online = ''
-
