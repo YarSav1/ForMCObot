@@ -14,18 +14,23 @@ schedule.every(1).seconds.do(task_go_to_coordinates)
 
 
 def setup_handlers():
+    config_b.access_run_bot = True
     print('\033[32mПодключение установлено!')
-    while True:
-        if config_b.run_bot:
-            try:
-                config_b.run_backend = True
-                schedule.run_pending()
-                time.sleep(1)
-            except Exception as exc:
-                config_b.errors_backend += 1
-                if config_b.errors_backend > 5:
-                    config_b.run_backend = False
-                    break
-                config_b.errors_backend = 0
-        else:
-            break
+    try:
+        while True:
+            if config_b.run_bot:
+                try:
+                    config_b.run_backend = True
+                    schedule.run_pending()
+                    time.sleep(1)
+                except Exception as exc:
+                    config_b.errors_backend += 1
+                    if config_b.errors_backend > 5:
+                        config_b.run_backend = False
+                        break
+                    config_b.errors_backend = 0
+            else:
+                break
+    except Exception as exc:
+        config_b.access_run_bot = False
+    config_b.access_run_bot = False

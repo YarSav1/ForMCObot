@@ -79,12 +79,13 @@ class CheckServer(commands.Cog):
                 await ctx.reply(embed=embed)
 
 
-    @commands.command(aliases=['test-minecraft'])
+    @commands.command(aliases=['see-me'])
     async def test_(self, ctx):
         info = await check_fields(ctx.author)
         if len(info['ds-minecraft']) == 0:
             embed = discord.Embed(title=failure,
-                                  description='У Вас нет привязанного аккаунта в майнкрафте!',
+                                  description='У Вас нет привязанного аккаунта в майнкрафте!\n'
+                                              'Привяжите аккаунт командой `!auth-ds-minecraft`!',
                                   color=FAILURE_COLOR)
             await ctx.reply(embed=embed)
         else:

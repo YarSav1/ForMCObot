@@ -56,9 +56,9 @@ def online_day(server_name):
 def online(karta, serv):
     try:
         html = requests.get(karta, headers=HEADERS, params=None)
-    except:
-        pass
-    r = requests.get(karta, headers=HEADERS, params=None).text
+        r = requests.get(karta, headers=HEADERS, params=None).text
+    except Exception as exc:
+        return
     if html.status_code == 200:
         r = json.loads(r)
     else:

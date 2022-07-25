@@ -1,3 +1,4 @@
+import asyncio
 import os
 import sys
 import time
@@ -7,6 +8,7 @@ from urllib3.packages.six import StringIO
 
 import config.config_b
 from DataBase.global_db import DB_GAME
+from config import config_b
 from config.functional_config import super_admin, accept, failure, money_emj, SUCCESS_COLOR, FAILURE_COLOR, check_channels
 
 
@@ -47,7 +49,15 @@ class SuperAdminCommands(commands.Cog):
 
     @commands.command()
     async def restart(self, ctx):
-        await ctx.send("Перезагружаюсь! Это быстро.")
+        text = 'Ожидаю выключение бэкэнда.'
+        msg = await ctx.reply(text)
+        config.config_b.run_bot = False
+        while config_b.access_run_bot:
+            await asyncio.sleep(0.1)
+        await msg.edit(f'{text} - выключен\n'
+                       f'Перезагружаюсь.')
+
+
         self.restart_program()
 
     # Просто проверка, работает ли бот.
@@ -179,7 +189,13 @@ class SuperAdminCommands(commands.Cog):
     @commands.command(aliases=['off', 'выкл'])
     async def _off(self, ctx):
         if ctx.author.id in super_admin:
+            text = 'Ожидаю выключение бэкэнда.'
+            msg = await ctx.reply(text)
             config.config_b.run_bot = False
+            while config_b.access_run_bot:
+                await asyncio.sleep(0.1)
+            await msg.edit(f'{text} - выключен.\n'
+                           f'Бот вырублен.')
             await self.py.close()
 
     @commands.command(aliases=['add-role', 'дать-роль'])

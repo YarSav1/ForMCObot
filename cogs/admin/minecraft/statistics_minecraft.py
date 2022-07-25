@@ -50,7 +50,7 @@ class SuperAdminChannelStatisticsOnlineMinecraft(commands.Cog):
                     await self._create_channel(ctx, msg)
                 else:
                     embed = discord.Embed(title='Канал уже существует', color=FAILURE_COLOR)
-                    await ctx.reply(embed=embed)
+                    await msg.edit(embed=embed)
 
     async def get_count(self):
         url = 'https://minecraftonly.ru/'
