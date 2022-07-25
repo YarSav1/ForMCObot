@@ -42,24 +42,22 @@ class CollectionInfoPlayers(commands.Cog):
             if config_b.text_coordinates != '':
                 if self.msg is None:
                     self.msg = await self.ctx.send(f'{config_b.text_coordinates}\n\n'
-                                                   f'Сеанс прекратится через: {self.timer} секунд')
+                                                   f'Сеанс прекратится через: {self.timer} сек.')
                     config_b.text_coordinates = ''
                 else:
                     if self.timer <= 0:
                         add_text = f'\n\nСеанс окончился'
+                        self.information_delay.stop()
+                        self.ctx = None
+                        self.check_delay = False
+                        self.msg = None
+                        self.timer = 60
                     else:
-                        add_text = f'\n\nСеанс прекратится через: {self.timer} секунд'
+                        add_text = f'\n\nСеанс прекратится через: {self.timer} сек.'
                     await self.msg.edit(f'{config_b.text_coordinates}{add_text}')
 
 
-                    self.information_delay.stop()
-                    self.ctx = None
-                    self.check_delay = False
-                    self.msg = None
-                    self.timer = 60
                     config_b.text_coordinates = ''
-
-
 
 
 def setup(py):
