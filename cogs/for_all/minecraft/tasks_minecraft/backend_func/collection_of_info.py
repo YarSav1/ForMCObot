@@ -11,6 +11,7 @@ class CollectionInfoPlayers(commands.Cog):
         self.check_delay = False
         self.msg = None
         self.ctx = None
+        self.timer = 60
 
     @commands.command(aliases=['прослушка'])
     async def _check_delay(self, ctx):
@@ -20,27 +21,41 @@ class CollectionInfoPlayers(commands.Cog):
                 self.check_delay = False
                 self.msg = None
                 await ctx.reply("Вывод прекращен.")
+                self.information_delay.stop()
+                self.timer = 60
             else:
                 self.ctx = ctx
                 self.check_delay = True
                 await ctx.reply("После следующей обработки начнется вывод статистики в этот чат!\n"
                                 "**При включенном режиме скорость отклика бота понизится!**")
+                self.information_delay.start()
 
     @commands.Cog.listener()
     async def on_ready(self):
         if self.py.is_ready():
-            self.information_delay.start()
+            pass
 
     @tasks.loop(seconds=1)
     async def information_delay(self):
         if self.check_delay:
             if config_b.text_coordinates != '':
                 if self.msg is None:
-                    self.msg = await self.ctx.send(config_b.text_coordinates)
+                    self.msg = await self.ctx.send(f'{config_b.text_coordinates}\n\n'
+                                                   f'Сеанс прекратится через: {self.timer} секунд')
                     config_b.text_coordinates = ''
                 else:
-                    await self.msg.edit(config_b.text_coordinates)
+                    self.timer-=1
+                    await self.msg.edit(f'{config_b.text_coordinates}\n\nСеанс прекратится через: {self.timer} секунд')
                     config_b.text_coordinates = ''
+                    if self.timer == 0:
+
+                        await self.msg.edit(f'{config_b.text_coordinates}\n\n'
+                                            f'Сеанс окончился.')
+                        self.information_delay.stop()
+                        self.ctx = None
+                        self.check_delay = False
+                        self.msg = None
+                        self.timer = 60
 
 
 

@@ -14,7 +14,6 @@ def create_task():
         except Exception as exc:
             pass
     for doc in players:
-        print(doc)
         range_for = 5-len(doc['minecraft-coordinates'])
         ttt = []
         for i in range(range_for):
