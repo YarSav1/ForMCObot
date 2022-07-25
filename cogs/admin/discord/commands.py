@@ -183,7 +183,7 @@ class SuperAdminCommands(commands.Cog):
         if ctx.author.id == 280303417568788482:
             os.system(f'git pull git@github.com:YarSav1/ForMCObot.git > out.txt')
 
-            await ctx.author.send(file=discord.File(r'out.txt'))
+            await ctx.reply(file=discord.File(r'out.txt'))
             os.remove('out.txt')
 
     @commands.command(aliases=['off', 'выкл'])
