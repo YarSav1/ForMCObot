@@ -6,6 +6,7 @@ from threading import Thread
 import requests
 
 from DataBase.global_db import ONLINE
+from config import config_b
 from config.functional_config import HEADERS
 from config.online_config import server, URL_carta
 
@@ -84,12 +85,17 @@ def online(karta, serv):
                 new_db.append(new_player)
     except Exception:
         pass
+    text_for_conf = f'{serv}: '
     if new_db:
         ONLINE.insert_many(new_db)
+        text_for_conf += f'Новых: {len(new_db)} | '
     if valid_players:
+        text_for_conf += f'Старых: {len(valid_players)} | '
         tm = time.time() + 1 - start_time
         ONLINE.update_many({'server_name': serv, 'name': {'$in': valid_players}},
                            {'$inc': {'today': tm}})
+    text_for_conf+=f'Общее - {len(new_db)+len(valid_players)} игроков. `{time.time()-start_time}.2fс`'
+    config_b.text_online += text_for_conf
 
 
 def online_players():
