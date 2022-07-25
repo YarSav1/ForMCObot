@@ -38,13 +38,14 @@ class CollectionInfoPlayers(commands.Cog):
     @tasks.loop(seconds=1)
     async def information_delay(self):
         if self.check_delay:
+            self.timer -= 1
             if config_b.text_coordinates != '':
                 if self.msg is None:
                     self.msg = await self.ctx.send(f'{config_b.text_coordinates}\n\n'
                                                    f'Сеанс прекратится через: {self.timer} секунд')
                     config_b.text_coordinates = ''
                 else:
-                    self.timer-=1
+
                     await self.msg.edit(f'{config_b.text_coordinates}\n\nСеанс прекратится через: {self.timer} секунд')
                     config_b.text_coordinates = ''
                     if self.timer == 0:
