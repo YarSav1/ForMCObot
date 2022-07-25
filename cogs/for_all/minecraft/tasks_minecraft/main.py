@@ -15,8 +15,9 @@ class TasksProfile(commands.Cog):
             if len(info['ds-minecraft']) != 0:
                 embed = discord.Embed(title='Ваши задания', color=GENERAL_COLOR)
 
+
                 if len(info['minecraft-coordinates']) == 0:
-                    embed.add_field(name='Прибеги на координаты:', value='Нет заданий.')
+                    text = 'Нет заданий'
                 else:
                     text = ''
                     for coord in info['minecraft-coordinates']:
@@ -25,7 +26,38 @@ class TasksProfile(commands.Cog):
                         else:
                             perf = failure
                         text += f'{info["minecraft-coordinates"].index(coord) + 1} | `x:{coord[0]}` | `z: {coord[1]}` - {perf}\n'
-                    embed.add_field(name='Прибеги на координаты:', value=f'{text}')
+                embed.add_field(name='Прибеги на координаты:', value=f'{text}')
+
+
+
+
+
+
+
+
+
+
+                if len(info['minecraft-login-many']) == 0:
+                    text = 'Нет задания'
+                else:
+                    if info["minecraft-login-many"][2]:
+                        perf = accept
+                    else:
+                        perf = failure
+                    text = f'Вы зашли {info["minecraft-login-many"][0]} раз из {info["minecraft-login-many"][1]} - ' \
+                           f'{perf}'
+                embed.add_field(name=f'Зайди на сервер несколько раз:', value=f'{text}')
+
+                if info['minecraft-login-1-in-day']:
+                    perf = accept
+                else:
+                    perf = failure
+
+                text = f'Выполнение - {perf}'
+                embed.add_field(name=f'Зайди на сервер один раз.', value=f'{text}', inline=False)
+
+
+
                 embed.set_footer(text=f'{accept} - задание выполнено | {failure} - задание не выполнено.')
 
                 await ctx.reply(embed=embed)

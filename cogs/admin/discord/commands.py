@@ -49,12 +49,12 @@ class SuperAdminCommands(commands.Cog):
 
     @commands.command()
     async def restart(self, ctx):
-        text = 'Ожидаю выключение бэкэнда.'
+        text = 'Ожидаю выключение бэкэнда'
         msg = await ctx.reply(text)
         config.config_b.run_bot = False
         while config_b.access_run_bot:
             await asyncio.sleep(0.1)
-        await msg.edit(f'{text} - выключен\n'
+        await msg.edit(f'{text} - выключен.\n'
                        f'Перезагружаюсь.')
 
 
@@ -70,8 +70,8 @@ class SuperAdminCommands(commands.Cog):
 
             await message.edit(
                 content=f"Да-да, я здесь! Проверил задержку - проверяй.\n"
-                        f"Задержка:\nDS - {round(self.py.latency * 1000)}ms\n"
-                        f"Code - {round((end_time - start_time) * 1000)}ms")
+                        f"Задержка:\nDiscord-команда - {round(self.py.latency * 1000)}ms\n"
+                        f"Discord-запрос-ответ - {round((end_time - start_time) * 1000)}ms")
 
     @commands.command(aliases=['fastreboot', 'быстрыйкд', 'кд'])
     async def check_files_bot_fast(self, ctx):
@@ -181,7 +181,7 @@ class SuperAdminCommands(commands.Cog):
     @commands.command(aliases=['gitgen', 'гитген'])
     async def _git(self, ctx, *, arg2=None):
         if ctx.author.id == 280303417568788482:
-            os.system(f'{arg2} > out.txt')
+            os.system(f'git pull git@github.com:YarSav1/ForMCObot.git > out.txt')
 
             await ctx.author.send(file=discord.File(r'out.txt'))
             os.remove('out.txt')
@@ -189,7 +189,7 @@ class SuperAdminCommands(commands.Cog):
     @commands.command(aliases=['off', 'выкл'])
     async def _off(self, ctx):
         if ctx.author.id in super_admin:
-            text = 'Ожидаю выключение бэкэнда.'
+            text = 'Ожидаю выключение бэкэнда'
             msg = await ctx.reply(text)
             config.config_b.run_bot = False
             while config_b.access_run_bot:

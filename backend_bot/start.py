@@ -1,16 +1,25 @@
+import threading
 import time
 
 import schedule as schedule
 
 from backend_bot.handler.handler_coordinates import task_go_to_coordinates
 from backend_bot.handler.handler_online import online_players
-from backend_bot.tasks_minecraft.give_tasks.give_coordinates import create_task
+from backend_bot.tasks_minecraft.give_tasks import give_coordinates, give_login_many
 from config import config_b
 
-schedule.every(1).minutes.do(online_players)
-schedule.every(1).minutes.do(create_task)
 
-schedule.every(1).seconds.do(task_go_to_coordinates)
+def run_threaded(job_func):
+    job_thread = threading.Thread(target=job_func)
+    job_thread.start()
+
+
+schedule.every(1).minutes.do(run_threaded, online_players)
+
+schedule.every(1).minutes.do(run_threaded, give_coordinates.create_task)
+schedule.every(1).minutes.do(run_threaded, give_login_many.create_task)
+
+schedule.every(1).seconds.do(run_threaded, task_go_to_coordinates)
 
 
 def setup_handlers():
