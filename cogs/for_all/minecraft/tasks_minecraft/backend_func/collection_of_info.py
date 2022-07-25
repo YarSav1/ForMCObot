@@ -45,18 +45,18 @@ class CollectionInfoPlayers(commands.Cog):
                                                    f'Сеанс прекратится через: {self.timer} секунд')
                     config_b.text_coordinates = ''
                 else:
-
-                    await self.msg.edit(f'{config_b.text_coordinates}\n\nСеанс прекратится через: {self.timer} секунд')
-
                     if self.timer <= 0:
+                        add_text = f'\n\nСеанс окончился'
+                    else:
+                        add_text = f'\n\nСеанс прекратится через: {self.timer} секунд'
+                    await self.msg.edit(f'{config_b.text_coordinates}{add_text}')
 
-                        await self.msg.edit(f'{config_b.text_coordinates}\n\n'
-                                            f'Сеанс окончился.')
-                        self.information_delay.stop()
-                        self.ctx = None
-                        self.check_delay = False
-                        self.msg = None
-                        self.timer = 60
+
+                    self.information_delay.stop()
+                    self.ctx = None
+                    self.check_delay = False
+                    self.msg = None
+                    self.timer = 60
                     config_b.text_coordinates = ''
 
 
