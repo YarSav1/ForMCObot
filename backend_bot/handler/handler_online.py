@@ -55,7 +55,7 @@ def online_day(server_name):
 
 
 def online(karta, serv):
-    start_time = time.time()
+    # start_time = time.time()
     try:
         html = requests.get(karta, headers=HEADERS, params=None)
         r = requests.get(karta, headers=HEADERS, params=None).text
@@ -87,7 +87,7 @@ def online(karta, serv):
     if new_db:
         ONLINE.insert_many(new_db)
     if valid_players:
-        tm = time.time() + 1 - start_time
+        # tm = time.time() + 1 - start_time
         ONLINE.update_many({'server_name': serv, 'name': {'$in': valid_players}},
                            {'$inc': {'today': 1}})
 
