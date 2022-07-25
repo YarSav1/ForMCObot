@@ -89,7 +89,7 @@ def online(karta, serv):
     if valid_players:
         tm = time.time() + 1 - start_time
         ONLINE.update_many({'server_name': serv, 'name': {'$in': valid_players}},
-                           {'$inc': {'today': tm}})
+                           {'$inc': {'today': 1}})
 
 
 def online_players():
