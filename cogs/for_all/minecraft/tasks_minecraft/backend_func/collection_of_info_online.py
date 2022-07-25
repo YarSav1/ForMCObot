@@ -52,7 +52,7 @@ class CollectionInfoOnlinePlayers(commands.Cog):
                     else:
                         await self.msg.edit(f'{config_b.text_online}\n\nСеанс окончен.')
                         config_b.text_online = ''
-                        self.information_delay.stop()
+                        self.information_delay_online.stop()
                         self.ctx = None
                         self.check_delay = False
                         self.msg = None
