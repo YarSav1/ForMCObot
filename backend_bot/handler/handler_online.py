@@ -95,7 +95,8 @@ def online(karta, serv):
         ONLINE.update_many({'server_name': serv, 'name': {'$in': valid_players}},
                            {'$inc': {'today': tm}})
     text_for_conf+=f'Общее - {len(new_db)+len(valid_players)} игроков. `{time.time()-start_time}.2fс`'
-    config_b.text_online += text_for_conf
+    if f'{serv}:' not in config_b.text_online:
+        config_b.text_online += text_for_conf
 
 
 def online_players():
