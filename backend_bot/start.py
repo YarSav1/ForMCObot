@@ -3,7 +3,7 @@ import time
 
 import schedule as schedule
 
-from backend_bot.handler.handler_coordinates import task_go_to_coordinates
+from backend_bot.handler.handler_players import task_go_to_coordinates
 from backend_bot.handler.handler_online import online_players
 from backend_bot.tasks_minecraft.give_tasks import give_coordinates, give_login_many
 from config import config_b

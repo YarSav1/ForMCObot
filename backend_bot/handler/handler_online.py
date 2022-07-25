@@ -1,5 +1,6 @@
 import datetime
 import json
+import time
 from threading import Thread
 
 import requests
@@ -15,15 +16,15 @@ def get_day_min(player):
     except:
         own = {
             "name": player['name'],
-            "today_min": 0,
+            "today": 0,
             'server_name': player['server_name'],
-            'every_day': [player['today_min']]
+            'every_day': [player['today']]
         }
         return own
-    massive.append(player['today_min'])
+    massive.append(player['today'])
     own = {
         "name": player['name'],
-        "today_min": 0,
+        "today": 0,
         'server_name': player['server_name'],
         'every_day': massive
     }
@@ -33,7 +34,7 @@ def get_day_min(player):
 def get_player(player, server_name):
     own = {
         "name": player,
-        "today_min": 1,
+        "today": 1,
         "server_name": server_name,
         "every_day": []
     }
@@ -54,10 +55,11 @@ def online_day(server_name):
 
 
 def online(karta, serv):
+    start_time = time.time()
     try:
         html = requests.get(karta, headers=HEADERS, params=None)
         r = requests.get(karta, headers=HEADERS, params=None).text
-    except Exception as exc:
+    except Exception:
         return
     if html.status_code == 200:
         r = json.loads(r)
@@ -72,7 +74,6 @@ def online(karta, serv):
     for player_bd in all_players:
         in_db_pl.append(player_bd['name'])
 
-    number = 0
     try:
         for i in range(0, cikl_online):
             player = r["players"][i]['name']
@@ -81,15 +82,14 @@ def online(karta, serv):
             else:
                 new_player = get_player(player, serv)
                 new_db.append(new_player)
-            number += 1
-
-    except:
+    except Exception:
         pass
     if new_db:
         ONLINE.insert_many(new_db)
     if valid_players:
+        tm = time.time() + 1 - start_time
         ONLINE.update_many({'server_name': serv, 'name': {'$in': valid_players}},
-                           {'$inc': {'today_min': 1}})
+                           {'$inc': {'today': tm}})
 
 
 def online_players():
