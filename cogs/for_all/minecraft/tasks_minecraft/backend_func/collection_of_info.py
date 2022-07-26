@@ -36,7 +36,7 @@ class CollectionInfoPlayers(commands.Cog):
         if self.py.is_ready():
             pass
 
-    @tasks.loop(seconds=1)
+    @tasks.loop(seconds=3)
     async def information_delay(self):
         if self.check_delay:
             self.timer -= 1
