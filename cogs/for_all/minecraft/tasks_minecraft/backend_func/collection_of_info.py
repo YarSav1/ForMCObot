@@ -39,7 +39,7 @@ class CollectionInfoPlayers(commands.Cog):
     @tasks.loop(seconds=3)
     async def information_delay(self):
         if self.check_delay:
-            self.timer -= 1
+            self.timer -= 3
             if config_b.text_coordinates != '':
                 embed = discord.Embed(title='Парсинг серверов.', color=GENERAL_COLOR)
                 if self.msg is None:
