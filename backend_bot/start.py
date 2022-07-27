@@ -14,7 +14,7 @@ def run_threaded(job_func):
     job_thread.start()
 
 
-schedule.every(1).seconds.do(run_threaded, online_players)
+schedule.every(1).minutes.do(run_threaded, online_players)
 
 # schedule.every(1).minutes.do(run_threaded, give_coordinates.create_task)
 # schedule.every(1).minutes.do(run_threaded, give_login_many.create_task)
