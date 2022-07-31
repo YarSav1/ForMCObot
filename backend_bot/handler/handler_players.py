@@ -10,25 +10,25 @@ from config.functional_config import HEADERS
 from config.online_config import URL_carta, server
 from config import config_b
 
-text = ''
+text = []
 
 
-def thread_task(serv, players):
+def thread_task(serv, players, index):
     global text
     start_time = time.time()
     try:
         html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None, timeout=1)
     except Exception:
         if f'{serv}:' not in text:
-            text += f'{serv}: Ошибка подключения. Превышено время ожидания!\n'
-        # text += f'{serv} - Ошибка'
+            text[index] += f'{serv}: Ошибка подключения. Превышено время ожидания!\n'
+        # text[index += f'{serv} - Ошибка'
         return
     if html.status_code == 200:
         try:
             r = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None).text
         except Exception as exc:
             if f'{serv}:' not in text:
-                text += f'{serv}: Ошибка подключения\n'
+                text[index] += f'{serv}: Ошибка подключения\n'
             return
         r = json.loads(r)
         cikl_online = r["currentcount"]
@@ -55,13 +55,13 @@ def thread_task(serv, players):
                                                            coordinates_now=coordinates_now)
         except Exception as exc:
             pass
-            if f'{serv}:' not in text:
-                text += f'{serv}: %.2fс\n' % (time.time() - start_time)
+        if f'{serv}:' not in text:
+            text[index] += f'{serv}: %.2fс\n' % (time.time() - start_time)
         # print(f'{r["players"]}\n{serv}: %.2fс\n' % (time.time() - start_time))
     else:
         if f'{serv}:' not in text:
-            text += f'{serv}: Ошибка подключения\n'
-    # text += f'{serv} - %.2fс\n' % (time.time() - start_time)
+            text[index] += f'{serv}: Ошибка подключения\n'
+    # text[index += f'{serv} - %.2fс\n' % (time.time() - start_time)
 
 
 def task_go_to_coordinates():
@@ -76,14 +76,13 @@ def task_go_to_coordinates():
         except Exception as exc:
             pass
     ths = []
-
+    index_list = len(text)
     for serv in server:
-        t = Thread(target=thread_task, args=(serv, players))
+        t = Thread(target=thread_task, args=(serv, players, index_list))
         t.start()
         ths.append(t)
     for th in ths:
         th.join()
     if config_b.text_coordinates == '':
-        text += f'\nЭта обработка длилась: %.2fс' % (time.time() - start_time)
-        config_b.text_coordinates = text
-        text = ''
+        text[index_list] += f'\nЭта обработка длилась: %.2fс' % (time.time() - start_time)
+        config_b.text_coordinates = text[index_list]
