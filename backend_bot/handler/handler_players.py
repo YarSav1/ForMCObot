@@ -19,7 +19,7 @@ def thread_task(serv, players, index):
     try:
         html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None, timeout=1)
     except Exception:
-        if f'{serv}:' not in text:
+        if f'{serv}:' not in text[index]:
             text[index] += f'{serv}: Ошибка подключения. Превышено время ожидания!\n'
         # text[index += f'{serv} - Ошибка'
         return
@@ -27,7 +27,7 @@ def thread_task(serv, players, index):
         try:
             r = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None).text
         except Exception as exc:
-            if f'{serv}:' not in text:
+            if f'{serv}:' not in text[index]:
                 text[index] += f'{serv}: Ошибка подключения\n'
             return
         r = json.loads(r)
@@ -35,10 +35,10 @@ def thread_task(serv, players, index):
         try:
             for i in range(0, cikl_online):
                 player = r["players"][i]['name']
-                if player in players:
+                # print(player)
+                if str(player) in players:
                     coordinates_now = [int(r["players"][i]['x']), int(r["players"][i]['z'])]
                     if len(config_b.check_players) != 0:
-                        login_complete.check_login(doc=players[players.index(player)+1])
                         for i in config_b.check_players:
                             if player == i[0]:
                                 add = [serv,
@@ -51,17 +51,17 @@ def thread_task(serv, players, index):
                                         break
                                 if add:
                                     config_b.check_players[config_b.check_players.index(i)] += [add]
-
+                    login_complete.check_login(doc=players[players.index(player) + 1])
                     coordinates_complete.check_coordinates(doc=players[players.index(player) + 1],
                                                            coordinates_now=coordinates_now)
 
         except Exception as exc:
             pass
-        if f'{serv}:' not in text:
+        if f'{serv}:' not in text[index]:
             text[index] += f'{serv}: %.2fс\n' % (time.time() - start_time)
         # print(f'{r["players"]}\n{serv}: %.2fс\n' % (time.time() - start_time))
     else:
-        if f'{serv}:' not in text:
+        if f'{serv}:' not in text[index]:
             text[index] += f'{serv}: Ошибка подключения\n'
     # text[index += f'{serv} - %.2fс\n' % (time.time() - start_time)
 
@@ -80,6 +80,7 @@ def task_go_to_coordinates():
     ths = []
     index_list = len(text)
     text.append([])
+    # print(players)
     for serv in server:
         t = Thread(target=thread_task, args=(serv, players, index_list))
         t.start()
@@ -89,3 +90,4 @@ def task_go_to_coordinates():
     if config_b.text_coordinates == '':
         text[index_list] += f'\nЭта обработка длилась: %.2fс' % (time.time() - start_time)
         config_b.text_coordinates = text[index_list]
+# task_go_to_coordinates()
