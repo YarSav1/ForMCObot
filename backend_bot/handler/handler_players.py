@@ -55,8 +55,8 @@ def thread_task(serv, players):
                                                            coordinates_now=coordinates_now)
         except Exception as exc:
             pass
-        if f'{serv}:' not in text:
-            text += f'{serv}: %.2fс\n' % (time.time() - start_time)
+            if f'{serv}:' not in text:
+                text += f'{serv}: %.2fс\n' % (time.time() - start_time)
         # print(f'{r["players"]}\n{serv}: %.2fс\n' % (time.time() - start_time))
     else:
         if f'{serv}:' not in text:
