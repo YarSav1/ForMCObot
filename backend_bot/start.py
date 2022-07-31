@@ -19,7 +19,7 @@ schedule.every(1).minutes.do(run_threaded, online_players)
 # schedule.every(1).minutes.do(run_threaded, give_coordinates.create_task)
 # schedule.every(1).minutes.do(run_threaded, give_login_many.create_task)
 
-schedule.every(3).seconds.do(run_threaded, task_go_to_coordinates)
+schedule.every(2).seconds.do(run_threaded, task_go_to_coordinates)
 
 
 def setup_handlers():
