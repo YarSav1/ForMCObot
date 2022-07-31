@@ -57,6 +57,7 @@ def thread_task(serv, players):
             pass
         if f'{serv}:' not in text:
             text += f'{serv}: %.2fс\n' % (time.time() - start_time)
+        # print(f'{r["players"]}\n{serv}: %.2fс\n' % (time.time() - start_time))
     else:
         if f'{serv}:' not in text:
             text += f'{serv}: Ошибка подключения\n'
