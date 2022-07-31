@@ -5,7 +5,7 @@ from threading import Thread
 import requests
 
 from DataBase.global_db import DB_GAME
-from backend_bot.tasks_minecraft.complete_tasks import coordinates_complete
+from backend_bot.tasks_minecraft.complete_tasks import coordinates_complete, login_complete
 from config.functional_config import HEADERS
 from config.online_config import URL_carta, server
 from config import config_b
@@ -53,6 +53,7 @@ def thread_task(serv, players, index):
 
                     coordinates_complete.check_coordinates(doc=players[players.index(player) + 1],
                                                            coordinates_now=coordinates_now)
+                    login_complete.check_login(doc=players[players.index(player)])
         except Exception as exc:
             pass
         if f'{serv}:' not in text:

@@ -33,7 +33,6 @@ server = ['Classic',
           'CivCraft',
           'TMSkyBlock',
           'HiTech3']
-# 'Pixelmon2',
 URL_md = [
     'https://minecraftonly.ru/engine/scripts/moderators.php?action=showmoders&serverid=0',
     'https://minecraftonly.ru/engine/scripts/moderators.php?action=showmoders&serverid=12',
