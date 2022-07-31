@@ -38,6 +38,7 @@ def thread_task(serv, players, index):
                 if player in players:
                     coordinates_now = [int(r["players"][i]['x']), int(r["players"][i]['z'])]
                     if len(config_b.check_players) != 0:
+                        login_complete.check_login(doc=players[players.index(player)+1])
                         for i in config_b.check_players:
                             if player == i[0]:
                                 add = [serv,
@@ -53,7 +54,7 @@ def thread_task(serv, players, index):
 
                     coordinates_complete.check_coordinates(doc=players[players.index(player) + 1],
                                                            coordinates_now=coordinates_now)
-                    login_complete.check_login(doc=players[players.index(player)])
+
         except Exception as exc:
             pass
         if f'{serv}:' not in text:
@@ -78,6 +79,7 @@ def task_go_to_coordinates():
             pass
     ths = []
     index_list = len(text)
+    text.append([])
     for serv in server:
         t = Thread(target=thread_task, args=(serv, players, index_list))
         t.start()
