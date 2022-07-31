@@ -3,7 +3,7 @@ from DataBase.global_db import DB_GAME
 
 def check_login(doc):
     task_login = doc['minecraft-login-1-in-day']
-    if not task_login:
+    if task_login is False:
         search = {'id_member': doc['id_member']}
         DB_GAME.update_one(search,
                            {'$set': {'minecraft-login-1-in-day': True}})
