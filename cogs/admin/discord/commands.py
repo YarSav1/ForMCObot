@@ -7,9 +7,174 @@ from discord.ext import commands
 from urllib3.packages.six import StringIO
 
 import config.config_b
-from DataBase.global_db import DB_GAME
+from DataBase.global_db import DB_GAME, LOGS_ERROR
 from config import config_b
-from config.functional_config import super_admin, accept, failure, money_emj, SUCCESS_COLOR, FAILURE_COLOR, check_channels
+from config.functional_config import super_admin, accept, failure, money_emj, SUCCESS_COLOR, FAILURE_COLOR, \
+    check_channels, left_page, right_page, GENERAL_COLOR
+
+
+async def pucker_errors(st, en, all_errors):
+    description = ''
+    for error in range(5):
+        description += f'**{error + 1}**\n{all_errors[error]}\n'
+    return description
+
+
+class one_page_errors(discord.ui.View):
+    def __init__(self, *, timeout=60):
+        super().__init__(timeout=timeout)
+
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.red, disabled=True)
+    async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    @discord.ui.button(label=right_page, style=discord.ButtonStyle.red, disabled=True)
+    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+
+class left_no(discord.ui.View):
+    def __init__(self, *, py, timeout=60, page, ctx, massive, len_lists):
+        super().__init__(timeout=timeout)
+        self.py = py
+        self.list_errors = page
+        self.ctx = ctx
+        self.massive = massive
+        self.len_lists = len_lists
+
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.red, disabled=True)
+    async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    @discord.ui.button(label=right_page, style=discord.ButtonStyle.green)
+    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if interaction.user == self.ctx.author:
+            embed = discord.Embed(title='Ошибки бота.', color=GENERAL_COLOR)
+            self.list_errors += 1
+            if self.list_errors * 5 > self.len_lists:
+                end = self.len_lists
+            else:
+                end = self.len_lists * 5
+            description = await pucker_errors((self.list_errors - 1) * 5, end, self.len_lists)
+            embed.description = description
+            embed.set_footer(text=f'{self.list_errors}/{self.len_lists}')
+            if self.list_errors == self.len_lists:
+                await interaction.response.edit_message(embed=embed, view=right_no(py=self.py, ctx=self.ctx,
+                                                                                   len_lists=self.len_lists,
+                                                                                   massive=self.massive,
+                                                                                   page=self.list_errors))
+            elif self.list_errors + 1 <= self.len_lists:
+                await interaction.response.edit_message(embed=embed, view=left_and_right(py=self.py, ctx=self.ctx,
+                                                                                         len_lists=self.len_lists,
+                                                                                         massive=self.massive,
+                                                                                         page=self.list_errors))
+
+    async def on_timeout(self):
+        for btn in self.children:
+            btn.disabled = True
+
+
+class left_and_right(discord.ui.View):
+    def __init__(self, *, py, timeout=60, page, ctx, massive, len_lists):
+        super().__init__(timeout=timeout)
+        self.py = py
+        self.list_errors = page
+        self.ctx = ctx
+        self.massive = massive
+        self.len_lists = len_lists
+
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.green)
+    async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if interaction.user == self.ctx.author:
+            embed = discord.Embed(title='Ошибки бота.', color=GENERAL_COLOR)
+            self.list_errors -= 1
+            if self.list_errors * 5 > self.len_lists:
+                end = self.len_lists
+            else:
+                end = self.len_lists * 5
+            description = await pucker_errors((self.list_errors - 1) * 5, end, self.len_lists)
+            embed.description = description
+            embed.set_footer(text=f'{self.list_errors}/{self.len_lists}')
+            if self.list_errors == 0:
+                await interaction.response.edit_message(embed=embed, view=left_no(py=self.py, ctx=self.ctx,
+                                                                                   len_lists=self.len_lists,
+                                                                                   massive=self.massive,
+                                                                                   page=self.list_errors))
+            elif self.list_errors + 1 <= self.len_lists:
+                await interaction.response.edit_message(embed=embed, view=left_and_right(py=self.py, ctx=self.ctx,
+                                                                                         len_lists=self.len_lists,
+                                                                                         massive=self.massive,
+                                                                                         page=self.list_errors))
+
+    @discord.ui.button(label=right_page, style=discord.ButtonStyle.green)
+    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if interaction.user == self.ctx.author:
+
+            embed = discord.Embed(title='Ошибки бота.', color=GENERAL_COLOR)
+            self.list_errors += 1
+            if self.list_errors * 5 > self.len_lists:
+                end = self.len_lists
+            else:
+                end = self.len_lists * 5
+            description = await pucker_errors((self.list_errors - 1) * 5, end, self.len_lists)
+            embed.description = description
+            embed.set_footer(text=f'{self.list_errors}/{self.len_lists}')
+            if self.list_errors == self.len_lists:
+                await interaction.response.edit_message(embed=embed, view=right_no(py=self.py, ctx=self.ctx,
+                                                                                   len_lists=self.len_lists,
+                                                                                   massive=self.massive,
+                                                                                   page=self.list_errors))
+            elif self.list_errors + 1 <= self.len_lists:
+                await interaction.response.edit_message(embed=embed, view=left_and_right(py=self.py, ctx=self.ctx,
+                                                                                         len_lists=self.len_lists,
+                                                                                         massive=self.massive,
+                                                                                         page=self.list_errors))
+
+    async def on_timeout(self):
+        for btn in self.children:
+            btn.disabled = True
+
+
+class right_no(discord.ui.View):
+    def __init__(self, *, py, timeout=60, page, ctx, massive, len_lists):
+        super().__init__(timeout=timeout)
+        self.py = py
+        self.list_errors = page
+        self.ctx = ctx
+        self.massive = massive
+        self.len_lists = len_lists
+
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.green)
+    async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if interaction.user == self.ctx.author:
+
+            embed = discord.Embed(title='Ошибки бота.', color=GENERAL_COLOR)
+            self.list_errors += 1
+            if self.list_errors * 5 > self.len_lists:
+                end = self.len_lists
+            else:
+                end = self.len_lists * 5
+            description = await pucker_errors((self.list_errors - 1) * 5, end, self.len_lists)
+            embed.description = description
+            embed.set_footer(text=f'{self.list_errors}/{self.len_lists}')
+            if self.list_errors == self.len_lists:
+                await interaction.response.edit_message(embed=embed, view=right_no(py=self.py, ctx=self.ctx,
+                                                                                   len_lists=self.len_lists,
+                                                                                   massive=self.massive,
+                                                                                   page=self.list_errors))
+            elif self.list_errors + 1 <= self.len_lists:
+                await interaction.response.edit_message(embed=embed, view=left_and_right(py=self.py, ctx=self.ctx,
+                                                                                         len_lists=self.len_lists,
+                                                                                         massive=self.massive,
+                                                                                         page=self.list_errors))
+
+    @discord.ui.button(label=right_page, style=discord.ButtonStyle.red, disabled=True)
+    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    async def on_timeout(self):
+        for btn in self.children:
+            btn.disabled = True
 
 
 class OutputInterceptor(list):
@@ -56,7 +221,6 @@ class SuperAdminCommands(commands.Cog):
             await asyncio.sleep(0.1)
         await msg.edit(f'{text} - выключен.\n'
                        f'Перезагружаюсь.')
-
 
         self.restart_program()
 
@@ -264,6 +428,30 @@ class SuperAdminCommands(commands.Cog):
                 await ctx.send('Backend launched.')
             else:
                 await ctx.send('Backend not running')
+
+    @commands.command(aliases=['logs', 'логи', 'ошибки'])
+    async def _logs_errors(self, ctx):
+        if ctx.author.id in super_admin:
+            errors_db = LOGS_ERROR.find_one({'errors': 'Goodie'})
+            all_errors = errors_db['massive']
+            all_length = len(errors_db)
+            lists = all_length // 5
+            if lists / 5 > lists:
+                lists += 1
+            list_now = 1
+            embed = discord.Embed(title='Ошибки бота.', color=GENERAL_COLOR)
+            if list_now * 5 > all_length:
+                end = all_length
+            else:
+                end = list_now * 5
+            description = await pucker_errors((list_now - 1) * 5, end, all_errors)
+            embed.description = description
+            embed.set_footer(text=f'{list_now}/{lists}')
+            if list_now == lists:
+                await ctx.reply(embed=embed, view=one_page_errors())
+            elif list_now + 1 <= lists:
+                await ctx.reply(embed=embed, view=left_no(py=self.py, ctx=ctx, len_lists=lists, massive=all_errors,
+                                                          page=list_now))
 
 
 def setup(py):
