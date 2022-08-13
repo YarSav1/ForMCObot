@@ -15,7 +15,7 @@ from config.functional_config import super_admin, accept, failure, money_emj, SU
 
 async def pucker_errors(st, en, all_errors):
     description = ''
-    for error in range(5):
+    for error in range(st,en):
         description += f'**{error + 1}**\n{all_errors[error]}\n'
     return description
 
@@ -434,14 +434,19 @@ class SuperAdminCommands(commands.Cog):
         if ctx.author.id in super_admin:
             errors_db = LOGS_ERROR.find_one({'errors': 'Goodie'})
             all_errors = errors_db['massive']
-            all_length = len(errors_db)
-            lists = all_length // 5
-            if lists / 5 > lists:
-                lists += 1
+            all_length = len(all_errors)
+            print(f'==={all_length}==')
+
+            if all_length%5 != 0:
+                lists = all_length//5+1
+            else:
+                lists = all_length//5
+            lists = int(lists)
+            print(lists)
             list_now = 1
             embed = discord.Embed(title='Ошибки бота.', color=GENERAL_COLOR)
             if list_now * 5 > all_length:
-                end = all_length
+                end = all_length+1
             else:
                 end = list_now * 5
             description = await pucker_errors((list_now - 1) * 5, end, all_errors)
