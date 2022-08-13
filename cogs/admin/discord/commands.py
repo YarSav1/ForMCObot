@@ -103,37 +103,37 @@ class SuperAdminCommands(commands.Cog):
                         text += f'{failure} (не запускается - {exc})\n'
             await msg.edit(text)
 
-    @commands.command(aliases=['check', 'проверка', 'чек'])
-    async def check_files_bot(self, ctx):
-        if ctx.author.id in super_admin:
-            zapusk = []
-            for DirPath_1, DirName_1, filenames in os.walk("cogs"):
-                for filename in filenames:
-                    if not filename.endswith('.pyc'):
-                        link = ''
-                        for simvol in str(os.path.join(DirPath_1, filename)):
-                            if simvol == '/':
-                                simvol = '.'
-                            link += simvol
-                        zapusk.append(link)
-
-            text = 'Проверка файлов:\n'
-            msg = await ctx.send(text)
-            for file in zapusk:
-                text += f'{file} '
-                try:
-                    self.py.unload_extension(str(file)[:-3])
-                    self.py.load_extension(str(file)[:-3])
-                    text += f'{accept}\n'
-                except Exception as exc:
-                    try:
-                        self.py.load_extension(str(file)[:-3])
-                        text += f'{accept} (перезапущен - {exc})\n'
-                    except Exception as exc:
-                        text += f'{failure} (не запускается - {exc})\n'
-                await msg.edit(text)
-            text += '\nКонец.'
-            await msg.edit(text)
+    # @commands.command(aliases=['check', 'проверка', 'чек'])
+    # async def check_files_bot(self, ctx):
+    #     if ctx.author.id in super_admin:
+    #         zapusk = []
+    #         for DirPath_1, DirName_1, filenames in os.walk("cogs"):
+    #             for filename in filenames:
+    #                 if not filename.endswith('.pyc'):
+    #                     link = ''
+    #                     for simvol in str(os.path.join(DirPath_1, filename)):
+    #                         if simvol == '/':
+    #                             simvol = '.'
+    #                         link += simvol
+    #                     zapusk.append(link)
+    #
+    #         text = 'Проверка файлов:\n'
+    #         msg = await ctx.send(text)
+    #         for file in zapusk:
+    #             text += f'{file} '
+    #             try:
+    #                 self.py.unload_extension(str(file)[:-3])
+    #                 self.py.load_extension(str(file)[:-3])
+    #                 text += f'{accept}\n'
+    #             except Exception as exc:
+    #                 try:
+    #                     self.py.load_extension(str(file)[:-3])
+    #                     text += f'{accept} (перезапущен - {exc})\n'
+    #                 except Exception as exc:
+    #                     text += f'{failure} (не запускается - {exc})\n'
+    #             await msg.edit(text)
+    #         text += '\nКонец.'
+    #         await msg.edit(text)
 
     @commands.command(aliases=['add-money', 'добавить-денег', 'добавить-баланс', 'add-balance', '+'])
     async def _add_balance(self, ctx, member: discord.User, amount: int):
@@ -266,5 +266,5 @@ class SuperAdminCommands(commands.Cog):
                 await ctx.send('Backend not running')
 
 
-def setup(py):
-    py.add_cog(SuperAdminCommands(py))
+# def setup(py):
+#     py.add_cog(SuperAdminCommands(py))
