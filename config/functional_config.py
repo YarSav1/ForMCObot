@@ -511,7 +511,7 @@ def logger_errors(text):
         'massive': []
     }
     timenow = datetime.datetime.now()
-    timenow = f"{timenow.strftime('%Y.%m.%d %H:%M:%S')}"
+    timenow = f"{timenow.strftime('%d.%m.%Y %H:%M:%S')}"
     text = f'`{text}`. Время: `{timenow}`'
     # print(text)
     if LOGS_ERROR.count_documents({'errors': 'Goodie'}) == 0:
