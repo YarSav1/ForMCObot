@@ -435,14 +435,12 @@ class SuperAdminCommands(commands.Cog):
             errors_db = LOGS_ERROR.find_one({'errors': 'Goodie'})
             all_errors = errors_db['massive']
             all_length = len(all_errors)
-            print(f'==={all_length}==')
 
             if all_length%5 != 0:
                 lists = all_length//5+1
             else:
                 lists = all_length//5
             lists = int(lists)
-            print(lists)
             list_now = 1
             embed = discord.Embed(title='Ошибки бота.', color=GENERAL_COLOR)
             if list_now * 5 > all_length:
