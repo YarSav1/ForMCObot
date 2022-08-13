@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 import os
 import sys
 import time
@@ -9,12 +8,14 @@ import discord
 from discord.ext import commands
 
 import config.config_b
-from DataBase.global_db import check_db, LOGS_ERROR
+from DataBase.global_db import check_db
 from backend_bot.start import setup_handlers
 from config import config_b
 from config.functional_config import accept, failure, logger_errors
 from config.secret import token
 from urllib3.packages.six import StringIO
+
+
 class OutputInterceptor(list):
     def __enter__(self):
         self._stdout = sys.stdout
@@ -25,6 +26,7 @@ class OutputInterceptor(list):
         self.extend(self._stringio.getvalue().splitlines())
         del self._stringio
         sys.stdout = self._stdout
+
 
 intents = discord.Intents.all()
 
@@ -68,7 +70,7 @@ if request:
             except Exception as exc:
                 text = f'Ошибка - {exc}'
                 logger_errors(text)
-                print(f'{failure} | Ошибка: {exc}', end='')
+                print(f'{failure} | Ошибка: {exc}')
 
         print('\nВсе файлы в запуске.')
 
@@ -76,7 +78,6 @@ if request:
         @py.event
         async def on_ready():
             if py.is_ready():
-
                 print("\033[0mЗапуск длился: %.2fс" % (time.time() - start_time))
 
 
@@ -86,6 +87,11 @@ if request:
             text = f'Критическая ошибка - {exc}'
             logger_errors(text)
             print('Токен неверен!')
+            print('Выключаем бэкэнд')
+            config.config_b.run_bot = False
+            while config_b.access_run_bot:
+                time.sleep(0.1)
+            print('Бот выключен.')
 
     except Exception as exc:
         text = f'Критическая ошибка - {exc}'
@@ -93,7 +99,7 @@ if request:
         print('Выключаем бэкэнд')
         config.config_b.run_bot = False
         while config_b.access_run_bot:
-            await asyncio.sleep(0.1)
+            time.sleep(0.1)
         print('Пробуем перезагрузиться...')
         python = sys.executable
         os.execl(python, python, *sys.argv)
@@ -104,4 +110,3 @@ else:
     logger_errors(text)
     print(f'\033[31m\n!!!WARNING!!!\n{text}\n'
           'Остановка бота.\n')
-

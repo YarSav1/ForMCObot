@@ -513,7 +513,7 @@ def logger_errors(text):
     timenow = datetime.datetime.now()
     timenow = f"{timenow.strftime('%Y.%m.%d %H:%M:%S')}"
     text = f'`{text}`. Время: `{timenow}`'
-    print(text)
+    # print(text)
     if LOGS_ERROR.count_documents({'errors': 'Goodie'}) == 0:
         LOGS_ERROR.insert_one(doc)
     LOGS_ERROR.update_one({'errors': 'Goodie'},

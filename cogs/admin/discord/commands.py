@@ -266,5 +266,5 @@ class SuperAdminCommands(commands.Cog):
                 await ctx.send('Backend not running')
 
 
-# def setup(py):
-#     py.add_cog(SuperAdminCommands(py))
+def setup(py):
+    py.add_cog(SuperAdminCommands(py))
