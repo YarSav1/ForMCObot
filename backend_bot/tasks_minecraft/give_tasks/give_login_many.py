@@ -1,7 +1,7 @@
 import random
 
 from DataBase.global_db import DB_GAME
-from config.minecraft_config import size_world_for_tasks, need_login_many
+from config.minecraft_config import need_login_many
 
 
 def create_task():

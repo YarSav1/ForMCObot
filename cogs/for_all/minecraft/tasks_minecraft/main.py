@@ -28,15 +28,6 @@ class TasksProfile(commands.Cog):
                         text += f'{info["minecraft-coordinates"].index(coord) + 1} | `x:{coord[0]}` | `z: {coord[1]}` - {perf}\n'
                 embed.add_field(name='Прибеги на координаты:', value=f'{text}')
 
-
-
-
-
-
-
-
-
-
                 if len(info['minecraft-login-many']) == 0:
                     text = 'Нет задания'
                 else:
