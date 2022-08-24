@@ -79,7 +79,7 @@ def task_go_to_coordinates():
             pass
     ths = []
     index_list = len(text)
-    text.append([])
+    # text.append([])
     # print(players)
     for serv in server:
         t = Thread(target=thread_task, args=(serv, players, index_list))
