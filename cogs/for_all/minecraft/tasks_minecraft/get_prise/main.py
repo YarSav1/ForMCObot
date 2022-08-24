@@ -31,6 +31,7 @@ class GetPrise(commands.Cog):
         text += f'Выполнено заданий с координатами: {amount_ok_coordinate} - Приз: **{prise_balance}** {money_emj} и ' \
                 f'**{prise_exp}** опыта.'
         print(text)
+        await ctx.send(text)
 
 
 def setup(py):
