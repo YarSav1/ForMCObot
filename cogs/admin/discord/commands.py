@@ -226,16 +226,27 @@ class SuperAdminCommands(commands.Cog):
 
     # Просто проверка, работает ли бот.
     @commands.command(aliases=['bot', 'бот'])
-    async def _check_bot_work(self, ctx):
+    async def _check_bot_work(self, ctx, amount = None):
         if await check_channels(ctx) or ctx.author.id in super_admin:
+            if amount is None:
+                amount = 1
+
             start_time = time.time()
             message = await ctx.message.reply("Да-да, я тута-здеся! Проверяю задержку...")
             end_time = time.time()
-
+            start_time2 = time.time()
             await message.edit(
                 content=f"Да-да, я здесь! Проверил задержку - проверяй.\n"
                         f"Задержка:\nDiscord-команда - {round(self.py.latency * 1000)}ms\n"
                         f"Discord-запрос-ответ - {round((end_time - start_time) * 1000)}ms")
+            for i in amount:
+                end_time2 = time.time()
+
+                await message.edit(
+                    content=f"Да-да, я здесь! Проверил задержку - проверяй.\n"
+                            f"Задержка:\nDiscord-команда - {round(self.py.latency * 1000)}ms\n"
+                            f"Discord-запрос-ответ - {round((end_time2 - start_time2) * 1000)}ms")
+                start_time2 = time.time()
 
     @commands.command(aliases=['fastreboot', 'быстрыйкд', 'кд'])
     async def check_files_bot_fast(self, ctx):
