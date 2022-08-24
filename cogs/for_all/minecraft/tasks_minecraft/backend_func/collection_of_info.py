@@ -22,13 +22,16 @@ class CollectionInfoPlayers(commands.Cog):
                 self.check_delay = False
                 self.msg = None
                 await ctx.reply("Вывод прекращен.")
+                config_b.create_text_coord = False
+                config_b.text_coordinates = []
                 self.information_delay.stop()
                 self.timer = 60
             else:
                 self.ctx = ctx
                 self.check_delay = True
-                await ctx.reply("После следующей обработки начнется вывод статистики в этот чат!\n"
-                                "**При включенном режиме скорость отклика бота понизится!**")
+                config_b.create_text_coord = True
+                await ctx.reply("После окончания действующей обработки начнется вывод статистики в этот чат!\n"
+                                "**Скорость отклика бота снижена!**")
                 self.information_delay.start()
 
     @commands.Cog.listener()
@@ -36,28 +39,27 @@ class CollectionInfoPlayers(commands.Cog):
         if self.py.is_ready():
             pass
 
-    @tasks.loop(seconds=5)
+    @tasks.loop(seconds=1)
     async def information_delay(self):
         if self.check_delay:
-            self.timer -= 5
-            if config_b.text_coordinates != '':
+            self.timer -= 1
+            if len(config_b.text_coordinates) != 0:
                 embed = discord.Embed(title='Парсинг серверов.', color=GENERAL_COLOR)
                 if self.msg is None:
-                    embed.description=f'{config_b.text_coordinates}\n\n'\
+                    embed.description=f'{config_b.text_coordinates[len(config_b.text_coordinates)-1]}\n\n'\
                                       f'Сеанс прекратится через: {self.timer} сек.'
                     self.msg = await self.ctx.send(embed=embed)
-                    config_b.text_coordinates = ''
                 else:
                     if self.timer > 0:
-                        embed.description = f'{config_b.text_coordinates}\n\n'\
+                        embed.description = f'{config_b.text_coordinates[len(config_b.text_coordinates)-1]}\n\n'\
                                             f'Сеанс прекратится через: {self.timer} сек.'
                         await self.msg.edit(embed=embed)
-                        config_b.text_coordinates = ''
                     else:
-                        embed.description = f'{config_b.text_coordinates}\n\n'\
+                        embed.description = f'{config_b.text_coordinates[len(config_b.text_coordinates)-1]}\n\n'\
                                             f'Сеанс окончен.'
                         await self.msg.edit(embed=embed)
-                        config_b.text_coordinates = ''
+                        config_b.text_coordinates = []
+                        config_b.create_text_coord = False
                         self.information_delay.stop()
                         self.ctx = None
                         self.check_delay = False

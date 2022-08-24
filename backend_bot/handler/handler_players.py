@@ -10,29 +10,31 @@ from config.functional_config import HEADERS
 from config.online_config import URL_carta, server
 from config import config_b
 
-text = [[]]
+text = []
 
 
-def thread_task(serv, players):
+def thread_task(serv, players, index):
     global text
     start_time = time.time()
     try:
         html = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None, timeout=1)
     except Exception:
         pass
-        # if f'{serv}:' not in text[index]:
-        #     text[index] += f'{serv}: Ошибка подключения. Превышено время ожидания!\n'
-        # text[index += f'{serv} - Ошибка'
+        if config_b.create_text_coord is True:
+            if f'{serv}:' not in text[index]:
+                text[index] += f'{serv}: Ошибка подключения.\n'
         return
     if html.status_code == 200:
         try:
             r = requests.get(URL_carta[server.index(serv)], headers=HEADERS, params=None).text
+            r = json.loads(r)
         except Exception as exc:
             pass
-            # if f'{serv}:' not in text[index]:
-            #     text[index] += f'{serv}: Ошибка подключения\n'
+            if config_b.create_text_coord is True:
+                if f'{serv}:' not in text[index]:
+                    text[index] += f'{serv}: Ошибка подключения\n'
             return
-        r = json.loads(r)
+
         cikl_online = r["currentcount"]
         try:
             for i in range(0, cikl_online):
@@ -60,18 +62,21 @@ def thread_task(serv, players):
         except Exception as exc:
             pass
         pass
-        # if f'{serv}:' not in text[index]:
-        #     text[index] += f'{serv}: %.2fс\n' % (time.time() - start_time)
+        if config_b.create_text_coord is True:
+            if f'{serv}:' not in text[index]:
+                text[index] += f'{serv}: %.2fс\n' % (time.time() - start_time)
         # print(f'{r["players"]}\n{serv}: %.2fс\n' % (time.time() - start_time))
     else:
         pass
-        # if f'{serv}:' not in text[index]:
-        #     text[index] += f'{serv}: Ошибка подключения\n'
+        if config_b.create_text_coord is True:
+            if f'{serv}:' not in text[index]:
+                text[index] += f'{serv}: Ошибка подключения\n'
     # text[index += f'{serv} - %.2fс\n' % (time.time() - start_time)
 
 
 def task_go_to_coordinates():
     global text
+    print(text)
     start_time = time.time()
     db = list(DB_GAME.find())
     players = []
@@ -81,15 +86,22 @@ def task_go_to_coordinates():
             players.append(i)
         except Exception as exc:
             pass
+    if config_b.create_text_coord is True:
+        index = len(text)
+        text.append('')
+    else:
+        index = 0
     ths = []
     # print(players)
     for serv in server:
-        t = Thread(target=thread_task, args=(serv, players))
+        t = Thread(target=thread_task, args=(serv, players, index))
         t.start()
         ths.append(t)
     for th in ths:
         th.join()
-    # if config_b.text_coordinates == '':
-    #     text[index_list] += f'\nЭта обработка длилась: %.2fс' % (time.time() - start_time)
-    #     config_b.text_coordinates = text[index_list]
+    if config_b.create_text_coord is True:
+        text[index] += f'\nЭта обработка длилась: %.2fс' % (time.time() - start_time)
+        config_b.text_coordinates.append(text[index])
+    else:
+        text = []
 # task_go_to_coordinates()
