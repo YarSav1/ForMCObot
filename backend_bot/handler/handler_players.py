@@ -76,7 +76,6 @@ def thread_task(serv, players, index):
 
 def task_go_to_coordinates():
     global text
-    print(text)
     start_time = time.time()
     db = list(DB_GAME.find())
     players = []

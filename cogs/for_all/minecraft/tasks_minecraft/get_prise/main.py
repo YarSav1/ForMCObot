@@ -18,7 +18,7 @@ class GetPrise(commands.Cog):
         amount_ok_coordinate = 0
         text = ''
         for i in player_db['minecraft-coordinates']:
-            if i['2']:
+            if i[2]:
                 amount_ok_coordinate += 1
                 # DB_GAME.update_one({'id_member': ctx.author.id},
                 #                    {'$pull': {'minecraft-coordinates': i}})
