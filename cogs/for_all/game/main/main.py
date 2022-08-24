@@ -73,10 +73,11 @@ class Profile(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=['give', 'передать', 'дать', 'перевести'])
-    async def _give_balance(self, ctx, member: discord.Member, amount: int = None):
+    async def _give_balance(self, ctx, member: discord.Member = None, amount: int = None):
         if await check_channels(ctx):
-
             if amount is None or amount <= 0:
+                await self.stopper(ctx)
+            elif member is None:
                 await self.stopper(ctx)
             else:
                 info = await check_fields(ctx.author)
@@ -98,7 +99,6 @@ class Profile(commands.Cog):
 
     @_give_balance.error
     async def _error_give(self, ctx, error):
-
         if isinstance(error, commands.MemberNotFound):
             await ctx.reply('Участник не найден!')
         elif isinstance(error, commands.BadArgument):
