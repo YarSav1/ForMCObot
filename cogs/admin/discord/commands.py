@@ -226,7 +226,7 @@ class SuperAdminCommands(commands.Cog):
 
     # Просто проверка, работает ли бот.
     @commands.command(aliases=['bot', 'бот'])
-    async def _check_bot_work(self, ctx, amount = None):
+    async def _check_bot_work(self, ctx, amount: int = None):
         if await check_channels(ctx) or ctx.author.id in super_admin:
             if amount is None:
                 amount = 1
