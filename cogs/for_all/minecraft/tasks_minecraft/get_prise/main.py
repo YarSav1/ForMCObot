@@ -4,7 +4,7 @@ from discord.ext import commands
 import discord
 
 from DataBase.global_db import DB_GAME
-from config.functional_config import money_emj
+from config.functional_config import money_emj, exp_emj
 from config.minecraft_config import bounty_coordinates
 
 
@@ -29,7 +29,7 @@ class GetPrise(commands.Cog):
             prise_exp+=random.randint(bounty_coordinates[1][0],bounty_coordinates[1][1])
 
         text += f'Выполнено заданий с координатами: {amount_ok_coordinate} - Приз: **{prise_balance}** {money_emj} и ' \
-                f'**{prise_exp}** опыта.'
+                f'**{prise_exp}** {exp_emj}.'
         print(text)
         await ctx.send(text)
 
