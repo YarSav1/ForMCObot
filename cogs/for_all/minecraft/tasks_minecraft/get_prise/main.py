@@ -20,8 +20,8 @@ class GetPrise(commands.Cog):
         for i in player_db['minecraft-coordinates']:
             if i[2]:
                 amount_ok_coordinate += 1
-                # DB_GAME.update_one({'id_member': ctx.author.id},
-                #                    {'$pull': {'minecraft-coordinates': i}})
+                DB_GAME.update_one({'id_member': ctx.author.id},
+                                   {'$pull': {'minecraft-coordinates': i}})
         prise_balance = 0
         prise_exp = 0
         for i in range(amount_ok_coordinate):
