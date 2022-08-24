@@ -5,6 +5,7 @@ import schedule as schedule
 
 from backend_bot.handler.handler_players import task_go_to_coordinates
 from backend_bot.handler.handler_online import online_players
+from backend_bot.tasks_minecraft.give_tasks import give_coordinates, give_login_many
 from backend_bot.tasks_minecraft.login_server_1_in_day.everyday_bonus import restart_task_login
 from config import config_b
 
@@ -16,8 +17,8 @@ def run_threaded(job_func):
 
 schedule.every(1).minutes.do(run_threaded, online_players)
 
-# schedule.every(1).minutes.do(run_threaded, give_coordinates.create_task)
-# schedule.every(1).minutes.do(run_threaded, give_login_many.create_task)
+schedule.every(1).minutes.do(run_threaded, give_coordinates.create_task)
+schedule.every(1).minutes.do(run_threaded, give_login_many.create_task)
 
 schedule.every(1).seconds.do(run_threaded, task_go_to_coordinates)
 schedule.every().day.at("00:00").do(run_threaded, restart_task_login)
