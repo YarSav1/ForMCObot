@@ -239,7 +239,7 @@ class SuperAdminCommands(commands.Cog):
                 content=f"Да-да, я здесь! Проверил задержку - проверяй.\n"
                         f"Задержка:\nDiscord-команда - {round(self.py.latency * 1000)}ms\n"
                         f"Discord-запрос-ответ - {round((end_time - start_time) * 1000)}ms")
-            for i in amount:
+            for i in range(amount):
                 end_time2 = time.time()
 
                 await message.edit(
