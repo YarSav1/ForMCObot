@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 
 from config.functional_config import LikeDislike

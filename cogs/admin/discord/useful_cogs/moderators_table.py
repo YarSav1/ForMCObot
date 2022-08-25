@@ -1,8 +1,11 @@
 import discord
+import requests
+from bs4 import BeautifulSoup
 from discord.ext import commands, tasks
 
 from DataBase.global_db import DB_SERVER_SETTINGS
-from config.functional_config import super_admin, GENERAL_COLOR, FAILURE_COLOR, SUCCESS_COLOR
+from config.functional_config import super_admin, GENERAL_COLOR, FAILURE_COLOR, SUCCESS_COLOR, HEADERS
+from config.online_config import URL_md, server
 
 
 class TableModerators(commands.Cog):
@@ -52,7 +55,7 @@ class TableModerators(commands.Cog):
         if self.py.is_ready():
             self.reload_table_moders.start()
 
-    @tasks.loop(minutes=5)
+    @tasks.loop(minutes=30)
     async def reload_table_moders(self):
         doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
         if 'table_moderators' in doc:
@@ -60,7 +63,56 @@ class TableModerators(commands.Cog):
             channel_ds = self.py.get_channel(id_channel)
             if channel_ds is None:
                 return
-            self.py.purge_from(channel_ds)
+            await channel_ds.purge(limit=100)
+
+            cycles = int(len(URL_md) / 10 + 1)
+            for i in range(cycles):
+                embed = discord.Embed(title=f'Модератора проекта #{i+1}', color=GENERAL_COLOR)
+                if len(URL_md) - (i + 1) * 10 >= 0:
+                    cycles2 = 10
+                else:
+                    cycles2 = int(len(URL_md)%10)+(i*10)
+                for x in range(i * 10, cycles2):
+                    text_serv = server[x]
+                    html = requests.get(URL_md[x], headers=HEADERS, params=None)
+                    if html.status_code == 200:
+                        html = html.text
+                    else:
+                        return
+                    soup = BeautifulSoup(html, 'html.parser')
+                    spis_md = soup.find_all('tr')
+                    cikl = len(spis_md)
+                    helpers = ['**Хелперы:** ', False]
+                    moders = ['**Модераторы:** ', False]
+                    curator = ['**Кураторы:** ', False]
+                    headmoder = ['**ХедМодераторы:** ', False]
+                    for i in range(1, cikl):
+                        moder = soup.find_all('tr')[i]
+                        moder_name = moder.find_all('td')[1].text
+                        moder_rank = moder.find_all('td')[2].text
+                        if moder_rank.lower() == 'helper':
+                            helpers[0] += f'`{moder_name}`, '
+                            helpers[1] += True
+                        elif moder_rank.lower() == 'curator':
+                            curator[0] += f'`{moder_name}`, '
+                            curator[1] += True
+                        elif moder_rank.lower() == 'headmoder':
+                            headmoder[0] += f'`{moder_name}`, '
+                            headmoder[1] += True
+                        else:
+                            moders[0] += f'`{moder_name}`, '
+                            moders[1] += True
+                    if not headmoder[1]:
+                        headmoder[0]+='`Нет`  '
+                    if not helpers[1]:
+                        helpers[0]+='`Нет`  '
+                    if not moders[1]:
+                        moders[0]+='`Нет`  '
+                    if not curator[1]:
+                        curator[0]+='`Нет`  '
+                    text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
+                    embed.add_field(name=f'==={text_serv}===', value=text_moders)
+                await channel_ds.send(embed=embed)
 
 
 def setup(py):

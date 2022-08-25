@@ -1,10 +1,9 @@
-import asyncio
-
 import discord
 from discord.ext import commands
 
 from config.functional_config import GENERAL_COLOR, amount_shop_bounty, money_emj, counter_number, \
     shop_bounty_massive, left_page, right_page
+
 
 class one_page_shop(discord.ui.View):
     def __init__(self, *, timeout=60):
