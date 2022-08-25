@@ -13,7 +13,7 @@ class TableModerators(commands.Cog):
         embed = discord.Embed(title='Создаю канал', color=GENERAL_COLOR)
         await msg.edit(embed=embed)
         try:
-            channel = await ctx.guild.create_channel(f'Модераторы-проекта')
+            channel = await ctx.guild.create_text_channel(f'Модераторы-проекта')
         except:
             embed = discord.Embed(title='Не могу создать канал. Нет разрешений!', color=FAILURE_COLOR)
             return await msg.edit(embed=embed)
