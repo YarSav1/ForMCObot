@@ -31,7 +31,7 @@ class TableModerators(commands.Cog):
         await msg.edit(embed=embed)
 
     @commands.command(aliases=['таблица-модераторов', 'т-м'])
-    async def _create_channel_online(self, ctx):
+    async def _create_channel_moderators(self, ctx):
         if ctx.author.id in super_admin:
             embed = discord.Embed(title='Проверяю существование канала', color=GENERAL_COLOR)
             msg = await ctx.reply(embed=embed)
