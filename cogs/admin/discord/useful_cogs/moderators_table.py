@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from DataBase.global_db import DB_SERVER_SETTINGS
 from config.functional_config import super_admin, GENERAL_COLOR, FAILURE_COLOR, SUCCESS_COLOR
@@ -47,6 +47,20 @@ class TableModerators(commands.Cog):
                     embed = discord.Embed(title='Канал уже существует', color=FAILURE_COLOR)
                     await msg.edit(embed=embed)
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        if self.py.is_ready():
+            self.reload_table_moders.start()
+
+    @tasks.loop(minutes=5)
+    async def reload_table_moders(self):
+        doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
+        if 'table_moderators' in doc:
+            id_channel = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})['table_moderators']
+            channel_ds = self.py.get_channel(id_channel)
+            if channel_ds is None:
+                return
+            self.py.purge_from(channel_ds)
 
 
 def setup(py):
