@@ -32,7 +32,7 @@ class SuperAdminChannelStatisticsOnlineMinecraft(commands.Cog):
         await msg.edit(embed=embed)
         DB_SERVER_SETTINGS.update_one({'_id': 'Goodie'},
                                       {'$set': {'stat_online': channel.id}})
-        embed = discord.Embed(title='Канал записан в ДБ', color=SUCCESS_COLOR)
+        embed = discord.Embed(title='Канал записан в БД', color=SUCCESS_COLOR)
         await msg.edit(embed=embed)
 
     @commands.command(aliases=['статистика-онлайн', 'с-о', 'c-o'])
