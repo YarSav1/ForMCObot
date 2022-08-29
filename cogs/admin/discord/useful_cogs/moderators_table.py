@@ -57,7 +57,7 @@ class TableModerators(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def reload_table_moders(self):
-        amount_servers = 9
+        amount_servers = 3
         doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
         if 'table_moderators' in doc:
             id_channel = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})['table_moderators']
