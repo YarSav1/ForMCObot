@@ -65,14 +65,14 @@ class TableModerators(commands.Cog):
                 return
             await channel_ds.purge(limit=100)
 
-            cycles = int(len(URL_md) / 10 + 1)
+            cycles = int(len(URL_md) / 9 + 1)
             for i in range(cycles):
                 embed = discord.Embed(title=f'Модератора проекта #{i+1}', color=GENERAL_COLOR)
-                if len(URL_md) - (i + 1) * 10 >= 0:
-                    cycles2 = 10
+                if len(URL_md) - (i + 1) * 9 >= 0:
+                    cycles2 = 9
                 else:
-                    cycles2 = int(len(URL_md)%10)+(i*10)
-                for x in range(i * 10, cycles2):
+                    cycles2 = int(len(URL_md)%9)+(i*9)
+                for x in range(i * 9, cycles2):
                     text_serv = server[x]
                     html = requests.get(URL_md[x], headers=HEADERS, params=None)
                     if html.status_code == 200:
