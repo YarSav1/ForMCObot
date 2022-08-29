@@ -72,7 +72,7 @@ class TableModerators(commands.Cog):
                 if len(URL_md) - (i + 1) * amount_servers >= 0:
                     cycles2 = amount_servers
                 else:
-                    cycles2 = int(len(URL_md)%amount_servers)+(i*amount_servers)
+                    cycles2 = (i * amount_servers)+amount_servers
                 for x in range(i * amount_servers, cycles2):
                     text_serv = server[x]
                     html = requests.get(URL_md[x], headers=HEADERS, params=None)
@@ -112,7 +112,7 @@ class TableModerators(commands.Cog):
                     if not curator[1]:
                         curator[0]+='`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
-                    embed.add_field(name=f'==={text_serv}===', value=text_moders)
+                    embed.add_field(name=f'| {text_serv} |', value=text_moders)
                 await channel_ds.send(embed=embed)
 
 
