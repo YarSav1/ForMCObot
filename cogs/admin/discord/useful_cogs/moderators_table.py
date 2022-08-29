@@ -57,6 +57,7 @@ class TableModerators(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def reload_table_moders(self):
+        amount_servers = 3
         doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
         if 'table_moderators' in doc:
             id_channel = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})['table_moderators']
@@ -65,14 +66,14 @@ class TableModerators(commands.Cog):
                 return
             await channel_ds.purge(limit=100)
 
-            cycles = int(len(URL_md) / 9 + 1)
+            cycles = int(len(URL_md) / amount_servers + 1)
             for i in range(cycles):
                 embed = discord.Embed(title=f'Модератора проекта #{i+1}', color=GENERAL_COLOR)
-                if len(URL_md) - (i + 1) * 9 >= 0:
-                    cycles2 = 9
+                if len(URL_md) - (i + 1) * amount_servers >= 0:
+                    cycles2 = amount_servers
                 else:
-                    cycles2 = int(len(URL_md)%9)+(i*9)
-                for x in range(i * 9, cycles2):
+                    cycles2 = int(len(URL_md)%amount_servers)+(i*amount_servers)
+                for x in range(i * amount_servers, cycles2):
                     text_serv = server[x]
                     html = requests.get(URL_md[x], headers=HEADERS, params=None)
                     if html.status_code == 200:
