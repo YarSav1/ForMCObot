@@ -69,8 +69,8 @@ class TableModerators(commands.Cog):
             cycles = int(len(URL_md) / amount_servers + 1)
             for i in range(cycles):
                 embed = discord.Embed(title=f'Модератора проекта #{i+1}', color=GENERAL_COLOR)
-                if len(URL_md) - (i + 1) * amount_servers >= 0:
-                    cycles2 = amount_servers
+                if (i * amount_servers)+amount_servers >= len(URL_md):
+                    cycles2 = len(URL_md)-1
                 else:
                     cycles2 = (i * amount_servers)+amount_servers
                 for x in range(i * amount_servers, cycles2):
