@@ -41,28 +41,31 @@
 #         tms = timenow
 #         print(end='\r')
 #         print(timenow, end='')
+import datetime
+
 import requests
 from bs4 import BeautifulSoup
 
 from config.functional_config import HEADERS
 
-nick = 'XxromaxX'  # doc["ds-minecraft"][1]
-html = requests.get(f'https://minecraftonly.ru/index.php?player={nick}&view=search&do=tophungergames&server=0',
-                    headers=HEADERS, params=None)
-if html.status_code == 200:
-    html = html.text
-    soup = BeautifulSoup(html, 'html.parser')
-    rows = soup.find_all('tr')
-    if len(rows) > 1:
-        nav = []
-        info = []
+# nick = 'XxromaxX'  # doc["ds-minecraft"][1]
+# html = requests.get(f'https://minecraftonly.ru/index.php?player={nick}&view=search&do=tophungergames&server=0',
+#                     headers=HEADERS, params=None)
+# if html.status_code == 200:
+#     html = html.text
+#     soup = BeautifulSoup(html, 'html.parser')
+#     rows = soup.find_all('tr')
+#     if len(rows) > 1:
+#         nav = []
+#         info = []
+#
+#         for i in rows[0]:
+#             if i.text != '\n':
+#                 nav.append(i.text)
+#         for i in rows[1]:
+#             info.append(i.text)
+#         index = nav.index('Убийств')
+#         player_kills = info[index]
+#         print(player_kills)
 
-        for i in rows[0]:
-            if i.text != '\n':
-                nav.append(i.text)
-        for i in rows[1]:
-            info.append(i.text)
-        index = nav.index('Убийств')
-        player_kills = info[index]
-        print(player_kills)
-
+print(datetime.datetime.today().weekday())
