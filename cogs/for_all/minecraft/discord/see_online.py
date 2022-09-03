@@ -112,7 +112,7 @@ class ShowMeOnline(commands.Cog):
             else:
                 docs_online = ONLINE.find({'name': info['ds-minecraft'][1]})
 
-                msg = await ctx.send('test', view=Select())
+                msg = await ctx.send('test', view=SelectView())
 
 
 def setup(py):
