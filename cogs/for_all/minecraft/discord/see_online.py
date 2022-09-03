@@ -81,6 +81,9 @@ class Select(discord.ui.Select):
             options.append(discord.SelectOption(label=i['server_name']))
         super().__init__(placeholder="Выберите сервер", max_values=1, min_values=1, options=options)
 
+    async def callback(self, interaction: discord.Interaction):
+        server = self.values[0]
+        await interaction.response.send_message(server)
 
 class SelectView(discord.ui.View):
     def __init__(self, *, timeout=180, servers):
