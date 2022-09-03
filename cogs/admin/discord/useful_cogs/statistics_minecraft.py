@@ -70,7 +70,12 @@ class SuperAdminChannelStatisticsOnlineMinecraft(commands.Cog):
             if channel_ds is None:
                 return
             count = await self.get_count()
-            await channel_ds.edit(name=f'Онлайн-серверов: {count}')
+            print(count)
+            try:
+                await channel_ds.edit(name=f'Онлайн-серверов: {count}')
+            except Exception as exc:
+                print(exc)
+            print('ok')
 
 
 
