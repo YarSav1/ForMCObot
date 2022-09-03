@@ -100,8 +100,12 @@ async def send_online(author, server, doc, max_lists, now_list):
     if now_list == 0:
         foring_start, foring_end = 0, datetime.datetime.today().weekday()+1
     else:
-        foring_start, foring_end = now_list*7+datetime.datetime.today().weekday(), \
-                                   now_list*7+datetime.datetime.today().weekday()+8
+        if now_list*7+datetime.datetime.today().weekday()+8 > len(doc['every_day']):
+            foring_start, foring_end = now_list * 7 + datetime.datetime.today().weekday(), \
+                                       len(doc['every_day'])-1
+        else:
+            foring_start, foring_end = now_list*7+datetime.datetime.today().weekday(), \
+                                       now_list*7+datetime.datetime.today().weekday()+8
     days = doc['every_day']
     print(days)
     days.reverse()
