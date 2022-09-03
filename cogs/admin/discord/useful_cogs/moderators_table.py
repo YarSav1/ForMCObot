@@ -88,8 +88,8 @@ class TableModerators(commands.Cog):
                     curator = ['**Кураторы:** ', False]
                     headmoder = ['**ХедМодераторы:** ', False]
                     if text_serv == 'HungerGames':
-                        headmoder[0] += '`XxromaxX`, '
-                        headmoder[1] += True
+                        curator[0] += '`XxromaxX`, '
+                        curator[1] += True
                     for i in range(1, cikl):
 
                         moder = soup.find_all('tr')[i]
