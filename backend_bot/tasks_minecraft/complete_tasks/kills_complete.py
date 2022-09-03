@@ -19,7 +19,7 @@ def check_kills():
         for doc in players:
             if 'minecraft-kills' in doc:
                 task_kills = doc['minecraft-kills']
-                if task_kills[3] is False:
+                if task_kills[3] is False or len(task_kills) == 0:
                     nick = doc["ds-minecraft"][1]
                     html = requests.get(
                         f'https://minecraftonly.ru/index.php?player={nick}&view=search&do=tophungergames&server=0',
