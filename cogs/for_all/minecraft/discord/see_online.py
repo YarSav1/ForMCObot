@@ -105,7 +105,7 @@ async def send_online(author, server, doc, max_lists, now_list):
     days = list(doc['every_day']).reverse()
     print(days)
     text = await get_text_online(now_list, foring_start, foring_end, days=days)
-    print(text)
+    await author.send(text)
     # if now_list <= 0:
     #     left_no
     # elif now_list+1 >= max_lists:
