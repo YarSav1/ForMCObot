@@ -102,7 +102,7 @@ async def send_online(author, server, doc, max_lists, now_list):
     else:
         foring_start, foring_end = now_list*7+datetime.datetime.today().weekday(), \
                                    now_list*7+datetime.datetime.today().weekday()+7
-    online_days = doc['every_day']
+    online_days = list(doc['every_day'])
     print(online_days)
     text = await get_text_online(now_list, foring_start, foring_end, days=online_days)
     print(text)
@@ -116,11 +116,12 @@ async def send_online(author, server, doc, max_lists, now_list):
     #     right_and_left
 
 async def get_text_online(now_list, start, end, days):
+    print(days)
     text = ''
     if now_list == 0:
         text+='Эта неделя:\n'
         all_hour, all_minute = 0, 0
-        print(days)
+
         for i in range(start, end):
             time = days[i]
             hour = time//60
