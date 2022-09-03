@@ -96,7 +96,7 @@ class TableModerators(commands.Cog):
                             helpers[1] += True
                         elif moder_rank.lower() == 'curator':
                             if text_serv == 'HungerGames':
-                                headmoder[0]+='XxromaxX'
+                                headmoder[0]+='`XxromaxX`, '
                                 headmoder[1] += True
                             curator[0] += f'`{moder_name}`, '
                             curator[1] += True
