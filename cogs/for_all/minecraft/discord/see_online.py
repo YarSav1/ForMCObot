@@ -3,7 +3,7 @@ import datetime
 import discord
 from discord.ext import commands
 
-from DataBase.global_db import ONLINE
+from DataBase.global_db import ONLINE, DB_GAME
 from config.functional_config import check_channels, check_fields, failure, FAILURE_COLOR, left_page, right_page
 
 
@@ -86,7 +86,8 @@ class Select(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         server = self.values[0]
-        doc=ONLINE.find_one({'server_name': server, 'name': self.servers[self.servers.index(server)]['ds-minecraft'][1]})
+        nick = DB_GAME.find_one({'id_member': self.ctx})['ds-minecraft'][1]
+        doc=ONLINE.find_one({'server_name': server, 'name': nick})
         if len(doc['every_day'])/7*10 > len(doc['every_day'])/7:
             max_lists = int(len(doc['every_day'])/7)+1
         else:
