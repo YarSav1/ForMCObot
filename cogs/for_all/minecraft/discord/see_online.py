@@ -1,0 +1,108 @@
+import discord
+from discord.ext import commands
+
+from DataBase.global_db import ONLINE
+from config.functional_config import check_channels, check_fields, failure, FAILURE_COLOR, left_page, right_page
+
+
+class left_no(discord.ui.View):
+    def __init__(self, *, py, timeout=60):
+        super().__init__(timeout=timeout)
+
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.red, disabled=True)
+    async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    @discord.ui.button(label=right_page, style=discord.ButtonStyle.green)
+    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    async def on_timeout(self):
+        for btn in self.children:
+            btn.disabled = True
+
+class right_no(discord.ui.View):
+    def __init__(self, *, py, timeout=60):
+        super().__init__(timeout=timeout)
+
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.green, disabled=True)
+    async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    @discord.ui.button(label=right_page, style=discord.ButtonStyle.red)
+    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    async def on_timeout(self):
+        for btn in self.children:
+            btn.disabled = True
+
+class stop(discord.ui.View):
+    def __init__(self, *, py, timeout=60):
+        super().__init__(timeout=timeout)
+
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.red, disabled=True)
+    async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    @discord.ui.button(label=right_page, style=discord.ButtonStyle.red)
+    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    async def on_timeout(self):
+        for btn in self.children:
+            btn.disabled = True
+
+class right_and_left(discord.ui.View):
+    def __init__(self, *, py, timeout=60):
+        super().__init__(timeout=timeout)
+
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.green, disabled=True)
+    async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    @discord.ui.button(label=right_page, style=discord.ButtonStyle.green)
+    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
+        pass
+
+    async def on_timeout(self):
+        for btn in self.children:
+            btn.disabled = True
+def prints(test):
+    print(test)
+
+
+class Buttons(discord.ui.View):
+    def __init__(self, *, timeout=180):
+        super().__init__(timeout=timeout)
+
+class ShowMeOnline(commands.Cog):
+    def __init__(self, py):
+        self.py = py
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        pass
+
+    @commands.command(aliases=['o-me','online-me','мой-онлайн','м-о'])
+    async def _me_online(self, ctx):
+        if await check_channels(ctx):
+            info = await check_fields(ctx.author)
+            if len(info['ds-minecraft']) == 0:
+                embed = discord.Embed(title=failure,
+                                      description='Можно посмотреть только свой онлайн, а у Вас нет привязанного '
+                                                  'аккаунта в майнкрафте!\n'
+                                                  'Привяжите аккаунт командой `!auth-ds-minecraft`!',
+                                      color=FAILURE_COLOR)
+                await ctx.reply(embed=embed)
+            else:
+                docs_online = ONLINE.find({'name': info['ds-minecraft'][1]})
+                view = Buttons()
+                for serv in docs_online:
+                    print(serv)
+                    view.add_item(discord.ui.Button(label=serv['server_name'], style=discord.ButtonStyle.green,
+                                                    disabled=False))
+                await ctx.send('test', view=view)
+
+def setup(py):
+    py.add_cog(ShowMeOnline(py))

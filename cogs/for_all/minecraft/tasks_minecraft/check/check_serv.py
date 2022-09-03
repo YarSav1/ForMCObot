@@ -6,9 +6,8 @@ import requests
 from discord.ext import commands
 
 from config.functional_config import check_channels, failure, FAILURE_COLOR, HEADERS, accept, loading, \
-    SUCCESS_COLOR, GENERAL_COLOR, check_fields
+    SUCCESS_COLOR, GENERAL_COLOR
 from config.online_config import server, URL_carta
-from config import config_b
 
 
 async def checking(ctx, server_name):
