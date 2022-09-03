@@ -74,20 +74,19 @@ class right_and_left(discord.ui.View):
 
 
 class Select(discord.ui.Select):
-    def __init__(self):
-        options = [
-            discord.SelectOption(label="Option 1", emoji="👌", description="This is option 1!"),
-            discord.SelectOption(label="Option 2", emoji="✨", description="This is option 2!"),
-            discord.SelectOption(label="Option 3", emoji="🎭", description="This is option 3!")
-        ]
-        # options.append(discord.SelectOption(label="Option 1", description="This is option 4!"))
+    def __init__(self, servers):
+        self.server = servers
+        options = []
+        for i in servers:
+            options.append(discord.SelectOption(label=i['server_name']))
         super().__init__(placeholder="Выберите сервер", max_values=1, min_values=1, options=options)
 
 
 class SelectView(discord.ui.View):
-    def __init__(self, *, timeout=180):
+    def __init__(self, *, timeout=180, servers):
         super().__init__(timeout=timeout)
-        self.add_item(Select())
+        self.servers = servers
+        self.add_item(Select(self.servers))
 
 
 class ShowMeOnline(commands.Cog):
@@ -112,7 +111,7 @@ class ShowMeOnline(commands.Cog):
             else:
                 docs_online = ONLINE.find({'name': info['ds-minecraft'][1]})
 
-                msg = await ctx.send('test', view=SelectView())
+                await ctx.send('test', view=SelectView(servers=docs_online))
 
 
 def setup(py):
