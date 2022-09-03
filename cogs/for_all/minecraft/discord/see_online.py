@@ -80,7 +80,7 @@ class Select(discord.ui.Select):
             discord.SelectOption(label="Option 2", emoji="✨", description="This is option 2!"),
             discord.SelectOption(label="Option 3", emoji="🎭", description="This is option 3!")
         ]
-        options.append(discord.SelectOption(label="Option 1", description="This is option 4!"))
+        # options.append(discord.SelectOption(label="Option 1", description="This is option 4!"))
         super().__init__(placeholder="Выберите сервер", max_values=1, min_values=1, options=options)
 
 
