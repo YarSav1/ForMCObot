@@ -68,16 +68,17 @@ class right_and_left(discord.ui.View):
     async def on_timeout(self):
         for btn in self.children:
             btn.disabled = True
-def prints(test):
-    print(test)
 
 
-class Buttons(discord.ui.View):
-    def __init__(self, *, timeout=180):
-        super().__init__(timeout=timeout)
-
-def test(awd):
-    print(awd)
+class Select(discord.ui.Select):
+    def __init__(self):
+        options=[
+            discord.SelectOption(label="Option 1",emoji="👌",description="This is option 1!"),
+            discord.SelectOption(label="Option 2",emoji="✨",description="This is option 2!"),
+            discord.SelectOption(label="Option 3",emoji="🎭",description="This is option 3!")
+            ]
+        options.append(discord.SelectOption(label="Option 1", description="This is option 4!"))
+        super().__init__(placeholder="Выберите сервер",max_values=1,min_values=1,options=options)
 class ShowMeOnline(commands.Cog):
     def __init__(self, py):
         self.py = py
@@ -99,13 +100,7 @@ class ShowMeOnline(commands.Cog):
                 await ctx.reply(embed=embed)
             else:
                 docs_online = ONLINE.find({'name': info['ds-minecraft'][1]})
-                view = Buttons()
-                for serv in docs_online:
-                    print(serv)
-                    view.add_item(discord.ui.Button(label=serv['server_name'], style=discord.ButtonStyle.green))
-                msg = await ctx.send('test', view=view)
-                print(msg)
-                btn = await self.py.wait_for()
-                print(btn)
+
+                msg = await ctx.send('test', view=Select())
 def setup(py):
     py.add_cog(ShowMeOnline(py))
