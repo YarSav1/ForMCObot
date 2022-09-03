@@ -6,6 +6,7 @@ import requests
 
 from DataBase.global_db import DB_GAME
 from backend_bot.tasks_minecraft.complete_tasks import coordinates_complete, login_complete
+from backend_bot.tasks_minecraft.complete_tasks.kills_complete import check_kills
 from config.functional_config import HEADERS
 from config.online_config import URL_carta, server
 from config import config_b
@@ -103,4 +104,7 @@ def task_go_to_coordinates():
         config_b.text_coordinates.append(text[index])
     else:
         text = []
+
+    t = Thread(target=check_kills,)
+    t.start()
 # task_go_to_coordinates()

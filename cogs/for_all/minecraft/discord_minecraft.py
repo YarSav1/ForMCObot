@@ -8,7 +8,8 @@ from discord.ext import commands
 
 from DataBase.global_db import DB_GAME
 from config.functional_config import check_channels, GENERAL_COLOR, failure, FAILURE_COLOR, form_send, payload, accept, \
-    SUCCESS_COLOR, check_fields
+    SUCCESS_COLOR, check_fields, HEADERS
+
 
 class go_or_no(discord.ui.View):
     def __init__(self, *, py, timeout=30, ctx):
@@ -21,6 +22,7 @@ class go_or_no(discord.ui.View):
         if interaction.user == self.ctx.author:
             await interaction.response.edit_message(view=self)
             await ConnectDiscordForMinecraft(self.py).next_stage_nick(self.ctx)
+
     @discord.ui.button(label="Отмена", style=discord.ButtonStyle.red)
     async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
         if interaction.user == self.ctx.author:
@@ -29,6 +31,8 @@ class go_or_no(discord.ui.View):
             description = 'Вы отказались от связки "Дискорд-Майнкрафт".'
             await self.ctx.reply(embed=await ConnectDiscordForMinecraft(self.py).pucker(title, description,
                                                                                         FAILURE_COLOR))
+
+
 class success_or_no(discord.ui.View):
     def __init__(self, *, py, timeout=30, ctx, nick):
         self.py = py
@@ -42,12 +46,13 @@ class success_or_no(discord.ui.View):
             await interaction.response.edit_message(view=self)
             title, description = f'{accept} Завершение {accept}', 'Произвожу связку.'
             await self.ctx.reply(embed=await ConnectDiscordForMinecraft(self.py).pucker(title, description,
-                                                                                                    SUCCESS_COLOR))
+                                                                                        SUCCESS_COLOR))
             DB_GAME.update_one({'id_member': self.ctx.author.id},
                                {'$set': {'ds-minecraft': [self.ctx.author.id, self.nick]}})
             title, description = f'{accept}', f'Аккаунты {self.ctx.author}-`{self.nick}` связаны!'
             await self.ctx.reply(embed=await ConnectDiscordForMinecraft(self.py).pucker(title, description,
                                                                                         SUCCESS_COLOR))
+
     @discord.ui.button(label="Не верно", style=discord.ButtonStyle.red)
     async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
         if interaction.user == self.ctx.author:
@@ -56,6 +61,7 @@ class success_or_no(discord.ui.View):
             description = 'Вы отказались от связки "Дискорд-Майнкрафт".'
             await self.ctx.reply(embed=await ConnectDiscordForMinecraft(self.py).pucker(title, description,
                                                                                         FAILURE_COLOR))
+
 
 class ConnectDiscordForMinecraft(commands.Cog):
     def __init__(self, py):
@@ -73,21 +79,19 @@ class ConnectDiscordForMinecraft(commands.Cog):
                 title, description = f'{failure}', f'У Вас уже привязан аккаунт!\n' \
                                                    f'{ctx.author}+`{info["ds-minecraft"][1]}`\n\n' \
                                                    f'Хотите отвязать? - Обратитесь к администраторам бота.'
-                await ctx.reply(embed=await self.pucker(title,description,FAILURE_COLOR))
+                await ctx.reply(embed=await self.pucker(title, description, FAILURE_COLOR))
             else:
                 title = 'Начало'
                 description = "Процедура \"Дискорд-Майнкрафт\"\n" \
                               "Эта команда свяжет Ваш аккаунт в майнкрафте с аккаунтом дискорда.\n" \
                               "Станут доступны задачи для заработка внутриигровой валюты!\n\n" \
                               "P.S. - процедура действует до первой ошибки. Ошиблись - начинайте заново.\n" \
-                              "P.S. - в связи с тем, что на форуме можно отправлять сообщение только раз в минуту - " \
+                              "P.S.2 - в связи с тем, что на форуме можно отправлять сообщение только раз в минуту - " \
                               "данная ошибка откатит Вас к самому началу. Извините за неудобства.\n\n" \
                               "**Продолжаем?**"
 
                 await ctx.reply(embed=await self.pucker(title, description, GENERAL_COLOR),
-                                      view=go_or_no(py=self.py, ctx=ctx))
-
-
+                                view=go_or_no(py=self.py, ctx=ctx))
 
     async def next_stage_nick(self, ctx):
         title = '1 стадия.'
@@ -116,7 +120,7 @@ class ConnectDiscordForMinecraft(commands.Cog):
                 pass
         if str(nick) in all_auth_nicks:
             title, description = f'{failure}', f'Этот ник уже привязан к другому дискорд участнику!'
-            await msg_nick.reply(embed=await self.pucker(title,description,FAILURE_COLOR))
+            await msg_nick.reply(embed=await self.pucker(title, description, FAILURE_COLOR))
         else:
             await self.next_stage_forum(ctx, nick, msg_nick)
 
@@ -135,9 +139,6 @@ class ConnectDiscordForMinecraft(commands.Cog):
                           '**Отправляю сообщение...**')
         stage_2 = await msg_nick.reply(embed=await self.pucker(title, description, GENERAL_COLOR))
         url = 'https://minecraftonly.ru/forum/private.php?do=newpm'
-        HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                                 'Chrome/87.0.4280.88 Safari/537.36',
-                   'accept': '*/*'}
 
         ver_code = ''
         for i in range(8):
@@ -194,8 +195,6 @@ class ConnectDiscordForMinecraft(commands.Cog):
         await msg_code.reply(embed=await self.pucker(title, description, GENERAL_COLOR), view=success_or_no(py=self.py,
                                                                                                             ctx=ctx,
                                                                                                             nick=nick))
-
-
 
 
 def setup(py):

@@ -68,11 +68,11 @@ class TableModerators(commands.Cog):
 
             cycles = int(len(URL_md) / amount_servers + 1)
             for i in range(cycles):
-                embed = discord.Embed(title=f'Модератора проекта #{i+1}', color=GENERAL_COLOR)
-                if (i * amount_servers)+amount_servers >= len(URL_md):
+                embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
+                if (i * amount_servers) + amount_servers >= len(URL_md):
                     cycles2 = len(URL_md)
                 else:
-                    cycles2 = (i * amount_servers)+amount_servers
+                    cycles2 = (i * amount_servers) + amount_servers
                 for x in range(i * amount_servers, cycles2):
                     text_serv = server[x]
                     html = requests.get(URL_md[x], headers=HEADERS, params=None)
@@ -91,7 +91,6 @@ class TableModerators(commands.Cog):
                         curator[0] += '`XxromaxX`, '
                         curator[1] += True
                     for i in range(1, cikl):
-
                         moder = soup.find_all('tr')[i]
                         moder_name = moder.find_all('td')[1].text
                         moder_rank = moder.find_all('td')[2].text
@@ -99,24 +98,22 @@ class TableModerators(commands.Cog):
                             helpers[0] += f'`{moder_name}`, '
                             helpers[1] += True
                         elif moder_rank.lower() == 'curator':
-
                             curator[0] += f'`{moder_name}`, '
                             curator[1] += True
                         elif moder_rank.lower() == 'headmoder':
-
                             headmoder[0] += f'`{moder_name}`, '
                             headmoder[1] += True
                         else:
                             moders[0] += f'`{moder_name}`, '
                             moders[1] += True
                     if not headmoder[1]:
-                        headmoder[0]+='`Нет`  '
+                        headmoder[0] += '`Нет`  '
                     if not helpers[1]:
-                        helpers[0]+='`Нет`  '
+                        helpers[0] += '`Нет`  '
                     if not moders[1]:
-                        moders[0]+='`Нет`  '
+                        moders[0] += '`Нет`  '
                     if not curator[1]:
-                        curator[0]+='`Нет`  '
+                        curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
                 await channel_ds.send(embed=embed)

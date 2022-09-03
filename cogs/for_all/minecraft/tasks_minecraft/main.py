@@ -15,7 +15,6 @@ class TasksProfile(commands.Cog):
             if len(info['ds-minecraft']) != 0:
                 embed = discord.Embed(title='Ваши задания', color=GENERAL_COLOR)
 
-
                 if len(info['minecraft-coordinates']) == 0:
                     text = 'Нет заданий'
                 else:
@@ -47,7 +46,17 @@ class TasksProfile(commands.Cog):
                 text = f'Выполнение - {perf}'
                 embed.add_field(name=f'Зайди на сервер один раз.', value=f'{text}', inline=False)
 
+                if len(info['minecraft-kills']) != 0:
+                    if info['minecraft-kills'][3]:
+                        perf = accept
+                    else:
+                        perf = failure
 
+                    text = f"Выполнение: убито {info['minecraft-kills'][2]} из {info['minecraft-kills'][1]} - {perf}"
+                    embed.add_field(name=f'Убей игроков.', value=f'{text}', inline=False)
+                else:
+                    text = 'Нет заданий'
+                    embed.add_field(name=f'Убей игроков.', value=f'{text}')
 
                 embed.set_footer(text=f'{accept} - задание выполнено | {failure} - задание не выполнено.')
 

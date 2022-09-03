@@ -252,6 +252,12 @@ async def check_fields(author):  # Чертовски медленная фун�
         print(exc)
         await add_doc_in_db(author.id, 'minecraft-login-many', [])
         success = False
+    try:
+        info['minecraft-kills']
+    except Exception as exc:
+        print(exc)
+        await add_doc_in_db(author.id, 'minecraft-kills', [])
+        success = False
     if not success:
         info = DB_GAME.find_one({'id_member': author.id})
     return info
@@ -341,7 +347,8 @@ async def list_commands(ctx, admin=None):
             '\n\n' \
             'Полезные винтики:\n' \
             '`!с-о` - создать канал статистику. Показывает онлайн серверов МКО.\n' \
-            '`!прослушка` - выводит время парсинга каждого сервера.' \
+            '`!прослушка` - выводит время парсинга каждого сервера.\n' \
+            '`!т-м` - создание канала с таблицей мд проекта.\n' \
             '\n\n' \
             'Общедоступные\n' \
             '`!bot` - проверка отклика бота.\n' \
