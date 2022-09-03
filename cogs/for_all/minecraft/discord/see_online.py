@@ -117,6 +117,7 @@ async def get_text_online(now_list, start, end, days):
     if now_list == 0:
         text+='Эта неделя:\n'
         all_hour, all_minute = 0, 0
+        print(days)
         for i in range(start, end):
             time = days[i]
             hour = time//60
