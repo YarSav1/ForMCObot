@@ -75,6 +75,7 @@ def prints(test):
 class Buttons(discord.ui.View):
     def __init__(self, *, timeout=180):
         super().__init__(timeout=timeout)
+
 def test(awd):
     print(awd)
 class ShowMeOnline(commands.Cog):
@@ -104,7 +105,7 @@ class ShowMeOnline(commands.Cog):
                     view.add_item(discord.ui.Button(label=serv['server_name'], style=discord.ButtonStyle.green))
                 msg = await ctx.send('test', view=view)
                 print(msg)
-                btn = await self.py.wait_for('button_click')
+                btn = await self.py.wait_for()
                 print(btn)
 def setup(py):
     py.add_cog(ShowMeOnline(py))
