@@ -102,7 +102,8 @@ async def send_online(author, server, doc, max_lists, now_list):
     else:
         foring_start, foring_end = now_list*7+datetime.datetime.today().weekday(), \
                                    now_list*7+datetime.datetime.today().weekday()+7
-    days = doc['every_day'].reverse()
+    days = list(doc['every_day'])
+    days = days.reverse()
     print(days)
     text = await get_text_online(now_list, foring_start, foring_end, days=days)
     await author.send(text)
