@@ -94,7 +94,6 @@ class Select(discord.ui.Select):
             max_lists = int(len(doc['every_day'])/7)+1
         else:
             max_lists = int(len(doc['every_day'])/7)
-        doc = ONLINE.find_one({'server_name': server, 'name': nick})
         await send_online(author=self.ctx, server=server, doc=doc, max_lists=max_lists, now_list=0)
 
 async def send_online(author, server, doc, max_lists, now_list):
@@ -103,7 +102,9 @@ async def send_online(author, server, doc, max_lists, now_list):
     else:
         foring_start, foring_end = now_list*7+datetime.datetime.today().weekday(), \
                                    now_list*7+datetime.datetime.today().weekday()+7
-    text = await get_text_online(now_list, foring_start, foring_end, doc=doc)
+    days = DB_GAME.find_one({'server_name': doc['server_name'], 'name': doc['name']})['every_day']
+    print(days)
+    text = await get_text_online(now_list, foring_start, foring_end, days=days)
     print(text)
     # if now_list <= 0:
     #     left_no
@@ -114,9 +115,7 @@ async def send_online(author, server, doc, max_lists, now_list):
     # else:
     #     right_and_left
 
-async def get_text_online(now_list, start, end, doc):
-    print(doc)
-    days = list(doc['every_day']).reverse()
+async def get_text_online(now_list, start, end, days):
     print(days)
     text = ''
     if now_list == 0:
