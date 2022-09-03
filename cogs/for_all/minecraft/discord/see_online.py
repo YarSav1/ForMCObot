@@ -141,6 +141,7 @@ async def get_text_online(now_list, start, end, days):
             all_minute += minute
             text += f'**{await date_for_online(i - 1)}**: `{hour}ч` `{minute}м`\n'
         text += f'Общее: `{all_hour}ч` `{all_minute}м`'
+    return text
 
 async def date_for_online(otkat):
     delta = datetime.timedelta(hours=3, minutes=0)
