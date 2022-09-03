@@ -94,7 +94,7 @@ class Select(discord.ui.Select):
             max_lists = int(len(doc['every_day'])/7)+1
         else:
             max_lists = int(len(doc['every_day'])/7)
-        await send_online(author=self.ctx, server=server, doc=doc, max_lists=max_lists, now_list=0)
+        await send_online(author=self.ctx, server=server, doc=doc, max_lists=max_lists, now_list=1)
 
 async def send_online(author, server, doc, max_lists, now_list):
     if now_list == 0:
