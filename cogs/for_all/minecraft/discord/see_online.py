@@ -103,7 +103,8 @@ async def send_online(author, server, doc, max_lists, now_list):
         foring_start, foring_end = now_list*7+datetime.datetime.today().weekday(), \
                                    now_list*7+datetime.datetime.today().weekday()+7
     online_days = doc['every_day']
-    text = await get_text_online(now_list, foring_start, foring_end, online_days)
+    print(online_days)
+    text = await get_text_online(now_list, foring_start, foring_end, days=online_days)
     print(text)
     # if now_list <= 0:
     #     left_no
