@@ -104,5 +104,7 @@ class ShowMeOnline(commands.Cog):
                     view.add_item(discord.ui.Button(label=serv['server_name'], style=discord.ButtonStyle.green))
                 msg = await ctx.send('test', view=view)
                 print(msg)
+                btn = await self.py.wait_for('button_click')
+                print(btn)
 def setup(py):
     py.add_cog(ShowMeOnline(py))
