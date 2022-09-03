@@ -87,13 +87,14 @@ class Select(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         server = self.values[0]
         nick = DB_GAME.find_one({'id_member': self.ctx.author.id})['ds-minecraft'][1]
-        print(nick)
+
         doc=ONLINE.find_one({'server_name': server, 'name': nick})
-        print(doc)
+
         if len(doc['every_day'])/7*10 > len(doc['every_day'])/7:
             max_lists = int(len(doc['every_day'])/7)+1
         else:
             max_lists = int(len(doc['every_day'])/7)
+        doc = ONLINE.find_one({'server_name': server, 'name': nick})
         await send_online(author=self.ctx, server=server, doc=doc, max_lists=max_lists, now_list=0)
 
 async def send_online(author, server, doc, max_lists, now_list):
@@ -114,6 +115,7 @@ async def send_online(author, server, doc, max_lists, now_list):
     #     right_and_left
 
 async def get_text_online(now_list, start, end, doc):
+    print(doc)
     days = list(doc['every_day']).reverse()
     print(days)
     text = ''
