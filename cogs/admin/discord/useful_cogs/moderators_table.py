@@ -87,7 +87,11 @@ class TableModerators(commands.Cog):
                     moders = ['**Модераторы:** ', False]
                     curator = ['**Кураторы:** ', False]
                     headmoder = ['**ХедМодераторы:** ', False]
+                    if text_serv == 'HungerGames':
+                        headmoder[0] += '`XxromaxX`, '
+                        headmoder[1] += True
                     for i in range(1, cikl):
+
                         moder = soup.find_all('tr')[i]
                         moder_name = moder.find_all('td')[1].text
                         moder_rank = moder.find_all('td')[2].text
@@ -95,9 +99,7 @@ class TableModerators(commands.Cog):
                             helpers[0] += f'`{moder_name}`, '
                             helpers[1] += True
                         elif moder_rank.lower() == 'curator':
-                            if text_serv == 'HungerGames':
-                                headmoder[0]+='`XxromaxX`, '
-                                headmoder[1] += True
+
                             curator[0] += f'`{moder_name}`, '
                             curator[1] += True
                         elif moder_rank.lower() == 'headmoder':
