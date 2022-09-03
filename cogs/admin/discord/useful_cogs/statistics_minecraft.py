@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 import requests
 from bs4 import BeautifulSoup
@@ -69,13 +71,17 @@ class SuperAdminChannelStatisticsOnlineMinecraft(commands.Cog):
             channel_ds = self.py.get_channel(id_channel)
             if channel_ds is None:
                 return
-            count = await self.get_count()
-            print(count)
-            try:
-                await channel_ds.edit(name=f'Онлайн-серверов: {count}')
-            except Exception as exc:
-                print(exc)
-            print('ok')
+
+            work = True
+            while work:
+                count = await self.get_count()
+                if count is not None:
+                    try:
+                        await channel_ds.edit(name=f'Онлайн-серверов: {count}')
+                        work = False
+                    except Exception as exc:
+                        pass
+                await asyncio.sleep(5)
 
 
 
