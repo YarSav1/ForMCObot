@@ -53,7 +53,10 @@ class TableModerators(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         if self.py.is_ready():
-            self.reload_table_moders.start()
+            try:
+                self.reload_table_moders.start()
+            except Exception as exc:
+                pass
 
     @tasks.loop(minutes=30)
     async def reload_table_moders(self):
