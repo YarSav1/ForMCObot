@@ -92,6 +92,7 @@ class TableModerators(commands.Cog):
                                 html = html.text
                                 break
                             else:
+                                print(html.text)
                                 print(html.status_code)
                                 await asyncio.sleep(2)
                         except Exception as exc:
