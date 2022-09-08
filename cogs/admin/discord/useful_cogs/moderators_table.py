@@ -86,7 +86,7 @@ class TableModerators(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         if self.py.is_ready():
-            await asyncio.sleep(10)
+            # await asyncio.sleep(10)
             self.reload_table_moders.start()
 
     @tasks.loop(minutes=30)
@@ -118,7 +118,7 @@ class TableModerators(commands.Cog):
                 for x in range(i * amount_servers, cycles2):
                     text_serv = server[x]
                     while True:
-                        # await asyncio.sleep(30)
+#                         # await asyncio.sleep(30)
                         try:
                             print(1)
                             s = get_session(get_free_proxies())
@@ -129,9 +129,9 @@ class TableModerators(commands.Cog):
                                 break
                             else:
                                 print(html.status_code)
-                                await asyncio.sleep(10)
+                                # await asyncio.sleep(10)
                         except Exception as exc:
-                            await asyncio.sleep(5)
+                            # await asyncio.sleep(5)
                     soup = BeautifulSoup(html, 'html.parser')
                     spis_md = soup.find_all('tr')
                     cikl = len(spis_md)
@@ -168,9 +168,9 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
-                    # await asyncio.sleep(30)
+#                     # await asyncio.sleep(30)
                 await self.msgs[i].edit(embed=embed)
-                await asyncio.sleep(20)
+                # await asyncio.sleep(20)
 
 
 
