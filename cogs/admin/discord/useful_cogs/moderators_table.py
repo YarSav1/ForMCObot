@@ -118,7 +118,7 @@ class TableModerators(commands.Cog):
                 for x in range(i * amount_servers, cycles2):
                     text_serv = server[x]
                     while True:
-                        await asyncio.sleep(30)
+                        # await asyncio.sleep(30)
                         try:
                             print(1)
                             s = get_session(get_free_proxies())
@@ -168,7 +168,7 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
-                    await asyncio.sleep(30)
+                    # await asyncio.sleep(30)
                 await self.msgs[i].edit(embed=embed)
                 await asyncio.sleep(20)
 
