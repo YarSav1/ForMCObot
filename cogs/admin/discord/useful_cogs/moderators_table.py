@@ -127,6 +127,7 @@ class TableModerators(commands.Cog):
                                                   'весьма долгое время.', color=SUCCESS_COLOR)
                 embed.set_footer(text='С любовью, Chaka#3063')
                 await channel_ds.send(embed=embed)
+                self.send_info = True
             for i in range(cycles):
                 embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
                 if (i * amount_servers) + amount_servers >= len(URL_md):
