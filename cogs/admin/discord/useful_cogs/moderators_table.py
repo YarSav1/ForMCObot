@@ -143,6 +143,7 @@ class TableModerators(commands.Cog):
                                 print(html.status_code)
                                 # await asyncio.sleep(10)
                         except Exception as exc:
+                            self.hst = ''
                             print(exc)
                             pass
                             # await asyncio.sleep(5)
