@@ -82,8 +82,6 @@ class TableModerators(commands.Cog):
                     self.msgs.append(msg)
             print(f'=={cycles}==')
             for i in range(cycles):
-
-                print(i)
                 embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
                 if (i * amount_servers) + amount_servers >= len(URL_md):
                     cycles2 = len(URL_md)
@@ -105,8 +103,6 @@ class TableModerators(commands.Cog):
                         except Exception as exc:
                             print(exc)
                             await asyncio.sleep(5)
-
-                    print(3)
                     soup = BeautifulSoup(html, 'html.parser')
                     spis_md = soup.find_all('tr')
                     cikl = len(spis_md)
@@ -143,9 +139,9 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
-                print(4)
-
                 print('попытка')
+                print(self.msgs)
+                print(i)
                 await self.msgs[i].edit(1, embed=embed)
                 await asyncio.sleep(5)
             self.send = True
