@@ -132,13 +132,9 @@ class TableModerators(commands.Cog):
                             html = s.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
                                 html = html.text
+                                print(f'--------------------------{html}===========================\n')
                                 break
-                            else:
-                                print(html.status_code)
-                                # await asyncio.sleep(10)
                         except Exception as exc:
-                            self.hst = ''
-                            print(exc)
                             pass
                             # await asyncio.sleep(5)
                     soup = BeautifulSoup(html, 'html.parser')

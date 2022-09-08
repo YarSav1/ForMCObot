@@ -85,7 +85,7 @@ def get_free_proxies():
             ip = tds[0].text.strip()
             port = tds[1].text.strip()
             name = tds[4].text.strip()
-            if name == 'elite proxy':
+            if name == 'elite proxy' and port == '8118':
                 host = f"{ip}:{port}"
                 proxies.append(host)
         except IndexError:
@@ -104,9 +104,9 @@ def get_session(proxies):
     session = requests.Session()
     # выбираем один случайный прокси
     proxy = random.choice(proxies)
-    proxy = '128.90.135.215:8118'
+    proxy = '185.156.175.131:8118'
     session.proxies = {"http": proxy, "https": proxy}
-    print(proxy)
+    # print(proxy)
     return session
 
 
