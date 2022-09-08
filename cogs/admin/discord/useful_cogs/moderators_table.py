@@ -120,6 +120,7 @@ class TableModerators(commands.Cog):
 
     @reload_table_moders.error
     async def reload(self, error):
+        print(error)
         self.reload_table_moders.start()
 
 
