@@ -47,6 +47,7 @@ class TableModerators(commands.Cog):
         self.send = False
         self.msgs = []
         self.hst = ''
+        self.send_info = False
 
     async def _create_channel(self, ctx, msg):
         embed = discord.Embed(title='Создаю канал', color=GENERAL_COLOR)
@@ -94,6 +95,7 @@ class TableModerators(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def reload_table_moders(self):
+
         session = requests.Session()
         retry = Retry(connect=3, backoff_factor=1.5)
         adapter = HTTPAdapter(max_retries=retry)
@@ -104,6 +106,7 @@ class TableModerators(commands.Cog):
         if 'table_moderators' in doc:
             id_channel = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})['table_moderators']
             channel_ds = self.py.get_channel(id_channel)
+
             if channel_ds is None:
                 return
             if self.send is False:
@@ -117,6 +120,13 @@ class TableModerators(commands.Cog):
                     msg = await channel_ds.send(embed=discord.Embed(title='Ожидаем...'))
                     self.msgs.append(msg)
                 self.send = True
+            if self.send_info is False:
+                embed = discord.Embed(title='Важная информация',
+                                      description='Бот постоянно обновляет информацию по модераторам, но к сожалению, '
+                                                  'антиботы не дают ему это делать быстро. Информация может обновляться '
+                                                  'весьма долгое время.', color=SUCCESS_COLOR)
+                embed.set_footer(text='С любовью, Chaka#3063')
+                await channel_ds.send(embed=embed)
             for i in range(cycles):
                 embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
                 if (i * amount_servers) + amount_servers >= len(URL_md):
