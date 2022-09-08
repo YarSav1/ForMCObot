@@ -93,7 +93,7 @@ class TableModerators(commands.Cog):
                         await asyncio.sleep(30)
                         print(f'connect {x}')
                         try:
-                            html = requests.get(URL_md[x], headers=HEADERS, timeout=5)
+                            html = requests.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
                                 html = html.text
                                 break
@@ -144,7 +144,7 @@ class TableModerators(commands.Cog):
                 print('попытка')
                 print(self.msgs)
                 print(i)
-                await self.msgs[i].edit(1, embed=embed)
+                await self.msgs[i].edit(embed=embed)
                 await asyncio.sleep(20)
             self.send = True
     @reload_table_moders.error
