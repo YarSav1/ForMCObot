@@ -131,7 +131,7 @@ class TableModerators(commands.Cog):
                     msg = await channel_ds.send(embed=embed)
                     self.msgs.append(msg)
                 else:
-                    await self.msgs[i].edit(embed=embed)
+                    await self.msgs[i].edit(1, embed=embed)
             self.send = True
     @reload_table_moders.error
     async def reload(self, error):
