@@ -57,6 +57,7 @@ class TableModerators(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         if self.py.is_ready():
+            await asyncio.sleep(10)
             self.reload_table_moders.start()
 
     @tasks.loop(seconds=90)
