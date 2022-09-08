@@ -88,15 +88,14 @@ class TableModerators(commands.Cog):
                         print('connect')
                         try:
                             html = requests.get(URL_md[x], headers=HEADERS, params=None)
-                            break
+                            if html.status_code == 200:
+                                html = html.text
+                                break
+                            else:
+                                await asyncio.sleep(2)
                         except Exception as exc:
                             await asyncio.sleep(1)
 
-                    if html.status_code == 200:
-                        html = html.text
-                    else:
-                        print('break')
-                        return
                     print(3)
                     soup = BeautifulSoup(html, 'html.parser')
                     spis_md = soup.find_all('tr')
