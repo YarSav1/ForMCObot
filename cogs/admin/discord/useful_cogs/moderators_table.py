@@ -60,7 +60,7 @@ class TableModerators(commands.Cog):
             await asyncio.sleep(10)
             self.reload_table_moders.start()
 
-    @tasks.loop(seconds=60)
+    @tasks.loop(seconds=120)
     async def reload_table_moders(self):
         amount_servers = 3
         doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
@@ -146,6 +146,7 @@ class TableModerators(commands.Cog):
                         await self.msgs[i].edit(1, embed=embed)
                     except Exception as exc:
                         print(exc)
+                await asyncio.sleep(5)
             self.send = True
     @reload_table_moders.error
     async def reload(self, error):
