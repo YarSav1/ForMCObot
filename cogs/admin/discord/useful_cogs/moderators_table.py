@@ -59,7 +59,7 @@ class TableModerators(commands.Cog):
         if self.py.is_ready():
             self.reload_table_moders.start()
 
-    @tasks.loop(seconds=30)
+    @tasks.loop(seconds=90)
     async def reload_table_moders(self):
         amount_servers = 3
         doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
