@@ -13,7 +13,7 @@ from config.online_config import URL_md, server
 import requests
 import random
 from bs4 import BeautifulSoup as bs
-
+pre_hst = ''
 def get_free_proxies():
     url = "https://free-proxy-list.net/"
     # получаем ответ HTTP и создаем объект soup
@@ -34,10 +34,12 @@ def get_free_proxies():
 
 
 def get_session(proxies):
+    global pre_hst
     # создать HTTP‑сеанс
     session = requests.Session()
     # выбираем один случайный прокси
     proxy = random.choice(proxies)
+    pre_hst = proxy
     session.proxies = {"http": proxy, "https": proxy}
     return session
 
@@ -46,6 +48,7 @@ class TableModerators(commands.Cog):
         self.py = py
         self.send = False
         self.msgs = []
+        self.hst = ''
 
     async def _create_channel(self, ctx, msg):
         embed = discord.Embed(title='Создаю канал', color=GENERAL_COLOR)
@@ -125,13 +128,18 @@ class TableModerators(commands.Cog):
                         await asyncio.sleep(1)
                         try:
                             print(f'connect {server[x]} - {popitka}', end='\r')
-                            s = get_session(get_free_proxies())
+                            if len(self.hst) == 0:
+                                s = get_session(get_free_proxies())
+                            else:
+                                s = get_session(self.hst)
                             html = s.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
-                                print('ok')
+                                if self.hst == '':
+                                    self.hst = pre_hst
                                 html = html.text
                                 break
                             else:
+                                self.hst = ''
                                 print(html.status_code)
                                 # await asyncio.sleep(10)
                         except Exception as exc:
