@@ -24,8 +24,10 @@ def get_free_proxies():
         try:
             ip = tds[0].text.strip()
             port = tds[1].text.strip()
-            host = f"{ip}:{port}"
-            proxies.append(host)
+            name = tds[4].text.strip()
+            if name == 'elite proxy':
+                host = f"{ip}:{port}"
+                proxies.append(host)
         except IndexError:
             continue
     return proxies
@@ -36,7 +38,7 @@ def get_session(proxies):
     session = requests.Session()
     # выбираем один случайный прокси
     proxy = random.choice(proxies)
-    session.proxies = {"http": 'proxy', "https": '154.216.191.190:8080'}
+    session.proxies = {"http": proxy, "https": proxy}
     return session
 
 class TableModerators(commands.Cog):
@@ -110,7 +112,6 @@ class TableModerators(commands.Cog):
                     self.msgs.append(msg)
                 self.send = True
             for i in range(cycles):
-                i+=1
                 embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
                 if (i * amount_servers) + amount_servers >= len(URL_md):
                     cycles2 = len(URL_md)

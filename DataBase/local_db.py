@@ -84,8 +84,10 @@ def get_free_proxies():
         try:
             ip = tds[0].text.strip()
             port = tds[1].text.strip()
-            host = f"{ip}:{port}"
-            proxies.append(host)
+            name = tds[4].text.strip()
+            if name == 'elite proxy':
+                host = f"{ip}:{port}"
+                proxies.append(host)
         except IndexError:
             continue
     return proxies
