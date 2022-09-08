@@ -73,9 +73,16 @@ class TableModerators(commands.Cog):
             if self.send is False:
                 await channel_ds.purge(limit=100)
 
+
+
             cycles = int(len(URL_md) / amount_servers + 1)
+            if self.send is False:
+                for i in range(cycles):
+                    msg = await channel_ds.send(embed=discord.Embed(title='Ожидаем...'))
+                    self.msgs.append(msg)
             print(f'=={cycles}==')
             for i in range(cycles):
+
                 print(i)
                 embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
                 if (i * amount_servers) + amount_servers >= len(URL_md):
@@ -137,15 +144,9 @@ class TableModerators(commands.Cog):
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
                 print(4)
-                if self.send is False:
-                    msg = await channel_ds.send(embed=embed)
-                    self.msgs.append(msg)
-                else:
-                    try:
-                        print('попытка')
-                        await self.msgs[i].edit(1, embed=embed)
-                    except Exception as exc:
-                        print(exc)
+
+                print('попытка')
+                await self.msgs[i].edit(1, embed=embed)
                 await asyncio.sleep(5)
             self.send = True
     @reload_table_moders.error
