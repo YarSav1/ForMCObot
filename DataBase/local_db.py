@@ -104,7 +104,7 @@ def get_session(proxies):
     session = requests.Session()
     # выбираем один случайный прокси
     proxy = random.choice(proxies)
-    proxy = '185.156.175.131:8118'
+    proxy = '37.230.154.57:3629'
     session.proxies = {"http": proxy, "https": proxy}
     # print(proxy)
     return session
@@ -119,9 +119,11 @@ def get_session(proxies):
 #         pass
 #     print('')
 s = get_session(get_free_proxies())
+print('Пробуем')
 html = s.get('https://minecraftonly.ru/engine/scripts/moderators.php?action=showmoders&serverid=0', headers=HEADERS, params=None)
 if html.status_code == 200:
     html = html.text
     print('ok')
+    print(html)
 else:
     print(html.status_code)

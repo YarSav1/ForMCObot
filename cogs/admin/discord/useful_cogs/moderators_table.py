@@ -5,7 +5,8 @@ import discord
 import requests
 from bs4 import BeautifulSoup
 from discord.ext import commands, tasks
-
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from DataBase.global_db import DB_SERVER_SETTINGS
 from config.functional_config import super_admin, GENERAL_COLOR, FAILURE_COLOR, SUCCESS_COLOR, HEADERS
 from config.online_config import URL_md, server
@@ -93,6 +94,11 @@ class TableModerators(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def reload_table_moders(self):
+        session = requests.Session()
+        retry = Retry(connect=3, backoff_factor=0.5)
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
         amount_servers = 3
         doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
         if 'table_moderators' in doc:
@@ -125,11 +131,11 @@ class TableModerators(commands.Cog):
                         await asyncio.sleep(2)
                         try:
                             print(f'connect {server[x]} - {popitka}', end='\r')
-                            if len(self.hst) == 0:
-                                s = get_session(get_free_proxies())
-                            else:
-                                s = get_session(self.hst)
-                            html = s.get(URL_md[x], headers=HEADERS, params=None)
+                            # if len(self.hst) == 0:
+                            #     s = get_session(get_free_proxies())
+                            # else:
+                            #     s = get_session(self.hst)
+                            html = session.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
                                 html = html.text
                                 print(f'--------------------------{html}===========================\n')
