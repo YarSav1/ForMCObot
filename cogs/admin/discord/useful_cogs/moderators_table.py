@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 import requests
 from bs4 import BeautifulSoup
@@ -77,7 +79,13 @@ class TableModerators(commands.Cog):
                     cycles2 = (i * amount_servers) + amount_servers
                 for x in range(i * amount_servers, cycles2):
                     text_serv = server[x]
-                    html = requests.get(URL_md[x], headers=HEADERS, params=None)
+                    while True:
+                        try:
+                            html = requests.get(URL_md[x], headers=HEADERS, params=None)
+                            break
+                        except:
+                            await asyncio.sleep(1)
+
                     if html.status_code == 200:
                         html = html.text
                     else:
