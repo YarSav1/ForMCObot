@@ -1,4 +1,5 @@
 import asyncio
+import random
 
 import discord
 import requests
@@ -9,6 +10,34 @@ from DataBase.global_db import DB_SERVER_SETTINGS
 from config.functional_config import super_admin, GENERAL_COLOR, FAILURE_COLOR, SUCCESS_COLOR, HEADERS
 from config.online_config import URL_md, server
 
+import requests
+import random
+from bs4 import BeautifulSoup as bs
+
+def get_free_proxies():
+    url = "https://free-proxy-list.net/"
+    # получаем ответ HTTP и создаем объект soup
+    soup = bs(requests.get(url).content, "html.parser")
+    proxies = []
+    for row in soup.find("table", attrs={"id": "proxylisttable"}).find_all("tr")[1:]:
+        tds = row.find_all("td")
+        try:
+            ip = tds[0].text.strip()
+            port = tds[1].text.strip()
+            host = f"{ip}:{port}"
+            proxies.append(host)
+        except IndexError:
+            continue
+    return proxies
+
+
+def get_session(proxies):
+    # создать HTTP‑сеанс
+    session = requests.Session()
+    # выбираем один случайный прокси
+    proxy = random.choice(proxies)
+    session.proxies = {"http": proxy, "https": proxy}
+    return session
 
 class TableModerators(commands.Cog):
     def __init__(self, py):
@@ -91,11 +120,13 @@ class TableModerators(commands.Cog):
                     while True:
                         await asyncio.sleep(30)
                         try:
-                            html = requests.get(URL_md[x], headers=HEADERS, params=None)
+                            s = get_session(get_free_proxies())
+                            html = s.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
                                 html = html.text
                                 break
                             else:
+                                print(html.status_code)
                                 await asyncio.sleep(10)
                         except Exception as exc:
                             await asyncio.sleep(5)
