@@ -125,14 +125,14 @@ class TableModerators(commands.Cog):
                     popitka = 0
                     while True:
                         popitka+=1
-                        await asyncio.sleep(1)
+                        await asyncio.sleep(2)
                         try:
                             print(f'connect {server[x]} - {popitka}', end='\r')
                             if len(self.hst) == 0:
                                 s = get_session(get_free_proxies())
                             else:
                                 s = get_session(self.hst)
-                            html = s.get(URL_md[x], headers=HEADERS, params=None, timeout=2)
+                            html = s.get(URL_md[x], headers=HEADERS, params=None, timeout=5)
                             if html.status_code == 200:
                                 if self.hst == '':
                                     self.hst = pre_hst
