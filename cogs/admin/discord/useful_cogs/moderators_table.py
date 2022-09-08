@@ -79,6 +79,7 @@ class TableModerators(commands.Cog):
                 for i in range(cycles):
                     msg = await channel_ds.send(embed=discord.Embed(title='Ожидаем...'))
                     self.msgs.append(msg)
+                self.send = True
             for i in range(cycles):
                 embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
                 if (i * amount_servers) + amount_servers >= len(URL_md):
@@ -137,10 +138,7 @@ class TableModerators(commands.Cog):
                     await asyncio.sleep(30)
                 await self.msgs[i].edit(embed=embed)
                 await asyncio.sleep(20)
-            self.send = True
-    @reload_table_moders.error
-    async def reload(self, error):
-        self.reload_table_moders.start()
+
 
 
 def setup(py):
