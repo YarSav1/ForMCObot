@@ -85,7 +85,7 @@ class TableModerators(commands.Cog):
                 for x in range(i * amount_servers, cycles2):
                     text_serv = server[x]
                     while True:
-                        print('connect')
+                        print(f'connect {x}')
                         try:
                             html = requests.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
