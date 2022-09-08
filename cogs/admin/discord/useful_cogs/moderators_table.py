@@ -68,7 +68,8 @@ class TableModerators(commands.Cog):
             channel_ds = self.py.get_channel(id_channel)
             if channel_ds is None:
                 return
-            await channel_ds.purge(limit=100)
+            if self.send is False:
+                await channel_ds.purge(limit=100)
 
             cycles = int(len(URL_md) / amount_servers + 1)
             for i in range(cycles):
@@ -83,7 +84,7 @@ class TableModerators(commands.Cog):
                         try:
                             html = requests.get(URL_md[x], headers=HEADERS, params=None)
                             break
-                        except:
+                        except Exception as exc:
                             await asyncio.sleep(1)
 
                     if html.status_code == 200:
