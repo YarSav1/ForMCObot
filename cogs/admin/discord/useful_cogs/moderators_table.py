@@ -117,10 +117,12 @@ class TableModerators(commands.Cog):
                     cycles2 = (i * amount_servers) + amount_servers
                 for x in range(i * amount_servers, cycles2):
                     text_serv = server[x]
+                    popitka = 0
                     while True:
+                        popitka+=1
 #                         # await asyncio.sleep(30)
                         try:
-                            print(f'connect {x}')
+                            print(f'connect {server[x]} - {popitka}', end='\r')
                             s = get_session(get_free_proxies())
                             html = s.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
