@@ -64,6 +64,7 @@ class TableModerators(commands.Cog):
         amount_servers = 3
         doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
         if 'table_moderators' in doc:
+            print('Работаем')
             id_channel = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})['table_moderators']
             channel_ds = self.py.get_channel(id_channel)
             if channel_ds is None:
@@ -73,6 +74,7 @@ class TableModerators(commands.Cog):
 
             cycles = int(len(URL_md) / amount_servers + 1)
             for i in range(cycles):
+                print(i)
                 embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
                 if (i * amount_servers) + amount_servers >= len(URL_md):
                     cycles2 = len(URL_md)
