@@ -101,10 +101,10 @@ class TableModerators(commands.Cog):
                             else:
                                 print(html.text)
                                 print(html.status_code)
-                                await asyncio.sleep(2)
+                                await asyncio.sleep(10)
                         except Exception as exc:
                             print(exc)
-                            await asyncio.sleep(1)
+                            await asyncio.sleep(5)
 
                     print(3)
                     soup = BeautifulSoup(html, 'html.parser')
