@@ -110,6 +110,7 @@ class TableModerators(commands.Cog):
                     self.msgs.append(msg)
                 self.send = True
             for i in range(cycles):
+                i+=1
                 embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
                 if (i * amount_servers) + amount_servers >= len(URL_md):
                     cycles2 = len(URL_md)
