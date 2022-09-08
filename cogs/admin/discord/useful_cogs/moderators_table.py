@@ -36,7 +36,7 @@ def get_session(proxies):
     session = requests.Session()
     # выбираем один случайный прокси
     proxy = random.choice(proxies)
-    session.proxies = {"http": 'proxy', "https": '216.137.184.253:80'}
+    session.proxies = {"http": 'proxy', "https": '154.216.191.190:8080'}
     return session
 
 class TableModerators(commands.Cog):

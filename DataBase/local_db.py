@@ -73,6 +73,7 @@ import requests
 import random
 from bs4 import BeautifulSoup as bs
 
+
 def get_free_proxies():
     url = "https://free-proxy-list.net/"
     # получаем ответ HTTP и создаем объект soup
@@ -89,11 +90,12 @@ def get_free_proxies():
             continue
     return proxies
 
-free_proxies = get_free_proxies()
 
-print(f'Обнаружено бесплатных прокси - {len(free_proxies)}:')
-for i in range(len(free_proxies)):
-    print(f"{i+1}) {free_proxies[i]}")
+# free_proxies = get_free_proxies()
+#
+# print(f'Обнаружено бесплатных прокси - {len(free_proxies)}:')
+# for i in range(len(free_proxies)):
+#     print(f"{i+1}) {free_proxies[i]}")
 
 def get_session(proxies):
     # создать HTTP‑сеанс
@@ -102,9 +104,13 @@ def get_session(proxies):
     proxy = random.choice(proxies)
     session.proxies = {"http": proxy, "https": proxy}
     return session
+
+
 for i in range(5):
     s = get_session(get_free_proxies())
     try:
-        print("Страница запроса с IP:", s.get("http://icanhazip.com", timeout=1.5).text.strip())
+        print(f'{i+1}', end=' ')
+        print("Страница запроса с IP:", s.get("http://icanhazip.com", timeout=5).text.strip(), end='')
     except Exception as e:
-        continue
+        pass
+    print('')
