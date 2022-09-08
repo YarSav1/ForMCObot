@@ -132,7 +132,7 @@ class TableModerators(commands.Cog):
                                 s = get_session(get_free_proxies())
                             else:
                                 s = get_session(self.hst)
-                            html = s.get(URL_md[x], headers=HEADERS, params=None)
+                            html = s.get(URL_md[x], headers=HEADERS, params=None, timeout=2)
                             if html.status_code == 200:
                                 if self.hst == '':
                                     self.hst = pre_hst
