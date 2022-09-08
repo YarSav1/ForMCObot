@@ -120,17 +120,18 @@ class TableModerators(commands.Cog):
                     while True:
 #                         # await asyncio.sleep(30)
                         try:
-                            print(1)
+                            print(f'connect {x}')
                             s = get_session(get_free_proxies())
-                            print(s)
                             html = s.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
+                                print('ok')
                                 html = html.text
                                 break
                             else:
                                 print(html.status_code)
                                 # await asyncio.sleep(10)
                         except Exception as exc:
+                            pass
                             # await asyncio.sleep(5)
                     soup = BeautifulSoup(html, 'html.parser')
                     spis_md = soup.find_all('tr')
