@@ -124,7 +124,7 @@ class TableModerators(commands.Cog):
                         try:
                             print(f'connect {server[x]} - {popitka}', end='\r')
                             s = get_session(get_free_proxies())
-                            html = s.get(URL_md[x], headers=HEADERS, params=None, timeout=1)
+                            html = s.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
                                 print('ok')
                                 html = html.text
