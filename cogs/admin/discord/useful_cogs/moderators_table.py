@@ -11,6 +11,8 @@ from config.online_config import URL_md, server
 class TableModerators(commands.Cog):
     def __init__(self, py):
         self.py = py
+        self.send = False
+        self.msgs = []
 
     async def _create_channel(self, ctx, msg):
         embed = discord.Embed(title='Создаю канал', color=GENERAL_COLOR)
@@ -116,8 +118,12 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
-                await channel_ds.send(embed=embed)
-
+                if self.send is False:
+                    msg = await channel_ds.send(embed=embed)
+                    self.msgs.append(msg)
+                else:
+                    await self.msgs[i].edit(embed=embed)
+            self.send = True
     @reload_table_moders.error
     async def reload(self, error):
         print(error)
