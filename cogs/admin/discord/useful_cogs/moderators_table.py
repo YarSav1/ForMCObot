@@ -120,7 +120,7 @@ class TableModerators(commands.Cog):
                     popitka = 0
                     while True:
                         popitka+=1
-#                         # await asyncio.sleep(30)
+                        await asyncio.sleep(1)
                         try:
                             print(f'connect {server[x]} - {popitka}', end='\r')
                             s = get_session(get_free_proxies())
