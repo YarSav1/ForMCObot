@@ -104,15 +104,24 @@ def get_session(proxies):
     session = requests.Session()
     # выбираем один случайный прокси
     proxy = random.choice(proxies)
+    proxy = '128.90.135.215:8118'
     session.proxies = {"http": proxy, "https": proxy}
+    print(proxy)
     return session
 
 
-for i in range(5):
-    s = get_session(get_free_proxies())
-    try:
-        print(f'{i+1}', end=' ')
-        print("Страница запроса с IP:", s.get("http://icanhazip.com", timeout=5).text.strip(), end='')
-    except Exception as e:
-        pass
-    print('')
+# for i in range(5):
+#     s = get_session(get_free_proxies())
+#     try:
+#         print(f'{i+1}', end=' ')
+#         print("Страница запроса с IP:", s.get("http://icanhazip.com", timeout=5).text.strip(), end='')
+#     except Exception as e:
+#         pass
+#     print('')
+s = get_session(get_free_proxies())
+html = s.get('https://minecraftonly.ru/engine/scripts/moderators.php?action=showmoders&serverid=0', headers=HEADERS, params=None)
+if html.status_code == 200:
+    html = html.text
+    print('ok')
+else:
+    print(html.status_code)
