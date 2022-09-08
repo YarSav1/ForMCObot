@@ -74,6 +74,7 @@ class TableModerators(commands.Cog):
                 await channel_ds.purge(limit=100)
 
             cycles = int(len(URL_md) / amount_servers + 1)
+            print(f'=={cycles}==')
             for i in range(cycles):
                 print(i)
                 embed = discord.Embed(title=f'Модератора проекта #{i + 1}', color=GENERAL_COLOR)
@@ -84,6 +85,7 @@ class TableModerators(commands.Cog):
                 for x in range(i * amount_servers, cycles2):
                     text_serv = server[x]
                     while True:
+                        print('connect')
                         try:
                             html = requests.get(URL_md[x], headers=HEADERS, params=None)
                             break
@@ -93,7 +95,9 @@ class TableModerators(commands.Cog):
                     if html.status_code == 200:
                         html = html.text
                     else:
+                        print('break')
                         return
+                    print(3)
                     soup = BeautifulSoup(html, 'html.parser')
                     spis_md = soup.find_all('tr')
                     cikl = len(spis_md)
@@ -130,6 +134,7 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
+                print(4)
                 if self.send is False:
                     msg = await channel_ds.send(embed=embed)
                     self.msgs.append(msg)
