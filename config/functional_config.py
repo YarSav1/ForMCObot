@@ -7,12 +7,10 @@
 import datetime
 
 import discord
-
+from fake_headers import Headers
 from DataBase.global_db import DB_SERVER_SETTINGS, DB_GAME, DB_IDEA_MEMBERS, LOGS_ERROR
 
-HEADERS = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                         'Chrome/87.0.4280.88 Safari/537.36',
-           'accept': '*/*'}
+HEADERS = headers = Headers(os="mac", headers=True).generate()
 # ID участников, которые будут иметь доступ к закрытым командам
 
 super_admin = [280303417568788482, 434972774394494976, 313583698513756161]  # Ярик-Рома-Вячеслав...
