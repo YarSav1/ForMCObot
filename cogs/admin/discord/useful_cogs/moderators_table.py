@@ -60,7 +60,7 @@ class TableModerators(commands.Cog):
             await asyncio.sleep(10)
             self.reload_table_moders.start()
 
-    @tasks.loop(seconds=120)
+    @tasks.loop(minutes=30)
     async def reload_table_moders(self):
         amount_servers = 3
         doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
@@ -139,11 +139,12 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
+                    await asyncio.sleep(30)
                 print('попытка')
                 print(self.msgs)
                 print(i)
                 await self.msgs[i].edit(1, embed=embed)
-                await asyncio.sleep(5)
+                await asyncio.sleep(20)
             self.send = True
     @reload_table_moders.error
     async def reload(self, error):
