@@ -95,6 +95,7 @@ class TableModerators(commands.Cog):
                                 print(html.status_code)
                                 await asyncio.sleep(2)
                         except Exception as exc:
+                            print(exc)
                             await asyncio.sleep(1)
 
                     print(3)
