@@ -92,7 +92,7 @@ class TableModerators(commands.Cog):
                     while True:
                         print(f'connect {x}')
                         try:
-                            html = requests.get(URL_md[x], headers=HEADERS, params=None)
+                            html = requests.get(URL_md[x], headers=HEADERS, timeout=5)
                             if html.status_code == 200:
                                 html = html.text
                                 break
@@ -113,8 +113,8 @@ class TableModerators(commands.Cog):
                     if text_serv == 'HungerGames':
                         curator[0] += '`XxromaxX`, '
                         curator[1] += True
-                    for i in range(1, cikl):
-                        moder = soup.find_all('tr')[i]
+                    for h in range(1, cikl):
+                        moder = soup.find_all('tr')[h]
                         moder_name = moder.find_all('td')[1].text
                         moder_rank = moder.find_all('td')[2].text
                         if moder_rank.lower() == 'helper':
