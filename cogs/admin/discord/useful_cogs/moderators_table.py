@@ -120,7 +120,9 @@ class TableModerators(commands.Cog):
                     while True:
                         await asyncio.sleep(30)
                         try:
+                            print(1)
                             s = get_session(get_free_proxies())
+                            print(s)
                             html = s.get(URL_md[x], headers=HEADERS, params=None)
                             if html.status_code == 200:
                                 html = html.text
