@@ -147,7 +147,7 @@ class TableModerators(commands.Cog):
                             #     s = get_session(get_free_proxies())
                             # else:
                             #     s = get_session(self.hst)
-                            html = session.get(URL_md[x], headers=HEADERS, params=None)
+                            html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=1)
                             if html.status_code == 200:
                                 html = html.text
                                 break

@@ -49,7 +49,7 @@ def online_day(server_name):
         new_old_player = get_day_min(player)
         players_del.append(player['name'])
         players_new.append(new_old_player)
-    if players_new:
+    if len(players_new) != 0:
         ONLINE.delete_many({'server_name': server_name, 'name': {'$in': players_del}})
         ONLINE.insert_many(players_new)
 
@@ -59,12 +59,13 @@ def online(karta, serv):
     try:
         html = requests.get(karta, headers=HEADERS, params=None)
         r = requests.get(karta, headers=HEADERS, params=None).text
+        if html.status_code == 200:
+            r = json.loads(r)
+        else:
+            return
     except Exception:
         return
-    if html.status_code == 200:
-        r = json.loads(r)
-    else:
-        return
+
     cikl_online = r["currentcount"]
     in_db_pl = []
     all_players = ONLINE.find({'server_name': serv})
@@ -74,19 +75,19 @@ def online(karta, serv):
     for player_bd in all_players:
         in_db_pl.append(player_bd['name'])
 
-    try:
-        for i in range(0, cikl_online):
+    for i in range(0, cikl_online):
+        try:
             player = r["players"][i]['name']
             if player in in_db_pl:
                 valid_players.append(player)
             else:
                 new_player = get_player(player, serv)
                 new_db.append(new_player)
-    except Exception:
-        pass
-    if new_db:
+        except Exception:
+            pass
+    if len(new_db) != 0:
         ONLINE.insert_many(new_db)
-    if valid_players:
+    if len(valid_players) != 0:
         # tm = time.time() + 1 - start_time
         ONLINE.update_many({'server_name': serv, 'name': {'$in': valid_players}},
                            {'$inc': {'today': 1}})

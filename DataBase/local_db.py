@@ -46,6 +46,7 @@ import datetime
 import requests
 from bs4 import BeautifulSoup
 
+from DataBase.global_db import ONLINE
 from config.functional_config import HEADERS
 
 # nick = 'XxromaxX'  # doc["ds-minecraft"][1]
@@ -73,6 +74,8 @@ import requests
 import random
 from bs4 import BeautifulSoup as bs
 
+from config.online_config import URL_md, server
+
 
 def get_free_proxies():
     url = "https://free-proxy-list.net/"
@@ -99,15 +102,15 @@ def get_free_proxies():
 # for i in range(len(free_proxies)):
 #     print(f"{i+1}) {free_proxies[i]}")
 
-def get_session(proxies):
-    # создать HTTP‑сеанс
-    session = requests.Session()
-    # выбираем один случайный прокси
-    proxy = random.choice(proxies)
-    proxy = '37.230.154.57:3629'
-    session.proxies = {"http": proxy, "https": proxy}
-    # print(proxy)
-    return session
+# def get_session(proxies):
+#     # создать HTTP‑сеанс
+#     session = requests.Session()
+#     # выбираем один случайный прокси
+#     proxy = random.choice(proxies)
+#     proxy = '37.230.154.57:3629'
+#     session.proxies = {"http": proxy, "https": proxy}
+#     # print(proxy)
+#     return session
 
 
 # for i in range(5):
@@ -118,12 +121,25 @@ def get_session(proxies):
 #     except Exception as e:
 #         pass
 #     print('')
-s = get_session(get_free_proxies())
-print('Пробуем')
-html = s.get('https://minecraftonly.ru/engine/scripts/moderators.php?action=showmoders&serverid=0', headers=HEADERS, params=None)
-if html.status_code == 200:
-    html = html.text
-    print('ok')
-    print(html)
-else:
-    print(html.status_code)
+# s = get_session(get_free_proxies())
+# print('Пробуем')
+# html = s.get('https://minecraftonly.ru/engine/scripts/moderators.php?action=showmoders&serverid=0', headers=HEADERS, params=None)
+# if html.status_code == 200:
+#     html = html.text
+#     print('ok')
+#     print(html)
+# else:
+#     print(html.status_code)
+for i in range(len(server)):
+    all_collection = list(ONLINE.find({'server_name': server[i]}))
+    players = []
+    print(server[i])
+    print(len(all_collection))
+    for player in range(len(all_collection)):
+        if player % 10 == 0:
+            print(f'{player}', end='\r')
+        if all_collection[player]['name'] not in players:
+            players.append(all_collection[player]['name'])
+
+    print(len(players))
+# print(players)
