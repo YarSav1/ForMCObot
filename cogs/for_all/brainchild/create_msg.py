@@ -281,13 +281,11 @@ class CreateIdea(commands.Cog):
 
         def check(message):
             if author == message.author:
-                return message.author == message.author
+                if len(message.content) != 0:
+                    return message.author == message.author
 
         try:
-            while True:
-                message = await self.py.wait_for('message', check=check, timeout=60)
-                if len(message.content) != 0:
-                    break
+            message = await self.py.wait_for('message', check=check, timeout=60)
         except asyncio.TimeoutError:
             await self.timeout(author)
             return
@@ -310,13 +308,11 @@ class CreateIdea(commands.Cog):
 
         def check(message):
             if author == message.author:
-                return message.author == message.author
+                if len(message.content) != 0:
+                    return message.author == message.author
 
         try:
-            while True:
-                message = await self.py.wait_for('message', check=check, timeout=300)
-                if len(message.content) != 0:
-                    break
+            message = await self.py.wait_for('message', check=check, timeout=300)
         except asyncio.TimeoutError:
             await self.timeout(author)
             return
@@ -352,13 +348,11 @@ class CreateIdea(commands.Cog):
 
         def check(message):
             if author == message.author:
-                return message.author == message.author
+                if len(message.content) != 0:
+                    return message.author == message.author
 
         try:
-            while True:
-                message = await self.py.wait_for('message', check=check, timeout=300)
-                if len(message.content) != 0:
-                    break
+            message = await self.py.wait_for('message', check=check, timeout=300)
         except asyncio.TimeoutError:
             await self.timeout(author)
             return

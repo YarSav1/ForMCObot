@@ -460,8 +460,8 @@ class LikeDislike(discord.ui.View):
                 #                                 doc['footer'], (len(doc['like'])), (len(doc['dislike'])), 'No')
                 await interaction.response.edit_message(view=self)
 
-                DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
-                                           {'$push': {'dislike': author_click.id}})
+                # DB_IDEA_MEMBERS.update_one({'msg': doc['msg']},
+                #                            {'$push': {'dislike': author_click.id}})
             else:
                 embed = await create_block_idea(self.py.get_user(doc['author']), doc['title'], doc['text'],
                                                 doc['footer'], (len(doc['like']) + 1), (len(doc['dislike'])), 'No')
