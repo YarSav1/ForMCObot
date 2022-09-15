@@ -22,10 +22,9 @@ def connect_site(x, session):
     global html
     popitka = 0
     while True:
-        time.sleep(2)
         popitka += 1
         try:
-            print(f'connect {server[x]} - {popitka}', end='\r')
+            # print(f'connect {server[x]} - {popitka}', end='\r')
             # if len(self.hst) == 0:
             #     s = get_session(get_free_proxies())
             # else:
@@ -161,13 +160,21 @@ class TableModerators(commands.Cog):
                     await asyncio.sleep(5)
                     text_serv = server[x]
 
-                    th = threading.Thread(target=connect_site, args=(x, session))
-                    th.start()
-                    print('ok')
-                    while html == '':
+                    def cnt():
+                        print('ok')
+                        th = threading.Thread(target=connect_site, args=(x, session))
+                        th.start()
+
+
+
+                    # await asyncio.sleep(5)
+                    while True:
+                        try:
+                            soup = BeautifulSoup(html, 'html.parser')
+                            break
+                        except Exception:
+                            cnt()
                         await asyncio.sleep(5)
-                        # await asyncio.sleep(5)
-                    soup = BeautifulSoup(html, 'html.parser')
                     spis_md = soup.find_all('tr')
                     cikl = len(spis_md)
                     helpers = ['**Хелперы:** ', False]
