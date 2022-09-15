@@ -16,6 +16,24 @@ from config.functional_config import super_admin, GENERAL_COLOR, FAILURE_COLOR, 
 from config.online_config import URL_md, server
 
 
+def connect_site(x, session):
+    popitka = 0
+    while True:
+        time.sleep(2)
+        popitka += 1
+        try:
+            print(f'connect {server[x]} - {popitka}', end='\r')
+            # if len(self.hst) == 0:
+            #     s = get_session(get_free_proxies())
+            # else:
+            #     s = get_session(self.hst)
+            html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=10)
+            if html.status_code == 200:
+                TableModerators.html = html.text
+                break
+        except Exception as exc:
+            pass
+
 def get_free_proxies():
     url = "https://free-proxy-list.net/"
     # получаем ответ HTTP и создаем объект soup
@@ -97,23 +115,7 @@ class TableModerators(commands.Cog):
             # await asyncio.sleep(10)
             self.reload_table_moders.start()
 
-    def connect_site(self, x, session):
-        popitka = 0
-        while True:
-            time.sleep(2)
-            popitka += 1
-            try:
-                print(f'connect {server[x]} - {popitka}', end='\r')
-                # if len(self.hst) == 0:
-                #     s = get_session(get_free_proxies())
-                # else:
-                #     s = get_session(self.hst)
-                html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=10)
-                if html.status_code == 200:
-                    self.html = html.text
-                    break
-            except Exception as exc:
-                pass
+
 
     @tasks.loop(minutes=30)
     async def reload_table_moders(self):
@@ -158,7 +160,7 @@ class TableModerators(commands.Cog):
                     await asyncio.sleep(5)
                     text_serv = server[x]
 
-                    threading.Thread(target=self.connect_site, args=(self, x, session,))
+                    threading.Thread(target=connect_site, args=(x, session,))
                     while self.html == '':
                         await asyncio.sleep(5)
                             # await asyncio.sleep(5)
