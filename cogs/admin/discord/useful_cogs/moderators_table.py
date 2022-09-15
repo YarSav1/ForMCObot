@@ -100,7 +100,7 @@ class TableModerators(commands.Cog):
     async def reload_table_moders(self):
 
         session = requests.Session()
-        retry = Retry(connect=1000, backoff_factor=1)
+        retry = Retry(connect=1000, backoff_factor=0.5)
         adapter = HTTPAdapter(max_retries=retry)
         session.mount('http://', adapter)
         session.mount('https://', adapter)
@@ -139,18 +139,17 @@ class TableModerators(commands.Cog):
                     text_serv = server[x]
                     popitka = 0
                     popitka += 1
-                    html_status = False
-                    while html_status is False:
+                    while True:
                         try:
-                            # print(f'connect {server[x]} - {popitka}', end='\r')
+                            print(f'connect {server[x]} - {popitka}', end='\r')
                             # if len(self.hst) == 0:
                             #     s = get_session(get_free_proxies())
                             # else:
                             #     s = get_session(self.hst)
-                            html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=1)
+                            html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=0.5)
                             if html.status_code == 200:
                                 html = html.text
-                                html_status = True
+                                break
                         except Exception as exc:
                             pass
                         # await asyncio.sleep(5)
