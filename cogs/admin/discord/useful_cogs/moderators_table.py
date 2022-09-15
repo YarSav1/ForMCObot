@@ -32,6 +32,7 @@ def connect_site(x, session):
             if html.status_code == 200:
                 html = html.text
                 break
+            html = random.randint(0, 1000)
         except Exception as exc:
             pass
 
@@ -162,7 +163,7 @@ class TableModerators(commands.Cog):
 
                     threading.Thread(target=connect_site, args=(x, session))
                     print('ok')
-                    while html == '':
+                    while html == '' or html == int(html):
                         print(html)
                         await asyncio.sleep(5)
                             # await asyncio.sleep(5)
