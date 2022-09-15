@@ -139,8 +139,8 @@ class TableModerators(commands.Cog):
                     text_serv = server[x]
                     popitka = 0
                     popitka += 1
-                    html = 0
-                    while html != 200:
+                    html_status = False
+                    while html_status is False:
                         try:
                             # print(f'connect {server[x]} - {popitka}', end='\r')
                             # if len(self.hst) == 0:
@@ -150,6 +150,7 @@ class TableModerators(commands.Cog):
                             html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=1)
                             if html.status_code == 200:
                                 html = html.text
+                                html_status = True
                         except Exception as exc:
                             pass
                         # await asyncio.sleep(5)
