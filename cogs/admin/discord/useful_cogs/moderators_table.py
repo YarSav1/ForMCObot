@@ -1,6 +1,7 @@
 import asyncio
 import random
 import threading
+import time
 
 import discord
 import requests
@@ -99,6 +100,7 @@ class TableModerators(commands.Cog):
     def connect_site(self, x, session):
         popitka = 0
         while True:
+            time.sleep(2)
             popitka += 1
             try:
                 print(f'connect {server[x]} - {popitka}', end='\r')
