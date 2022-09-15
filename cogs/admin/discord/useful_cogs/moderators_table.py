@@ -21,25 +21,22 @@ html = ''
 def connect_site(x, session):
     global html
     popitka = 0
-    try:
-        while True:
-            time.sleep(2)
-            popitka += 1
-            try:
-                # print(f'connect {server[x]} - {popitka}', end='\r')
-                # if len(self.hst) == 0:
-                #     s = get_session(get_free_proxies())
-                # else:
-                #     s = get_session(self.hst)
-                html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=10)
-                if html.status_code == 200:
-                    html = html.text
-                    break
-                html = random.randint(0, 1000)
-            except Exception as exc:
-                pass
-    except Exception as exc:
-        print(exc)
+    while True:
+        time.sleep(2)
+        popitka += 1
+        try:
+            # print(f'connect {server[x]} - {popitka}', end='\r')
+            # if len(self.hst) == 0:
+            #     s = get_session(get_free_proxies())
+            # else:
+            #     s = get_session(self.hst)
+            html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=10)
+            if html.status_code == 200:
+                html = html.text
+                break
+            html = random.randint(0, 1000)
+        except Exception as exc:
+            pass
 
 
 def get_free_proxies():
@@ -165,7 +162,8 @@ class TableModerators(commands.Cog):
                     await asyncio.sleep(5)
                     text_serv = server[x]
 
-                    threading.Thread(target=connect_site, args=(x, session))
+                    th = threading.Thread(target=connect_site, args=(x, session))
+                    th.join()
                     print('ok')
                     while html == '' or html == int(html):
                         print(html)
