@@ -106,7 +106,7 @@ class TableModerators(commands.Cog):
                 #     s = get_session(get_free_proxies())
                 # else:
                 #     s = get_session(self.hst)
-                html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=1.5)
+                html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=10)
                 if html.status_code == 200:
                     self.html = html.text
                     break
@@ -117,7 +117,7 @@ class TableModerators(commands.Cog):
     async def reload_table_moders(self):
 
         session = requests.Session()
-        retry = Retry(connect=1, backoff_factor=.7)
+        retry = Retry(connect=3, backoff_factor=5)
         adapter = HTTPAdapter(max_retries=retry)
         session.mount('http://', adapter)
         session.mount('https://', adapter)
