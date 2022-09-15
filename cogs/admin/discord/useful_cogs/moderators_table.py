@@ -70,7 +70,6 @@ class TableModerators(commands.Cog):
         self.msgs = []
         self.hst = ''
         self.send_info = False
-        self.html = html
 
     async def _create_channel(self, ctx, msg):
         embed = discord.Embed(title='Создаю канал', color=GENERAL_COLOR)
@@ -120,7 +119,7 @@ class TableModerators(commands.Cog):
 
     @tasks.loop(minutes=30)
     async def reload_table_moders(self):
-
+        global html
         session = requests.Session()
         retry = Retry(connect=3, backoff_factor=5)
         adapter = HTTPAdapter(max_retries=retry)
@@ -163,7 +162,7 @@ class TableModerators(commands.Cog):
 
                     threading.Thread(target=connect_site, args=(x, session))
                     print('ok')
-                    while self.html == '':
+                    while html == '':
                         await asyncio.sleep(5)
                             # await asyncio.sleep(5)
                     soup = BeautifulSoup(self.html, 'html.parser')
@@ -202,7 +201,7 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
-                    self.html = ''
+                    html = ''
                 #                     # await asyncio.sleep(30)
                 await self.msgs[i].edit(embed=embed)
                 # await asyncio.sleep(20)
