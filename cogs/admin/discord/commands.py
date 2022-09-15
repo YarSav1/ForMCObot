@@ -16,7 +16,7 @@ from config.online_config import server
 
 async def pucker_errors(st, en, all_errors):
     description = ''
-    for error in range(st,en):
+    for error in range(st, en):
         description += f'**{error + 1}**\n{all_errors[error]}\n'
     return description
 
@@ -98,9 +98,9 @@ class left_and_right(discord.ui.View):
             embed.set_footer(text=f'{self.list_errors}/{self.len_lists}')
             if self.list_errors == 0:
                 await interaction.response.edit_message(embed=embed, view=left_no(py=self.py, ctx=self.ctx,
-                                                                                   len_lists=self.len_lists,
-                                                                                   massive=self.massive,
-                                                                                   page=self.list_errors))
+                                                                                  len_lists=self.len_lists,
+                                                                                  massive=self.massive,
+                                                                                  page=self.list_errors))
             elif self.list_errors + 1 <= self.len_lists:
                 await interaction.response.edit_message(embed=embed, view=left_and_right(py=self.py, ctx=self.ctx,
                                                                                          len_lists=self.len_lists,
@@ -229,7 +229,6 @@ class SuperAdminCommands(commands.Cog):
     @commands.command(aliases=['bot', 'бот'])
     async def _check_bot_work(self, ctx):
         if await check_channels(ctx) or ctx.author.id in super_admin:
-
             start_time = time.time()
             message = await ctx.message.reply("Да-да, я тута-здеся! Проверяю задержку...")
             end_time = time.time()
@@ -438,15 +437,15 @@ class SuperAdminCommands(commands.Cog):
             all_errors = errors_db['massive']
             all_length = len(all_errors)
 
-            if all_length%5 != 0:
-                lists = all_length//5+1
+            if all_length % 5 != 0:
+                lists = all_length // 5 + 1
             else:
-                lists = all_length//5
+                lists = all_length // 5
             lists = int(lists)
             list_now = 1
             embed = discord.Embed(title='Ошибки бота.', color=GENERAL_COLOR)
             if list_now * 5 > all_length:
-                end = all_length+1
+                end = all_length + 1
             else:
                 end = list_now * 5
             description = await pucker_errors((list_now - 1) * 5, end, all_errors)
@@ -458,7 +457,7 @@ class SuperAdminCommands(commands.Cog):
                 await ctx.reply(embed=embed, view=left_no(py=self.py, ctx=ctx, len_lists=lists, massive=all_errors,
                                                           page=list_now))
 
-    @commands.command(aliases=['players','игроки'])
+    @commands.command(aliases=['players', 'игроки'])
     async def __players(self, ctx):
         if ctx.author.id in super_admin:
             embed = discord.Embed(title='Получаю информацию...', color=SUCCESS_COLOR)
@@ -470,18 +469,17 @@ class SuperAdminCommands(commands.Cog):
             players = []
             for i in server:
                 db_serv = list(ONLINE.find({"server_name": i}))
-                text_servers+=f'`{i}`, '
-                text+=f'`{i}` - `{len(db_serv)}` игроков.\n'
+                text_servers += f'`{i}`, '
+                text += f'`{i}` - `{len(db_serv)}` записей.\n'
                 for player in db_serv:
                     if player['name'] not in players:
                         players.append(player['name'])
             text_servers = text_servers[:-2]
             embed.description = f'Кол-во документов - **{all_db}**\n' \
-                                f'{text_servers}\n' \
+                                f'{text_servers}\n\n' \
                                 f'{text}\n' \
                                 f'Уникальных игроков - {len(players)}'
             await msg.edit(embed=embed)
-
 
 
 def setup(py):
