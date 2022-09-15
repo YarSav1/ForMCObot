@@ -16,25 +16,31 @@ from config.functional_config import super_admin, GENERAL_COLOR, FAILURE_COLOR, 
 from config.online_config import URL_md, server
 
 html = ''
+
+
 def connect_site(x, session):
     global html
     popitka = 0
-    while True:
-        time.sleep(2)
-        popitka += 1
-        try:
-            # print(f'connect {server[x]} - {popitka}', end='\r')
-            # if len(self.hst) == 0:
-            #     s = get_session(get_free_proxies())
-            # else:
-            #     s = get_session(self.hst)
-            html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=10)
-            if html.status_code == 200:
-                html = html.text
-                break
-            html = random.randint(0, 1000)
-        except Exception as exc:
-            pass
+    try:
+        while True:
+            time.sleep(2)
+            popitka += 1
+            try:
+                # print(f'connect {server[x]} - {popitka}', end='\r')
+                # if len(self.hst) == 0:
+                #     s = get_session(get_free_proxies())
+                # else:
+                #     s = get_session(self.hst)
+                html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=10)
+                if html.status_code == 200:
+                    html = html.text
+                    break
+                html = random.randint(0, 1000)
+            except Exception as exc:
+                pass
+    except Exception as exc:
+        print(exc)
+
 
 def get_free_proxies():
     url = "https://free-proxy-list.net/"
@@ -116,8 +122,6 @@ class TableModerators(commands.Cog):
             # await asyncio.sleep(10)
             self.reload_table_moders.start()
 
-
-
     @tasks.loop(minutes=30)
     async def reload_table_moders(self):
         global html
@@ -166,7 +170,7 @@ class TableModerators(commands.Cog):
                     while html == '' or html == int(html):
                         print(html)
                         await asyncio.sleep(5)
-                            # await asyncio.sleep(5)
+                        # await asyncio.sleep(5)
                     soup = BeautifulSoup(html, 'html.parser')
                     spis_md = soup.find_all('tr')
                     cikl = len(spis_md)
