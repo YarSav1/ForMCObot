@@ -160,7 +160,8 @@ class TableModerators(commands.Cog):
                     await asyncio.sleep(5)
                     text_serv = server[x]
 
-                    threading.Thread(target=connect_site, args=(x, session,))
+                    threading.Thread(target=connect_site, args=(x, session))
+                    print('ok')
                     while self.html == '':
                         await asyncio.sleep(5)
                             # await asyncio.sleep(5)
