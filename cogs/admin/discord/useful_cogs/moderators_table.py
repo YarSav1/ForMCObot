@@ -97,7 +97,7 @@ class TableModerators(commands.Cog):
     async def reload_table_moders(self):
 
         session = requests.Session()
-        retry = Retry(connect=1, backoff_factor=1.5)
+        retry = Retry(connect=1, backoff_factor=.7)
         adapter = HTTPAdapter(max_retries=retry)
         session.mount('http://', adapter)
         session.mount('https://', adapter)
