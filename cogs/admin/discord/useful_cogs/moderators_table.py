@@ -168,15 +168,14 @@ class TableModerators(commands.Cog):
 
 
                     # await asyncio.sleep(5)
+                    cnt()
                     while True:
-                        try:
-                            if html != '':
+                        if html != '':
+                            try:
                                 soup = BeautifulSoup(html, 'html.parser')
                                 break
-                            else:
+                            except Exception:
                                 cnt()
-                        except Exception:
-                            cnt()
                         await asyncio.sleep(5)
                     spis_md = soup.find_all('tr')
                     cikl = len(spis_md)
