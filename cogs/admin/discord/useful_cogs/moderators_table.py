@@ -170,8 +170,9 @@ class TableModerators(commands.Cog):
                     # await asyncio.sleep(5)
                     while True:
                         try:
-                            soup = BeautifulSoup(html, 'html.parser')
-                            break
+                            if html != '':
+                                soup = BeautifulSoup(html, 'html.parser')
+                                break
                         except Exception:
                             cnt()
                         await asyncio.sleep(5)
