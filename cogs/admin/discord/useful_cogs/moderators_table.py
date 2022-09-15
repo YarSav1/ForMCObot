@@ -25,7 +25,7 @@ def connect_site(x, session):
         time.sleep(2)
         popitka += 1
         try:
-            # print(f'connect {server[x]} - {popitka}', end='\r')
+            print(f'connect {server[x]} - {popitka}', end='\r')
             # if len(self.hst) == 0:
             #     s = get_session(get_free_proxies())
             # else:
@@ -34,7 +34,6 @@ def connect_site(x, session):
             if html.status_code == 200:
                 html = html.text
                 break
-            html = random.randint(0, 1000)
         except Exception as exc:
             pass
 
