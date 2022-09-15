@@ -34,6 +34,8 @@ def connect_site(x, session):
             if html.status_code == 200:
                 html = html.text
                 break
+            else:
+                html = ''
         except Exception as exc:
             pass
 
