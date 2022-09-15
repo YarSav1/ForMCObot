@@ -22,6 +22,7 @@ def connect_site(x, session):
     global html
     popitka = 0
     while True:
+        time.sleep(2)
         popitka += 1
         try:
             print(f'connect {server[x]} - {popitka}', end='\r')
