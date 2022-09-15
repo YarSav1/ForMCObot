@@ -157,7 +157,10 @@ class TableModerators(commands.Cog):
                     text_serv = server[x]
 
                     th = threading.Thread(target=self.connect_site(session=session, x=x))
-                    th.join()
+                    while True:
+                        if self.html != '':
+                            break
+                        await asyncio.sleep(1)
                             # await asyncio.sleep(5)
                     soup = BeautifulSoup(self.html, 'html.parser')
                     spis_md = soup.find_all('tr')
@@ -195,6 +198,7 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
+                    self.html = ''
                 #                     # await asyncio.sleep(30)
                 await self.msgs[i].edit(embed=embed)
                 # await asyncio.sleep(20)
