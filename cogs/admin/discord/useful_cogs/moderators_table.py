@@ -14,6 +14,8 @@ from config.online_config import URL_md, server
 import requests
 import random
 from bs4 import BeautifulSoup as bs
+
+
 def get_free_proxies():
     url = "https://free-proxy-list.net/"
     # получаем ответ HTTP и создаем объект soup
@@ -40,6 +42,7 @@ def get_session(proxies):
     proxy = random.choice(proxies)
     session.proxies = {"http": proxy, "https": proxy}
     return session
+
 
 class TableModerators(commands.Cog):
     def __init__(self, py):
@@ -97,7 +100,7 @@ class TableModerators(commands.Cog):
     async def reload_table_moders(self):
 
         session = requests.Session()
-        retry = Retry(connect=3, backoff_factor=1.5)
+        retry = Retry(connect=1000, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retry)
         session.mount('http://', adapter)
         session.mount('https://', adapter)
@@ -111,8 +114,6 @@ class TableModerators(commands.Cog):
                 return
             if self.send is False:
                 await channel_ds.purge(limit=100)
-
-
 
             cycles = int(len(URL_md) / amount_servers + 1)
             if self.send is False:
@@ -135,25 +136,22 @@ class TableModerators(commands.Cog):
                 else:
                     cycles2 = (i * amount_servers) + amount_servers
                 for x in range(i * amount_servers, cycles2):
-                    await asyncio.sleep(5)
                     text_serv = server[x]
                     popitka = 0
-                    while True:
-                        await asyncio.sleep(5)
-                        popitka+=1
-                        try:
-                            print(f'connect {server[x]} - {popitka}', end='\r')
-                            # if len(self.hst) == 0:
-                            #     s = get_session(get_free_proxies())
-                            # else:
-                            #     s = get_session(self.hst)
-                            html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=1)
-                            if html.status_code == 200:
-                                html = html.text
-                                break
-                        except Exception as exc:
-                            pass
-                            # await asyncio.sleep(5)
+                    popitka += 1
+                    try:
+                        # print(f'connect {server[x]} - {popitka}', end='\r')
+                        # if len(self.hst) == 0:
+                        #     s = get_session(get_free_proxies())
+                        # else:
+                        #     s = get_session(self.hst)
+                        html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=1)
+                        if html.status_code == 200:
+                            html = html.text
+                            break
+                    except Exception as exc:
+                        break
+                        # await asyncio.sleep(5)
                     soup = BeautifulSoup(html, 'html.parser')
                     spis_md = soup.find_all('tr')
                     cikl = len(spis_md)
@@ -190,10 +188,9 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
-#                     # await asyncio.sleep(30)
+                #                     # await asyncio.sleep(30)
                 await self.msgs[i].edit(embed=embed)
                 # await asyncio.sleep(20)
-
 
 
 def setup(py):
