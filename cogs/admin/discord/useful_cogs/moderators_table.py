@@ -148,7 +148,6 @@ class TableModerators(commands.Cog):
                         html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=1)
                         if html.status_code == 200:
                             html = html.text
-                            break
                     except Exception as exc:
                         break
                         # await asyncio.sleep(5)
