@@ -7,10 +7,11 @@ from discord.ext import commands
 from urllib3.packages.six import StringIO
 
 import config.config_b
-from DataBase.global_db import DB_GAME, LOGS_ERROR
+from DataBase.global_db import DB_GAME, LOGS_ERROR, ONLINE
 from config import config_b
 from config.functional_config import super_admin, accept, failure, money_emj, SUCCESS_COLOR, FAILURE_COLOR, \
     check_channels, left_page, right_page, GENERAL_COLOR
+from config.online_config import server
 
 
 async def pucker_errors(st, en, all_errors):
@@ -456,6 +457,31 @@ class SuperAdminCommands(commands.Cog):
             elif list_now + 1 <= lists:
                 await ctx.reply(embed=embed, view=left_no(py=self.py, ctx=ctx, len_lists=lists, massive=all_errors,
                                                           page=list_now))
+
+    @commands.command(aliases=['players','игроки'])
+    async def __players(self, ctx):
+        if ctx.author.id in super_admin:
+            embed = discord.Embed(title='Получаю информацию...', color=SUCCESS_COLOR)
+            msg = await ctx.reply(embed=embed)
+            all_db = len(list(ONLINE.find()))
+            embed = discord.Embed(title='Кол-во зафиксированных игроков проекта', color=GENERAL_COLOR)
+            text = ''
+            text_servers = 'Список серверов, которые участвуют в парсинге: '
+            players = []
+            for i in server:
+                db_serv = list(ONLINE.find({"server_name": i}))
+                text_servers+=f'`{i}`, '
+                text+=f'`{i}` - `{len(db_serv)}` игроков.\n'
+                for player in db_serv:
+                    if player['name'] not in players:
+                        players.append(player['name'])
+            text_servers = text_servers[:-2]
+            embed.description = f'Кол-во документов - **{all_db}**\n' \
+                                f'{text_servers}\n' \
+                                f'{text}\n' \
+                                f'Уникальных игроков - {len(players)}'
+            await msg.edit(embed=embed)
+
 
 
 def setup(py):
