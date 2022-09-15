@@ -165,7 +165,6 @@ class TableModerators(commands.Cog):
                     th.start()
                     print('ok')
                     while html == '' or html == int(html):
-                        print(html)
                         await asyncio.sleep(5)
                         # await asyncio.sleep(5)
                     soup = BeautifulSoup(html, 'html.parser')
