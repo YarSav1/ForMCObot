@@ -24,7 +24,7 @@ def connect_site(x, session):
     while True:
         popitka += 1
         try:
-            # print(f'connect {server[x]} - {popitka}', end='\r')
+            print(f'connect {server[x]} - {popitka}', end='\r')
             # if len(self.hst) == 0:
             #     s = get_session(get_free_proxies())
             # else:
