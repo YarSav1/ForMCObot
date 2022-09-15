@@ -15,8 +15,9 @@ from DataBase.global_db import DB_SERVER_SETTINGS
 from config.functional_config import super_admin, GENERAL_COLOR, FAILURE_COLOR, SUCCESS_COLOR, HEADERS
 from config.online_config import URL_md, server
 
-
+html = ''
 def connect_site(x, session):
+    global html
     popitka = 0
     while True:
         time.sleep(2)
@@ -29,7 +30,7 @@ def connect_site(x, session):
             #     s = get_session(self.hst)
             html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=10)
             if html.status_code == 200:
-                TableModerators.html = html.text
+                html = html.text
                 break
         except Exception as exc:
             pass
@@ -69,7 +70,7 @@ class TableModerators(commands.Cog):
         self.msgs = []
         self.hst = ''
         self.send_info = False
-        self.html = ''
+        self.html = html
 
     async def _create_channel(self, ctx, msg):
         embed = discord.Embed(title='Создаю канал', color=GENERAL_COLOR)
