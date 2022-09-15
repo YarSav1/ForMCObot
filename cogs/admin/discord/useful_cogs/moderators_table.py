@@ -139,17 +139,19 @@ class TableModerators(commands.Cog):
                     text_serv = server[x]
                     popitka = 0
                     popitka += 1
-                    try:
-                        # print(f'connect {server[x]} - {popitka}', end='\r')
-                        # if len(self.hst) == 0:
-                        #     s = get_session(get_free_proxies())
-                        # else:
-                        #     s = get_session(self.hst)
-                        html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=1)
-                        if html.status_code == 200:
-                            html = html.text
-                    except Exception as exc:
-                        break
+                    html = 0
+                    while html != 200:
+                        try:
+                            # print(f'connect {server[x]} - {popitka}', end='\r')
+                            # if len(self.hst) == 0:
+                            #     s = get_session(get_free_proxies())
+                            # else:
+                            #     s = get_session(self.hst)
+                            html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=1)
+                            if html.status_code == 200:
+                                html = html.text
+                        except Exception as exc:
+                            pass
                         # await asyncio.sleep(5)
                     soup = BeautifulSoup(html, 'html.parser')
                     spis_md = soup.find_all('tr')
