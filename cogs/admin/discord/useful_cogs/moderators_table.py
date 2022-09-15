@@ -163,7 +163,7 @@ class TableModerators(commands.Cog):
                     text_serv = server[x]
 
                     th = threading.Thread(target=connect_site, args=(x, session))
-                    th.join()
+                    th.start()
                     print('ok')
                     while html == '' or html == int(html):
                         print(html)
