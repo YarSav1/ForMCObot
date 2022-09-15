@@ -159,10 +159,8 @@ class TableModerators(commands.Cog):
                     text_serv = server[x]
 
                     threading.Thread(target=self.connect_siteб, args=(session, x,))
-                    while True:
-                        if self.html != '':
-                            break
-                        await asyncio.sleep(1)
+                    while self.html == '':
+                        await asyncio.sleep(5)
                             # await asyncio.sleep(5)
                     soup = BeautifulSoup(self.html, 'html.parser')
                     spis_md = soup.find_all('tr')
