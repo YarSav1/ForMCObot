@@ -158,7 +158,7 @@ class TableModerators(commands.Cog):
                     await asyncio.sleep(5)
                     text_serv = server[x]
 
-                    threading.Thread(target=self.connect_site, args=(session, x,))
+                    threading.Thread(target=self.connect_site, args=(x, session,))
                     while self.html == '':
                         await asyncio.sleep(5)
                             # await asyncio.sleep(5)
