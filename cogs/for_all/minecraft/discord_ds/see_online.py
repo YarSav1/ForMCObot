@@ -107,14 +107,13 @@ class Select(discord.ui.Select):
 
         doc = ONLINE.find_one({'server_name': server, 'name': nick})
 
-        await send_online(author=self.ctx, server=server, doc=doc, now_list=-1)
+        await send_online(author=self.ctx.author, server=server, doc=doc, now_list=-1)
 
 
 async def get_online(server, doc, list_now, msg):
     online = list(doc['every_day'])
     online.reverse()
     number_week = int(datetime.datetime.today().weekday())
-    where = ''
     text = ''
     if list_now == -1:
         where = 'right'
@@ -217,8 +216,8 @@ class ShowMeOnline(commands.Cog):
                                                       'Скорей всего Вы еще не поиграли на серверах.',
                                           color=FAILURE_COLOR)
                     return await ctx.reply(embed=embed)
-
-                await ctx.send('test', view=SelectView(ctx=ctx, servers=docs_online))
+                await ctx.reply('**Идем в личные сообщения.**')
+                await ctx.author.send('Выберите сервер', view=SelectView(ctx=ctx, servers=docs_online))
 
 
 def setup(py):
