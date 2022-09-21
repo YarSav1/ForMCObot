@@ -47,7 +47,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from DataBase.global_db import ONLINE
-from config.functional_config import HEADERS
+from config.functional_config import HEADERS, payload
 
 # nick = 'XxromaxX'  # doc["ds-minecraft"][1]
 # html = requests.get(f'https://minecraftonly.ru/index.php?player={nick}&view=search&do=tophungergames&server=0',
@@ -77,23 +77,23 @@ from bs4 import BeautifulSoup as bs
 from config.online_config import URL_md, server
 
 
-def get_free_proxies():
-    url = "https://free-proxy-list.net/"
-    # получаем ответ HTTP и создаем объект soup
-    soup = bs(requests.get(url).content, "html.parser")
-    proxies = []
-    for row in soup.find("table", attrs={"class": "table table-striped table-bordered"}).find_all("tr")[1:]:
-        tds = row.find_all("td")
-        try:
-            ip = tds[0].text.strip()
-            port = tds[1].text.strip()
-            name = tds[4].text.strip()
-            if name == 'elite proxy' and port == '8118':
-                host = f"{ip}:{port}"
-                proxies.append(host)
-        except IndexError:
-            continue
-    return proxies
+# def get_free_proxies():
+#     url = "https://free-proxy-list.net/"
+#     # получаем ответ HTTP и создаем объект soup
+#     soup = bs(requests.get(url).content, "html.parser")
+#     proxies = []
+#     for row in soup.find("table", attrs={"class": "table table-striped table-bordered"}).find_all("tr")[1:]:
+#         tds = row.find_all("td")
+#         try:
+#             ip = tds[0].text.strip()
+#             port = tds[1].text.strip()
+#             name = tds[4].text.strip()
+#             if name == 'elite proxy' and port == '8118':
+#                 host = f"{ip}:{port}"
+#                 proxies.append(host)
+#         except IndexError:
+#             continue
+#     return proxies
 
 
 # free_proxies = get_free_proxies()
@@ -130,31 +130,40 @@ def get_free_proxies():
 #     print(html)
 # else:
 #     print(html.status_code)
-def date_for_online(otkat):
-    delta = datetime.timedelta(hours=3, minutes=0)
-    time_now = datetime.datetime.now(datetime.timezone.utc) + delta
-    delta = datetime.timedelta(days=otkat + 1)
-    time_now = time_now - delta
-    time_now = str(time_now.strftime('%d.%m.%y'))
-    return time_now
-
-
-list_now = -1
-
-doc = ONLINE.find_one({'name': 'XxromaxX', 'server_name': 'HungerGames'})
-print('Док есть')
-online = list(doc['every_day'])
-online.reverse()
-number_week = int(datetime.datetime.today().weekday())
-print(f'Число недели - {number_week}')
-
-if list_now == -1:
-    st, en = 0, number_week
-    print(f'{date_for_online(-1)} - {doc["today"]}')
-else:
-    st, en = number_week+7*list_now, number_week+7*list_now+7
-    print(st, en)
-    if en > len(online):
-        en = int(len(online))-1
-for i in range(st, en):
-    print(f'{date_for_online(i)} - {online[i]}')
+# def date_for_online(otkat):
+#     delta = datetime.timedelta(hours=3, minutes=0)
+#     time_now = datetime.datetime.now(datetime.timezone.utc) + delta
+#     delta = datetime.timedelta(days=otkat + 1)
+#     time_now = time_now - delta
+#     time_now = str(time_now.strftime('%d.%m.%y'))
+#     return time_now
+#
+#
+# list_now = -1
+#
+# doc = ONLINE.find_one({'name': 'XxromaxX', 'server_name': 'HungerGames'})
+# print('Док есть')
+# online = list(doc['every_day'])
+# online.reverse()
+# number_week = int(datetime.datetime.today().weekday())
+# print(f'Число недели - {number_week}')
+#
+# if list_now == -1:
+#     st, en = 0, number_week
+#     print(f'{date_for_online(-1)} - {doc["today"]}')
+# else:
+#     st, en = number_week+7*list_now, number_week+7*list_now+7
+#     print(st, en)
+#     if en > len(online):
+#         en = int(len(online))-1
+# for i in range(st, en):
+#     print(f'{date_for_online(i)} - {online[i]}')
+url = 'https://minecraftonly.ru/forum/private.php?do=newpm'
+with requests.Session() as s:
+    p = s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
+    html = s.get(url, headers=HEADERS, params=None)
+    if html.status_code == 200:
+        soup = BeautifulSoup(html.content, 'html.parser')
+        print(soup)
+        tkn = soup.find('input', {'name': 'securitytoken'})['value']
+        print(tkn)
