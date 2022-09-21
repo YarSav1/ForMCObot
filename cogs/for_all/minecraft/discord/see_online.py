@@ -141,6 +141,7 @@ async def get_online(server, doc, list_now, msg):
 async def send_online(author, server, doc, now_list):
     embed = discord.Embed(title='Получаю информацию...', color=SUCCESS_COLOR)
     msg = await author.send(embed=embed)
+    await get_online(server,doc,now_list,msg)
 
 
 async def get_text_online(now_list, start, end, days):
