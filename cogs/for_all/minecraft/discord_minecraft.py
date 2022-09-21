@@ -149,7 +149,19 @@ class ConnectDiscordForMinecraft(commands.Cog):
             ver_code += str(random.randint(0, 9))
 
         s = requests.Session()
-        s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
+        popitka_c = 0
+        while True:
+            popitka_c+=1
+            try:
+                s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
+
+                break
+            except Exception:
+                description = dsn('\n\n'
+                                  f'**Отправляю сообщение... Упс, что-то идет не так... Пробуем еще! ({popitka_c})**')
+                stage_2 = await msg_nick.reply(embed=await self.pucker(title, description, GENERAL_COLOR))
+                pass
+            await asyncio.sleep(popitka_c*2)
         html = s.get(url, headers=HEADERS, params=None)
         if html.status_code == 200:
             await asyncio.sleep(5)
@@ -161,7 +173,6 @@ class ConnectDiscordForMinecraft(commands.Cog):
                     tkn = soup.find('input', {'name': 'securitytoken'})['value']
                     break
                 except Exception as exc:
-                    print(exc)
                     p+=1
                     if p == 50:
                         description = dsn('\n\n'
