@@ -211,7 +211,12 @@ class ShowMeOnline(commands.Cog):
                 await ctx.reply(embed=embed)
             else:
                 docs_online = ONLINE.find({'name': info['ds-minecraft'][1]})
-                print(len(list(docs_online)))
+                if len(list(docs_online)) == 0:
+                    embed = discord.Embed(title=f'{failure} Ошибка',
+                                          description='Мне не удалось найти документы с Вами :(\n'
+                                                      'Скорей всего Вы еще не поиграли на серверах.',
+                                          color=FAILURE_COLOR)
+                    return await ctx.reply(embed=embed)
 
                 await ctx.send('test', view=SelectView(ctx=ctx, servers=docs_online))
 
