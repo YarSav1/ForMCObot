@@ -164,7 +164,7 @@ class TableModerators(commands.Cog):
                     text_serv = server[x]
 
                     def cnt():
-                        print('ok')
+                        # print('ok')
                         th = threading.Thread(target=connect_site, args=(x, session))
                         th.start()
 

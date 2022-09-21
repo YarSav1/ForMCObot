@@ -158,12 +158,21 @@ from config.online_config import URL_md, server
 #         en = int(len(online))-1
 # for i in range(st, en):
 #     print(f'{date_for_online(i)} - {online[i]}')
-url = 'https://minecraftonly.ru/forum/private.php?do=newpm'
-with requests.Session() as s:
-    p = s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
-    html = s.get(url, headers=HEADERS, params=None)
-    if html.status_code == 200:
-        soup = BeautifulSoup(html.content, 'html.parser')
-        print(soup)
-        tkn = soup.find('input', {'name': 'securitytoken'})['value']
-        print(tkn)
+# url = 'https://minecraftonly.ru/forum/private.php?do=newpm'
+# with requests.Session() as s:
+#     p = s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
+#     html = s.get(url, headers=HEADERS, params=None)
+#     if html.status_code == 200:
+#         soup = BeautifulSoup(html.content, 'html.parser')
+#         print(soup)
+#         tkn = soup.find('input', {'name': 'securitytoken'})['value']
+#         print(tkn)
+
+
+own = {
+        "name": 'YarSav',
+        "today": 1000,
+        'server_name': 'HiTech',
+        'every_day': [100,210,1200,124,12431,123,123123,123123,123123,12312,122]
+    }
+ONLINE.insert_one(own)
