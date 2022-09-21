@@ -148,8 +148,27 @@ class ConnectDiscordForMinecraft(commands.Cog):
             p = s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
             html = s.get(url, headers=HEADERS, params=None)
             if html.status_code == 200:
-                soup = BeautifulSoup(html.content, 'html.parser')
-                tkn = soup.find('input', {'name': 'securitytoken'})['value']
+
+                p = 0
+                while True:
+                    soup = BeautifulSoup(html.content, 'html.parser')
+                    try:
+                        tkn = soup.find('input', {'name': 'securitytoken'})['value']
+                        break
+                    except Exception:
+                        p+=1
+                        if p == 5:
+                            description = dsn('\n\n'
+                                              f'**Я не смог отправить сообщение. Попробуйте позже.**')
+                            await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
+                        else:
+                            description = dsn('\n\n'
+                                              f'**Возникли проблемы с отправкой. Все еще пробую. ({p})**')
+                            await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
+
+                    html = s.get(url, headers=HEADERS, params=None)
+                    await asyncio.sleep(3)
+
                 form = form_send(tkn, str(nick), ver_code)
                 a = s.post('https://minecraftonly.ru/forum/private.php?do=insertpm&pmid=', data=form)
                 if 'Следующие пользователи не найдены:' in a.text:
