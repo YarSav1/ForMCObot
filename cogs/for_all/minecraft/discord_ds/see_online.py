@@ -38,13 +38,13 @@ class right_no(discord.ui.View):
         self.list_now = list_now
         self.msg = msg
 
-    @discord.ui.button(label=left_page, style=discord.ButtonStyle.green, disabled=True)
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.green)
     async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
         self.list_now -= 1
         await get_online(self.server, self.doc, self.list_now, self.msg)
 
     @discord.ui.button(label=right_page, style=discord.ButtonStyle.red)
-    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
+    async def button2(self, button: discord.ui.Button, interaction: discord.Interaction, disabled=True):
         await interaction.response.edit_message(view=self)
 
     async def on_timeout(self):
@@ -77,7 +77,7 @@ class right_and_left(discord.ui.View):
         self.list_now = list_now
         self.msg = msg
 
-    @discord.ui.button(label=left_page, style=discord.ButtonStyle.green, disabled=True)
+    @discord.ui.button(label=left_page, style=discord.ButtonStyle.green)
     async def button1(self, button: discord.ui.Button, interaction: discord.Interaction):
         self.list_now -= 1
         await get_online(self.server, self.doc, self.list_now, self.msg)
@@ -119,7 +119,7 @@ async def get_online(server, doc, list_now, msg):
     if list_now == -1:
         where = 'right'
         st, en = 0, number_week
-        text += f'{date_for_online(-1)} - {doc["today"]}'
+        text += f'{await date_for_online(-1)} - {doc["today"]}'
     else:
         st, en = number_week + 7 * list_now, number_week + 7 * list_now + 7
         if en > len(online):
@@ -128,7 +128,7 @@ async def get_online(server, doc, list_now, msg):
         else:
             where = 'rAl'
     for i in range(st, en):
-        text += f'{date_for_online(i)} - {online[i]}'
+        text += f'{await date_for_online(i)} - {online[i]}'
     embed = discord.Embed(title=f'Ваш онлайн на {server}',
                           description=text, color=GENERAL_COLOR)
     if where == 'right':
@@ -144,33 +144,33 @@ async def send_online(author, server, doc, now_list):
     await get_online(server,doc,now_list,msg)
 
 
-async def get_text_online(now_list, start, end, days):
-    print(days)
-    text = ''
-    if now_list == 0:
-        text += 'Эта неделя:\n'
-        all_hour, all_minute = 0, 0
-
-        for i in range(start, end):
-            time = days[i]
-            hour = time // 60
-            minute = time % 60
-            all_hour += hour
-            all_minute += minute
-            text += f'**{await date_for_online(i - 1)}**: `{hour}ч` `{minute}м`\n'
-        text += f'Общее: `{all_hour}ч` `{all_minute}м`'
-    else:
-        text += f'{await date_for_online(0)} - {await date_for_online(start - 1)}'
-        all_hour, all_minute = 0, 0
-        for i in range(start, end):
-            time = days[i]
-            hour = time // 60
-            minute = time % 60
-            all_hour += hour
-            all_minute += minute
-            text += f'**{await date_for_online(i - 1)}**: `{hour}ч` `{minute}м`\n'
-        text += f'Общее: `{all_hour}ч` `{all_minute}м`'
-    return text
+# async def get_text_online(now_list, start, end, days):
+#     print(days)
+#     text = ''
+#     if now_list == 0:
+#         text += 'Эта неделя:\n'
+#         all_hour, all_minute = 0, 0
+#
+#         for i in range(start, end):
+#             time = days[i]
+#             hour = time // 60
+#             minute = time % 60
+#             all_hour += hour
+#             all_minute += minute
+#             text += f'**{await date_for_online(i - 1)}**: `{hour}ч` `{minute}м`\n'
+#         text += f'Общее: `{all_hour}ч` `{all_minute}м`'
+#     else:
+#         text += f'{await date_for_online(0)} - {await date_for_online(start - 1)}'
+#         all_hour, all_minute = 0, 0
+#         for i in range(start, end):
+#             time = days[i]
+#             hour = time // 60
+#             minute = time % 60
+#             all_hour += hour
+#             all_minute += minute
+#             text += f'**{await date_for_online(i - 1)}**: `{hour}ч` `{minute}м`\n'
+#         text += f'Общее: `{all_hour}ч` `{all_minute}м`'
+#     return text
 
 
 async def date_for_online(otkat):
