@@ -52,6 +52,8 @@ class success_or_no(discord.ui.View):
             title, description = f'{accept}', f'Аккаунты {self.ctx.author}-`{self.nick}` связаны!'
             await self.ctx.reply(embed=await ConnectDiscordForMinecraft(self.py).pucker(title, description,
                                                                                         SUCCESS_COLOR))
+            for btn in self.children:
+                btn.disabled = True
 
     @discord.ui.button(label="Не верно", style=discord.ButtonStyle.red)
     async def button2(self, button: discord.ui.Button, interaction: discord.Interaction):
@@ -61,6 +63,8 @@ class success_or_no(discord.ui.View):
             description = 'Вы отказались от связки "Дискорд-Майнкрафт".'
             await self.ctx.reply(embed=await ConnectDiscordForMinecraft(self.py).pucker(title, description,
                                                                                         FAILURE_COLOR))
+            for btn in self.children:
+                btn.disabled = True
 
 
 class ConnectDiscordForMinecraft(commands.Cog):
