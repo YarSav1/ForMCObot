@@ -151,19 +151,21 @@ class ConnectDiscordForMinecraft(commands.Cog):
             ver_code += str(random.randint(0, 9))
 
         s = requests.Session()
+
+        s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
         popitka_c = 0
         while True:
-            popitka_c+=1
+            popitka_c += 1
             try:
-                s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
-
-                break
+                html = s.get(url, headers=HEADERS, params=None)
+                if html.status_code == 200:
+                    break
             except Exception:
                 description = dsn('\n\n'
                                   f'**Отправляю сообщение... Упс, что-то идет не так... Пробуем еще! ({popitka_c})**')
                 await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
                 pass
-            await asyncio.sleep(popitka_c*2)
+            await asyncio.sleep(popitka_c * 2)
         html = s.get(url, headers=HEADERS, params=None)
         if html.status_code == 200:
             await asyncio.sleep(5)
