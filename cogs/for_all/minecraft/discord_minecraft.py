@@ -152,15 +152,18 @@ class ConnectDiscordForMinecraft(commands.Cog):
                 p = 0
                 while True:
                     soup = BeautifulSoup(html.content, 'html.parser')
+                    print(soup)
                     try:
                         tkn = soup.find('input', {'name': 'securitytoken'})['value']
                         break
-                    except Exception:
+                    except Exception as exc:
+                        print(exc)
                         p+=1
                         if p == 5:
                             description = dsn('\n\n'
                                               f'**Я не смог отправить сообщение. Попробуйте позже.**')
-                            await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
+                            return await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
+
                         else:
                             description = dsn('\n\n'
                                               f'**Возникли проблемы с отправкой. Все еще пробую. ({p})**')
