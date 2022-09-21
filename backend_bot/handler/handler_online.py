@@ -13,7 +13,7 @@ from config.online_config import server, URL_carta
 def get_day_min(player):
     try:
         massive = player['every_day']
-    except:
+    except Exception:
         own = {
             "name": player['name'],
             "today": 0,
