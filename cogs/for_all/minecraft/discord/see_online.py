@@ -211,7 +211,7 @@ class ShowMeOnline(commands.Cog):
                 await ctx.reply(embed=embed)
             else:
                 docs_online = ONLINE.find({'name': info['ds-minecraft'][1]})
-                print(docs_online)
+                print(len(list(docs_online)))
 
                 await ctx.send('test', view=SelectView(ctx=ctx, servers=docs_online))
 
