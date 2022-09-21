@@ -172,7 +172,7 @@ from config.online_config import URL_md, server
 own = {
         "name": 'YarSav',
         "today": 1000,
-        'server_name': 'HiTech',
+        'server_name': 'Classic',
         'every_day': [100,210,1200,124,12431,123,123123,123123,123123,12312,122]
     }
 ONLINE.insert_one(own)

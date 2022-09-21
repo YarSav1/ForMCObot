@@ -187,7 +187,7 @@ class SelectView(discord.ui.View):
         super().__init__(timeout=timeout)
         self.servers = servers
         self.ctx = ctx
-        self.add_item(Select(self.servers, self.ctx))
+        self.add_item(Select(servers=self.servers, ctx=self.ctx))
 
 
 class ShowMeOnline(commands.Cog):
