@@ -43,7 +43,7 @@ class right_no(discord.ui.View):
         self.list_now -= 1
         await get_online(self.server, self.doc, self.list_now, self.msg)
 
-    @discord.ui.button(label=right_page, style=discord.ButtonStyle.red)
+    @discord.ui.button(label=right_page, style=discord.ButtonStyle.red, disabled=True)
     async def button2(self, button: discord.ui.Button, interaction: discord.Interaction, disabled=True):
         await interaction.response.edit_message(view=self)
 
@@ -127,7 +127,10 @@ async def get_online(server, doc, list_now, msg):
         else:
             where = 'rAl'
     for i in range(st, en):
-        text += f'{await date_for_online(i)} - {online[i]}\n'
+        all_min = online[i]
+        h = all_min // 60
+        m = all_min % 60
+        text += f'{await date_for_online(i)} - {h}ч {m}м\n'
     embed = discord.Embed(title=f'Ваш онлайн на {server}',
                           description=text, color=GENERAL_COLOR)
     if where == 'right':
@@ -137,10 +140,11 @@ async def get_online(server, doc, list_now, msg):
     elif where == 'rAl':
         await msg.edit(embed=embed, view=right_and_left(server=server, doc=doc, list_now=list_now, msg=msg))
 
+
 async def send_online(author, server, doc, now_list):
     embed = discord.Embed(title='Получаю информацию...', color=SUCCESS_COLOR)
     msg = await author.send(embed=embed)
-    await get_online(server,doc,now_list,msg)
+    await get_online(server, doc, now_list, msg)
 
 
 # async def get_text_online(now_list, start, end, days):

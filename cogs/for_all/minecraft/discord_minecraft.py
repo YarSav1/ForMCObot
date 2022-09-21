@@ -148,7 +148,7 @@ class ConnectDiscordForMinecraft(commands.Cog):
         s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
         html = s.get(url, headers=HEADERS, params=None)
         if html.status_code == 200:
-
+            await asyncio.sleep(5)
             p = 0
             while True:
                 soup = BeautifulSoup(html.content, 'html.parser')
