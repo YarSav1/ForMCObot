@@ -159,7 +159,7 @@ class ConnectDiscordForMinecraft(commands.Cog):
             except Exception:
                 description = dsn('\n\n'
                                   f'**Отправляю сообщение... Упс, что-то идет не так... Пробуем еще! ({popitka_c})**')
-                stage_2 = await msg_nick.reply(embed=await self.pucker(title, description, GENERAL_COLOR))
+                await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
                 pass
             await asyncio.sleep(popitka_c*2)
         html = s.get(url, headers=HEADERS, params=None)
