@@ -144,50 +144,50 @@ class ConnectDiscordForMinecraft(commands.Cog):
         for i in range(8):
             ver_code += str(random.randint(0, 9))
 
-        with requests.Session() as s:
-            p = s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
-            html = s.get(url, headers=HEADERS, params=None)
-            if html.status_code == 200:
+        s = requests.Session()
+        s.post('https://minecraftonly.ru/', headers=HEADERS, data=payload)
+        html = s.get(url, headers=HEADERS, params=None)
+        if html.status_code == 200:
 
-                p = 0
-                while True:
-                    soup = BeautifulSoup(html.content, 'html.parser')
-                    print(soup)
-                    try:
-                        tkn = soup.find('input', {'name': 'securitytoken'})['value']
-                        break
-                    except Exception as exc:
-                        print(exc)
-                        p+=1
-                        if p == 5:
-                            description = dsn('\n\n'
-                                              f'**Я не смог отправить сообщение. Попробуйте позже.**')
-                            return await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
+            p = 0
+            while True:
+                soup = BeautifulSoup(html.content, 'html.parser')
+                print(soup)
+                try:
+                    tkn = soup.find('input', {'name': 'securitytoken'})['value']
+                    break
+                except Exception as exc:
+                    print(exc)
+                    p+=1
+                    if p == 50:
+                        description = dsn('\n\n'
+                                          f'**Я не смог отправить сообщение. Попробуйте позже.**')
+                        return await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
 
-                        else:
-                            description = dsn('\n\n'
-                                              f'**Возникли проблемы с отправкой. Все еще пробую. ({p})**')
-                            await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
+                    else:
+                        description = dsn('\n\n'
+                                          f'**Возникли проблемы с отправкой. Все еще пробую. ({p})**')
+                        await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
 
-                    html = s.get(url, headers=HEADERS, params=None)
-                    await asyncio.sleep(3)
+                html = s.get(url, headers=HEADERS, params=None)
+                await asyncio.sleep(1)
 
-                form = form_send(tkn, str(nick), ver_code)
-                a = s.post('https://minecraftonly.ru/forum/private.php?do=insertpm&pmid=', data=form)
-                if 'Следующие пользователи не найдены:' in a.text:
-                    title = f'{failure} ОШИБКА'
-                    description = 'Игрок с таким ником не найден!\n' \
-                                  'Процесс связки отменен! Начинайте заново.'
-                    await msg_nick.reply(embed=await self.pucker(title, description, FAILURE_COLOR))
-                elif '<li>Приносим вам свои извинения, но у нас на сайте пользователи могут отправлять личное сообщение не чаще, чем раз в 60 секунд' in a.text:
-                    title = f'{failure} ОШИБКА {failure}'
-                    description = 'Извините, но на форуме можно отправлять сообщение лишь раз в минуту.\n' \
-                                  'Попробуйте пройти связку заново.'
-                    await msg_nick.reply(embed=await self.pucker(title, description, FAILURE_COLOR))
-                else:
-                    description = dsn('\n\n'
-                                      '**Сообщение отправлено! Жду код!!!**')
-                    await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
+            form = form_send(tkn, str(nick), ver_code)
+            a = s.post('https://minecraftonly.ru/forum/private.php?do=insertpm&pmid=', data=form)
+            if 'Следующие пользователи не найдены:' in a.text:
+                title = f'{failure} ОШИБКА'
+                description = 'Игрок с таким ником не найден!\n' \
+                              'Процесс связки отменен! Начинайте заново.'
+                await msg_nick.reply(embed=await self.pucker(title, description, FAILURE_COLOR))
+            elif '<li>Приносим вам свои извинения, но у нас на сайте пользователи могут отправлять личное сообщение не чаще, чем раз в 60 секунд' in a.text:
+                title = f'{failure} ОШИБКА {failure}'
+                description = 'Извините, но на форуме можно отправлять сообщение лишь раз в минуту.\n' \
+                              'Попробуйте пройти связку заново.'
+                await msg_nick.reply(embed=await self.pucker(title, description, FAILURE_COLOR))
+            else:
+                description = dsn('\n\n'
+                                  '**Сообщение отправлено! Жду код!!!**')
+                await stage_2.edit(embed=await self.pucker(title, description, GENERAL_COLOR))
 
         def check(msg_response):
             if msg_response.author == ctx.author:
