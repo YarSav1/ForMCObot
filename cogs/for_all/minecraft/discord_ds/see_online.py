@@ -119,7 +119,7 @@ async def get_online(server, doc, list_now, msg):
     if list_now == -1:
         where = 'right'
         st, en = 0, number_week
-        text += f'{await date_for_online(-1)} - {doc["today"]}'
+        text += f'{await date_for_online(-1)} - {doc["today"]}\n'
     else:
         st, en = number_week + 7 * list_now, number_week + 7 * list_now + 7
         if en > len(online):
@@ -128,7 +128,7 @@ async def get_online(server, doc, list_now, msg):
         else:
             where = 'rAl'
     for i in range(st, en):
-        text += f'{await date_for_online(i)} - {online[i]}'
+        text += f'{await date_for_online(i)} - {online[i]}\n'
     embed = discord.Embed(title=f'Ваш онлайн на {server}',
                           description=text, color=GENERAL_COLOR)
     if where == 'right':
