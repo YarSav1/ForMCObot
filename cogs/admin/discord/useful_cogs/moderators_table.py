@@ -22,7 +22,7 @@ def connect_site(x, session):
     global html
     popitka = 0
     while True:
-        time.sleep(2)
+
         popitka += 1
         try:
             # print(f'connect {server[x]} - {popitka}', end='\r')
@@ -30,7 +30,7 @@ def connect_site(x, session):
             #     s = get_session(get_free_proxies())
             # else:
             #     s = get_session(self.hst)
-            html = session.get(URL_md[x], headers=HEADERS, params=None, timeout=10)
+            html = session.get(URL_md[x], headers=HEADERS, params=None)
             if html.status_code == 200:
                 html = html.text
                 break
@@ -38,6 +38,7 @@ def connect_site(x, session):
                 html = ''
         except Exception as exc:
             pass
+        time.sleep(popitka * 2)
 
 
 def get_free_proxies():
@@ -124,10 +125,10 @@ class TableModerators(commands.Cog):
     async def reload_table_moders(self):
         global html
         session = requests.Session()
-        retry = Retry(connect=3, backoff_factor=5)
-        adapter = HTTPAdapter(max_retries=retry)
-        session.mount('http://', adapter)
-        session.mount('https://', adapter)
+        # retry = Retry(connect=3, backoff_factor=5)
+        # adapter = HTTPAdapter(max_retries=retry)
+        # session.mount('http://', adapter)
+        # session.mount('https://', adapter)
         amount_servers = 3
         doc = DB_SERVER_SETTINGS.find_one({'_id': 'Goodie'})
         if 'table_moderators' in doc:
@@ -168,18 +169,17 @@ class TableModerators(commands.Cog):
                         th = threading.Thread(target=connect_site, args=(x, session))
                         th.start()
 
-
-
-                    # await asyncio.sleep(5)
                     cnt()
+                    popitka = 0
                     while True:
+                        popitka+=1
                         if html != '':
                             try:
                                 soup = BeautifulSoup(html, 'html.parser')
                                 break
                             except Exception:
                                 cnt()
-                        await asyncio.sleep(5)
+                        await asyncio.sleep(popitka*2)
                     spis_md = soup.find_all('tr')
                     cikl = len(spis_md)
                     helpers = ['**Хелперы:** ', False]
