@@ -114,11 +114,16 @@ async def get_online(server, doc, list_now, msg):
     online = list(doc['every_day'])
     online.reverse()
     number_week = int(datetime.datetime.today().weekday())
+    general_min = 0
     text = ''
     if list_now == -1:
         where = 'right'
         st, en = 0, number_week
-        text += f'{await date_for_online(-1)} - {doc["today"]}\n'
+        all_min = doc["today"]
+        h = all_min // 60
+        m = all_min % 60
+        text += f'{await date_for_online(-1)} - {h}ч {m}м\n'
+        general_min+=all_min
     else:
         st, en = number_week + 7 * list_now, number_week + 7 * list_now + 7
         if en > len(online):
@@ -131,6 +136,10 @@ async def get_online(server, doc, list_now, msg):
         h = all_min // 60
         m = all_min % 60
         text += f'{await date_for_online(i)} - {h}ч {m}м\n'
+        general_min+=all_min
+    h = general_min // 60
+    m = general_min % 60
+    text+=f'\nОбщее за неделю: {h}ч {m}м'
     embed = discord.Embed(title=f'Ваш онлайн на {server}',
                           description=text, color=GENERAL_COLOR)
     if where == 'right':

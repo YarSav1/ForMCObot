@@ -172,7 +172,6 @@ class ConnectDiscordForMinecraft(commands.Cog):
             p = 0
             while True:
                 soup = BeautifulSoup(html.content, 'html.parser')
-                print(soup)
                 try:
                     tkn = soup.find('input', {'name': 'securitytoken'})['value']
                     break
