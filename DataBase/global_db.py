@@ -1,7 +1,8 @@
 from pymongo import MongoClient
 
 cluster = MongoClient(
-    'mongodb+srv://userch:Paradox123@cluster0.h3myb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+    'mongodb+srv://userch:Paradox123@cluster0.h3myb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+)
 
 
 def check_db():

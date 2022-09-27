@@ -178,6 +178,7 @@ class TableModerators(commands.Cog):
                                 soup = BeautifulSoup(html, 'html.parser')
                                 break
                             except Exception:
+                                html = ''
                                 cnt()
                         await asyncio.sleep(popitka*2)
                     spis_md = soup.find_all('tr')
