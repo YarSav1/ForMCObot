@@ -160,6 +160,7 @@ class TableModerators(commands.Cog):
                     cycles2 = len(URL_md)
                 else:
                     cycles2 = (i * amount_servers) + amount_servers
+                error = False
                 for x in range(i * amount_servers, cycles2):
                     await asyncio.sleep(5)
                     text_serv = server[x]
@@ -220,12 +221,15 @@ class TableModerators(commands.Cog):
                         curator[0] += '`Нет`  '
                         count+=1
                     if count == 4:
+                        error = True
                         break
+
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
                     html = ''
                 #                     # await asyncio.sleep(30)
-                await self.msgs[i].edit(embed=embed)
+                if error is False:
+                    await self.msgs[i].edit(embed=embed)
                 # await asyncio.sleep(20)
 
 
