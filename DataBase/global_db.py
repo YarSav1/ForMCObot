@@ -1,7 +1,8 @@
 from pymongo import MongoClient
-
+LOGIN = 'userch'
+PASSWORD = 'Paradox123'
 cluster = MongoClient(
-    'mongodb+srv://userch:Paradox123@cluster0.h3myb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+    f'mongodb+srv://{LOGIN}:{PASSWORD}@cluster0.h3myb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 )
 
 
