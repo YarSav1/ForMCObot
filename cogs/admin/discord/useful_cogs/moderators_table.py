@@ -206,14 +206,21 @@ class TableModerators(commands.Cog):
                         else:
                             moders[0] += f'`{moder_name}`, '
                             moders[1] += True
+                    count = 0
                     if not headmoder[1]:
                         headmoder[0] += '`Нет`  '
+                        count+=1
                     if not helpers[1]:
                         helpers[0] += '`Нет`  '
+                        count+=1
                     if not moders[1]:
                         moders[0] += '`Нет`  '
+                        count+=1
                     if not curator[1]:
                         curator[0] += '`Нет`  '
+                        count+=1
+                    if count == 4:
+                        break
                     text_moders = f'{curator[0][:-2]}\n{headmoder[0][:-2]}\n{moders[0][:-2]}\n{helpers[0][:-2]}'
                     embed.add_field(name=f'| {text_serv} |', value=text_moders)
                     html = ''
